@@ -1,9 +1,8 @@
 "use client"
-// import { ModeToggle } from "@/components/ThemeToggle/mode-toggle"
-// import { useGetMeQuery } from "@/redux/features/auth/authApi"
-import React, { useState } from "react"
+import { ModeToggle } from "@/components/ThemeToggle/mode-toggle"
+ import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-// import GoogleTranslate from "@/components/LanguageToggle/GoogleTranslate"
+import GoogleTranslate from "@/components/LanguageToggle/GoogleTranslate"
 
 interface UserHeaderProps {
   userImage: string
@@ -35,16 +34,16 @@ export const LayoutNavber: React.FC<UserHeaderProps> = ({ }) => {
   }
 
   // const { data: userData } = useGetMeQuery({});
-  // const role = userData?.data?.role;
-  // // const email = userData?.data?.email;
-  // // const subscriptionPlan = userData?.data?.subscriptionPlan;
-  // // const trialAvailable = userData?.data?.trialAvailable;
-  // const name = userData?.data?.name;
-  // const avatar = userData?.data?.avatar;
+  const role = userData?.data?.role;
+  // const email = userData?.data?.email;
+  // const subscriptionPlan = userData?.data?.subscriptionPlan;
+  // const trialAvailable = userData?.data?.trialAvailable;
+  const name = userData?.data?.name;
+  const avatar = userData?.data?.avatar;
   //(role,email,subscriptionPlan,trialAvailable,name)
 
   // Determine settings route based on role
-  // const settingsRoute = role === 'SUPER_ADMIN' ? '/admin/settings' : '/user/settings';
+  const settingsRoute = role === 'SUPER_ADMIN' ? '/admin/settings' : '/user/settings';
 
   return (
     <div className="md:px-10 pl-5 pr-15 z-9999 bg-white border-b dark:border-b-[#536580] border-b-[#b9b6b6] py-5 flex items-center justify-between dark:bg-gray-900">
