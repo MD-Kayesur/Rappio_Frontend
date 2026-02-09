@@ -4,10 +4,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Key, CheckCircle, ArrowLeft } from "lucide-react";
-import { useForgotPasswordMutation, useVerifyResetCodeMutation } from "@/redux/features/auth/authApi";
+ 
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/Layout/Navbar";
-
+ 
 // Validation schemas
 const forgotPasswordSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -44,13 +43,12 @@ const ForgotPasswordForm: React.FC = () => {
     resolver: zodResolver(verifyCodeSchema),
   });
 
-  const [forgotPassword, { isLoading: isSendingCode }] = useForgotPasswordMutation();
-  const [verifyResetCode, { isLoading: isVerifyingCode }] = useVerifyResetCodeMutation();
+ 
 
   // Step 1: Send reset code
   const onSendCode = async (data: ForgotPasswordInputs) => {
     try {
-      await forgotPassword({ email: data.email }).unwrap();
+       
       setEmail(data.email);
       setSentEmail(data.email);
       setStep("code");
@@ -62,20 +60,13 @@ const ForgotPasswordForm: React.FC = () => {
   // Step 2: Verify reset code
   const onVerifyCode = async (data: VerifyCodeInputs) => {
     try {
-      const response = await verifyResetCode({
-        email,
-        code: data.code,
-      }).unwrap();
+      
 
       // Extract token from response if available, otherwise use code as token
-      const token = (response as any)?.token || (response as any)?.data?.token || data.code;
-      
+       
       setStep("success");
       
-      // Navigate to reset password page with email and token
-      setTimeout(() => {
-        navigate(`/reset?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`);
-      }, 2000);
+      // Navigate to reset password page with email and  
       
     } catch (error: any) {
       alert(error?.data?.message || "Invalid or expired code");
@@ -122,10 +113,10 @@ const ForgotPasswordForm: React.FC = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSendingCode}
+            
                 className="w-full cursor-pointer bg-[#10B981] hover:bg-[#0ea571] text-white py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSendingCode ? "Sending Code..." : "Send Verification Code"}
+                
               </button>
             </form>
           </div>
@@ -174,10 +165,10 @@ const ForgotPasswordForm: React.FC = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isVerifyingCode}
+          
                 className="w-full cursor-pointer bg-[#10B981] hover:bg-[#0ea571] text-white py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isVerifyingCode ? "Verifying..." : "Verify Code"}
+             
               </button>
               
               {/* Resend Code */}
@@ -187,7 +178,7 @@ const ForgotPasswordForm: React.FC = () => {
                 </p>
                 <button
                   type="button"
-                  onClick={() => forgotPassword({ email }).unwrap().then(() => alert("Code resent!"))}
+                 
                   className="text-sm font-semibold text-[#10B981] hover:text-[#0ea571] dark:text-[#10B981] dark:hover:text-[#0ea571] cursor-pointer underline transition-colors"
                 >
                   Resend Code
@@ -213,7 +204,7 @@ const ForgotPasswordForm: React.FC = () => {
 
   return (
     <>
-      <Navbar />
+   
       <div className="min-h-screen text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
         <AnimatedBackground />
         <div className="relative z-10 w-full flex items-center justify-center">

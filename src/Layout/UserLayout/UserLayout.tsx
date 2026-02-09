@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { UserSidebar } from "./UserSidebar";
 import { Outlet } from "react-router-dom";
-import { LayoutNavber } from "../LayoutNavber";
-import adminimg from "../../assets/adminimg.svg";
-import themeicon from "../../assets/Component 10.svg";
 import { AiOutlineMenuFold } from "react-icons/ai";
+import { LayoutNavber } from "@/Layout/LayoutNavber";
 
 export default function UserLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,17 +31,13 @@ export default function UserLayout() {
     };
   }, []);
 
-  const handleclick = () => {
-    alert("clicked");
-  };
 
   return (
-    <div className="flex h-screen bg-[#F5F5F5] dark:bg-[#191919] relative overflow-hidden">
+    <div className="flex h-screen bg-[#F5F5F5] dark:bg-gray-950 relative overflow-hidden">
       {/* Sidebar - Overlay on mobile, fixed on desktop */}
       <div
-        className={`fixed lg:static inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 ${
-          sidebarOpen ? "block" : "hidden lg:block"
-        }`}
+        className={`fixed lg:static inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 ${sidebarOpen ? "block" : "hidden lg:block"
+          }`}
       >
         {/* Mobile overlay backdrop */}
         {isMobile && sidebarOpen && (
@@ -52,7 +46,7 @@ export default function UserLayout() {
             onClick={() => setSidebarOpen(false)}
           />
         )}
-        
+
         <div className="relative h-full">
           <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         </div>
@@ -73,13 +67,7 @@ export default function UserLayout() {
 
         {/* Layout Navbar */}
         <div className="sticky top-0 z-30">
-          <LayoutNavber
-            userImage={adminimg}
-            userName="Darlene Robertson"
-            userRole="Admin"
-            themeIcon={themeicon}
-            onThemeClick={handleclick}
-          />
+          <LayoutNavber />
         </div>
 
         {/* Main Content */}

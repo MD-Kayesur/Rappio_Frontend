@@ -1,17 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import logoLight from "../../assets/prontocorso/ProntoCorsoLogoLight-removebg-preview.png";
-import logoDark from "../../assets/prontocorso/ProntoCorsoLogoDark-removebg-preview.png";
-import logo from "../../assets/prontocorso/ProntoCorsoBadge-removebg-preview (1).png";
-import overviewIcon from "../../assets/Dashbord/fi_18.svg";
-import Practiceicon from "../../assets/Dashbord/fi_17.svg";
-import TrendingUpicon from "../../assets/Dashbord/fi_16.svg";
-import Brainicon from "../../assets/Dashbord/fi_15.svg";
-import Usersicon from "../../assets/Dashbord/fi_14.svg";
-import Calendaricon from "../../assets/Dashbord/fi_13.svg";
-import Settingsicon from "../../assets/Dashbord/fi_1.svg";
-import Supporticon from "../../assets/Dashbord/fi_2.svg";
+import logoLight from "../../assets/Logo.svg";
+import logoDark from "../../assets/Logo2.svg";
+import logo from "../../assets/Logo.svg";
+import {
+  LayoutDashboard,
+  Video,
+  Image,
+  Heart,
+  Trophy,
+  Settings,
+  LifeBuoy
+} from "lucide-react";
 
 import {
   MdKeyboardDoubleArrowLeft,
@@ -37,7 +38,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
 }) => {
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
-   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode] = useState(false);
 
   //  const { data: subscriptionData } = useGetMySubscriptionQuery();
   // const isLifetime = subscriptionData?.data?.planAlias === "PRO_LIFETIME" || subscriptionData?.data?.plan === "PRO_LIFETIME";
@@ -45,7 +46,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
 
   const handleLogout = () => {
     localStorage.clear();
-     
+
     window.location.href = "/login";
   };
 
@@ -74,38 +75,21 @@ export const UserSidebar: React.FC<SidebarProps> = ({
   // }, [theme]);
 
   const menuItems = [
-    { path: "/user", label: "Pro Overview", icon: overviewIcon },
-    { path: "/user/practice", label: "Practice", icon: Practiceicon },
-
-    // { path: "/user/analytics", label: "Advanced Analytics", icon: TrendingUpicon,disabled: !prodata },
-
-    { path: "/user/flashcards", label: "Advanced Flashcards", icon: Brainicon },
-
-    // PRO-only (visible but disabled if not pro)
-    {
-      path: "/user/leaderboard",
-      label: "Pro Leaderboard",
-      icon: Usersicon,
-      // disabled: !prodata,
-    },
-    {
-      path: "/user/planner",
-      label: "AI Study Planner",
-      icon: Calendaricon,
-      // disabled: !prodata,
-    },
-
-    { path: "/user/settings", label: "Settings", icon: Settingsicon },
-    { path: "/user/support", label: "Support", icon: Supporticon },
+    { path: "/user/all", label: "All", icon: LayoutDashboard },
+    { path: "/user/videos", label: "Videos", icon: Video },
+    { path: "/user/photos", label: "Photos", icon: Image },
+    { path: "/user/favorites", label: "Favorites", icon: Heart },
+    { path: "/user/top-casinos", label: "Top Casinos", icon: Trophy },
+    { path: "/user/settings", label: "Settings", icon: Settings },
+    { path: "/user/support", label: "Support", icon: LifeBuoy },
   ];
 
   return (
     <div
-      className={`relative z-50 flex flex-col bg-[#EBEBEB] dark:bg-gray-900 border-r border-[#b9b6b6] dark:border-r-[#536580] transition-all duration-300 ease-in-out h-full ${
-        sidebarOpen 
-          ? (isCollapsed ? "w-20" : "w-64 sm:w-70") 
-          : "w-0 overflow-hidden"
-      }`}
+      className={`relative z-50 flex flex-col bg-[#EBEBEB] dark:bg-gray-900 border-r border-[#b9b6b6] dark:border-r-[#536580] transition-all duration-300 ease-in-out h-full ${sidebarOpen
+        ? (isCollapsed ? "w-20" : "w-64 sm:w-70")
+        : "w-0 overflow-hidden"
+        }`}
     >
       {/* Mobile Close Button */}
       {sidebarOpen && (
@@ -125,22 +109,21 @@ export const UserSidebar: React.FC<SidebarProps> = ({
         <div className="md:px-3 pt-4 sm:pt-6">
           <Link to="/" className="block">
             <div
-              className={`flex items-center gap-3 border-b border-[#b9b6b6] dark:border-b-[#536580] transition-all duration-300 pb-4 ${
-                isCollapsed ? "justify-center px-2" : "px-4 sm:px-6"
-              }`}
+              className={`flex items-center gap-3 border-b border-[#b9b6b6] dark:border-b-[#536580] transition-all duration-300 pb-4 ${isCollapsed ? "justify-center px-2" : "px-4 sm:px-6"
+                }`}
             >
               {isCollapsed ? (
                 <img src={logo} alt="ProntoCorso" className="w-10 h-10 rounded-full" />
               ) : (
-                <img 
+                <img
                   src={isDarkMode ? logoDark : logoLight}
-                  alt="ProntoCorso" 
+                  alt="ProntoCorso"
                   className="transition-all duration-300 rounded-full w-50"
                 />
               )}
               {!isCollapsed && (
                 <h1 className="font-bold text-xl sm:text-2xl text-[#111827] dark:text-gray-200 truncate">
-                 ProntoCorso
+                  ProntoCorso
                 </h1>
               )}
             </div>
@@ -153,12 +136,12 @@ export const UserSidebar: React.FC<SidebarProps> = ({
         <nav className="flex-1 overflow-y-auto mt-4 px-2 sm:px-3 pb-4">
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path;
-            const isDisabled = item;  
+            const isDisabled = false; // Add logic here if some items should be locked
 
             return (
               <Link
                 key={item.path}
-                to={isDisabled ? "#" : item}
+                to={item.path}
                 onClick={(e) => {
                   if (isDisabled) {
                     e.preventDefault();
@@ -170,24 +153,19 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                   }
                 }}
                 className={`group flex font-semibold items-center gap-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer
-                  ${
-                    isDisabled
-                      ? "opacity-50 cursor-not-allowed bg-gray-200 dark:bg-gray-800 text-gray-400"
-                      : isActive
+                  ${isDisabled
+                    ? "opacity-50 cursor-not-allowed bg-gray-200 dark:bg-gray-800 text-gray-400"
+                    : isActive
                       ? "bg-[#111827] dark:bg-[#AFC7FF] dark:text-[#111827] text-white shadow-md"
                       : "text-[#686565] dark:text-gray-200 hover:bg-[#111827] dark:hover:bg-gray-800 hover:text-white"
                   }
                   ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
                 `}
               >
-                <img
-                  src={item.icon}
-                  alt={item.label}
-                  className={`flex-shrink-0 transition-transform duration-200 ${
-                    isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"
-                  } ${
-                    !isDisabled && "group-hover:scale-110"
-                  }`}
+                <item.icon
+                  className={`flex-shrink-0 transition-transform duration-200 ${isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"
+                    } ${!isDisabled && "group-hover:scale-110"
+                    }`}
                 />
 
                 {!isCollapsed && (
@@ -211,9 +189,8 @@ export const UserSidebar: React.FC<SidebarProps> = ({
         <div className="p-3 border-t border-[#C6C8CB] dark:border-gray-700">
           <button
             onClick={handleLogout}
-            className={`group w-full cursor-pointer flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-500 hover:text-white dark:hover:bg-red-600 transition-colors ${
-              isCollapsed ? "justify-center" : ""
-            }`}
+            className={`group w-full cursor-pointer flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-500 hover:text-white dark:hover:bg-red-600 transition-colors ${isCollapsed ? "justify-center" : ""
+              }`}
           >
             <MdLogout className={isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7 dark:text-white text-black" : "w-5 h-5 sm:w-6 sm:h-6 dark:text-white text-black"} />
             {!isCollapsed && <span className="text-sm sm:text-base dark:text-white text-black">Logout</span>}
@@ -252,4 +229,3 @@ export const UserSidebar: React.FC<SidebarProps> = ({
 
 
 
- 

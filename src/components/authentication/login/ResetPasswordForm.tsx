@@ -7,8 +7,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, ArrowLeft, Check } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useResetPasswordMutation } from "@/redux/features/auth/authApi";
-import Navbar from "@/Layout/Navbar";
+ 
+ 
   
 // Validation Schema
 const resetPasswordSchema = z
@@ -45,7 +45,7 @@ const ResetPasswordForm = () => {
   // const token = searchParams.get("token") || searchParams.get("code") || "";
   const navigate = useNavigate();
 
-  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+ 
 
   const resetForm = useForm<ResetPasswordInputs>({
     resolver: zodResolver(resetPasswordSchema),
@@ -61,11 +61,7 @@ const onSubmit = async (data: ResetPasswordInputs) => {
   }
 
   try {
-    await resetPassword({
-      email: email,
-      password: data.password,
-      confirmPassword: data.confirmPassword,
-    }).unwrap();
+     
 
     setIsSuccess(true);
 
@@ -83,7 +79,7 @@ const onSubmit = async (data: ResetPasswordInputs) => {
   if (isSuccess) {
     return (
       <>
-        <Navbar />
+      
         <div className="min-h-screen text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
           <AnimatedBackground />
           <div className="relative z-10 w-full flex items-center justify-center">
@@ -107,7 +103,7 @@ const onSubmit = async (data: ResetPasswordInputs) => {
 
   return (
    <>
-    <Navbar />
+     
     <div className="min-h-screen text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
       <AnimatedBackground />
       <div className="relative z-10 w-full flex items-center justify-center">
@@ -193,10 +189,10 @@ const onSubmit = async (data: ResetPasswordInputs) => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={isLoading}
+        
             className="w-full cursor-pointer bg-[#10B981] hover:bg-[#0ea571] text-white py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Resetting Password..." : "Reset Password"}
+          
           </button>
         </form>
         </div>
