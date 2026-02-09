@@ -1,26 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock,  Rocket, Sparkles, CheckCircle, Zap,  Eye, EyeOff, AlertCircle } from 'lucide-react';
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { useLoginMutation } from "@/redux/features/auth/authApi";
-import Cookies from "js-cookie";
-import Navbar from "@/Layout/Navbar";
+import { Mail, Lock, Rocket, Sparkles, CheckCircle, Zap, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
 import loginimage from "@/assets/prontocorso/Loginwithguy.png";
 import logo from "@/assets/prontocorso/ProntoCorsoLogoLight-removebg-preview.png";
 import img from "@/assets/prontocorso/ProntoCorsoLogoDark-removebg-preview.png";
 import { useTheme } from "@/components/ThemeToggle/theme-provider";
- // OR import toast from "react-hot-toast"; if using react-hot-toast
+// OR import toast from "react-hot-toast"; if using react-hot-toast
 
-const loginSchema = z.object({
-  email: z.string().email("Invalid email format"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  // Remove role from schema as it should come from backend
-});
 
-type LoginFormInputs = z.infer<typeof loginSchema>;
+
+
 
 const AnimatedBackground = () => (
   <div className="absolute inset-0 overflow-hidden">
@@ -55,19 +45,16 @@ const MockInput = React.forwardRef<HTMLInputElement, MockInputProps>(
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`flex h-11 xs:h-12 text-black md:h-14 w-full rounded-lg xs:rounded-xl md:rounded-2xl border-2 bg-white/5 px-3 xs:px-3 md:px-4 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base text-white transition-all duration-500 placeholder:text-gray-500 focus:outline-none focus:ring-1 xs:focus:ring-2 md:focus:ring-4 focus:ring-blue-500/30 focus:border-transparent backdrop-blur-sm transform group-hover:scale-[1.02] ${
-            Icon ? 'pl-9 xs:pl-10 md:pl-12' : 'pl-3'
-          } ${
-            error 
-              ? 'border-red-400/80 shadow-lg shadow-red-500/30' 
+          className={`flex h-11 xs:h-12 text-black md:h-14 w-full rounded-lg xs:rounded-xl md:rounded-2xl border-2 bg-white/5 px-3 xs:px-3 md:px-4 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base text-white transition-all duration-500 placeholder:text-gray-500 focus:outline-none focus:ring-1 xs:focus:ring-2 md:focus:ring-4 focus:ring-blue-500/30 focus:border-transparent backdrop-blur-sm transform group-hover:scale-[1.02] ${Icon ? 'pl-9 xs:pl-10 md:pl-12' : 'pl-3'
+            } ${error
+              ? 'border-red-400/80 shadow-lg shadow-red-500/30'
               : 'border-gray-500/30 hover:border-blue-400/50'
-          }`}
+            }`}
           {...props}
         />
         {/* Animated border effect */}
-        <div className={`absolute inset-0 rounded-lg xs:rounded-xl md:rounded-2xl from-blue-500 to-purple-500 opacity-0 transition-opacity duration-500 group-focus-within:opacity-20 -z-10 ${
-          error ? 'from-red-500 to-pink-500' : ''
-        }`}></div>
+        <div className={`absolute inset-0 rounded-lg xs:rounded-xl md:rounded-2xl from-blue-500 to-purple-500 opacity-0 transition-opacity duration-500 group-focus-within:opacity-20 -z-10 ${error ? 'from-red-500 to-pink-500' : ''
+          }`}></div>
       </div>
     </div>
   )
@@ -95,17 +82,17 @@ interface MockButtonProps {
   onClick?: () => void;
 }
 
-const MockButton: React.FC<MockButtonProps> = ({ 
-  children, 
-  type = 'button', 
+const MockButton: React.FC<MockButtonProps> = ({
+  children,
+  type = 'button',
   variant = 'gradient',
-  className = '', 
+  className = '',
   disabled = false,
   onClick,
-  ...props 
+  ...props
 }) => {
   const baseClasses = "inline-flex items-center justify-center rounded-lg xs:rounded-xl md:rounded-2xl px-4 xs:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base font-bold text-white shadow-md xs:shadow-lg md:shadow-2xl transition-all duration-500 transform hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-1 xs:focus:ring-2 md:focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group";
-  
+
   const variantClasses = {
     primary: "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500/30",
     secondary: "bg-gray-600 hover:bg-gray-700 focus:ring-gray-500/30",
@@ -123,7 +110,7 @@ const MockButton: React.FC<MockButtonProps> = ({
     >
       {/* Shine effect */}
       <div className="absolute inset-0 -translate-x-full from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-1000"></div>
-      
+
       {/* Content */}
       <span className="relative z-10 flex items-center gap-1 xs:gap-1 md:gap-2">
         {children}
@@ -133,22 +120,15 @@ const MockButton: React.FC<MockButtonProps> = ({
 };
 
 // Enhanced background image URL
-const LOGIN_IMAGE =  loginimage
+const LOGIN_IMAGE = loginimage
 const Login = () => {
-  const [login, { isLoading,   }] = useLoginMutation();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<LoginFormInputs>({
-    resolver: zodResolver(loginSchema),
-  });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [apiError, setApiError] = useState<string | null>(null);
+
   const navigate = useNavigate();
+  const [isLoggedIn] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [apiError] = useState<string | null>(null);
+
   const { theme } = useTheme();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -177,82 +157,12 @@ const Login = () => {
   }, [theme]);
 
   // Extract error message from RTK Query error
-  const getErrorMessage = useCallback((error: any): string => {
-    if (!error) return '';
-    
- 
-    
-    if (typeof error.data === 'string') {
-      return error.data;
-    }
-    
-    if (error.status === 401) {
-      return 'Invalid email or password';
-    }
-    
-    if (error.status === 404) {
-      return 'User not found';
-    }
-    
-    if (error.status === 500) {
-      return 'Server error. Please try again later';
-    }
-    
-    return 'invalid email or password';
-  }, []);
 
-  const onSubmit = async (data: LoginFormInputs) => {
-    
-    try {
-      // Call the login mutation
-      const result = await login({
-        email: data.email,
-        password: data.password,
-      }).unwrap();
-      
-    
-      // Store tokens in localStorage or cookies
-      if (result.data) {
-       
-        Cookies.set('accessToken', result.data.accessToken);
-        Cookies.set('refreshToken', result.data.refreshToken);  
-      }
-      // Show success state
-      setIsLoggedIn(true);
-      
-   
-
-
-  setTimeout(() => {
-      const role = result.data?.user?.role;
-      
-      switch (role) {
-        case "SUPER_ADMIN":
-          return navigate("/admin");
-        case "SUPORT_MANAGER": 
-          return navigate("/admin");
-        case "CONTENT_MANAGER":
-          return navigate("/admin");
-        case "USER":
-          return navigate("/user");
-        default:
-          return navigate("/");
-      }
-    }, 500);
-
-
-
-    } catch (error: any) {
-      console.error('Login error:', error);
-      setApiError(getErrorMessage(error));
-      
-      // Clear form on error
-      reset({
-        email: data.email,
-        password: '',
-      });
-    }
+  const onSubmit = async () => {
+    // Form submission logic
   };
+
+
 
   const renderContent = useMemo(() => {
     if (isLoggedIn) {
@@ -276,7 +186,7 @@ const Login = () => {
     }
 
     return (
-      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3 xs:gap-4 md:gap-8">
+      <form className="grid gap-3 xs:gap-4 md:gap-8">
         {/* Display API Error */}
         {apiError && (
           <div className="p-3 xs:p-4 md:p-6 rounded-lg xs:rounded-xl md:rounded-2xl border border-red-500/30 from-red-500/10 to-red-600/5 backdrop-blur-sm animate-shake">
@@ -301,21 +211,19 @@ const Login = () => {
               id="email"
               type="email"
               placeholder="your.email@example.com"
-              {...register("email")}
-              className={`flex h-11 fucus:border-[#10B981] ring-1 ring-[#10B981] xs:h-12 md:h-14 w-full rounded-lg xs:rounded-xl md:rounded-2xl border-1 bg-white/5 px-3 xs:px-3 md:px-4 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base text-gray-900 dark:text-white transition-all duration-500 placeholder:text-gray-500 focus:outline-none focus:ring-1 xs:focus:ring-2 md:focus:ring-4   focus:border-transparent backdrop-blur-sm ${
-                errors.email || apiError
-                  ? 'border-red-400/80 shadow-lg shadow-red-500/30' 
-                  : 'border-gray-500/30  hover:border-[#10B981]'
-              } pl-9 xs:pl-10 md:pl-12`}
+
+              className={`flex h-11 fucus:border-[#10B981] ring-1 ring-[#10B981] xs:h-12 md:h-14 w-full rounded-lg xs:rounded-xl md:rounded-2xl border-1 bg-white/5 px-3 xs:px-3 md:px-4 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base text-gray-900 dark:text-white transition-all duration-500 placeholder:text-gray-500 focus:outline-none focus:ring-1 xs:focus:ring-2 md:focus:ring-4   focus:border-transparent backdrop-blur-sm ${'border-red-400/80 shadow-lg shadow-red-500/30'
+
+                } pl-9 xs:pl-10 md:pl-12`}
             />
             <Mail className="absolute left-3 top-1/2 h-3.5 w-3.5 xs:h-4 xs:w-4 md:h-5 md:w-5 -translate-y-1/2 text-gray-400" />
           </div>
-          {errors.email && (
-            <p className="text-red-400 text-[10px] xs:text-xs md:text-sm mt-1 xs:mt-1 md:mt-2 flex items-center gap-1 xs:gap-1 md:gap-2 animate-shake">
-              <Zap className="h-2.5 w-2.5 xs:h-3 xs:w-3 md:h-4 md:w-4" />
-              {errors.email.message}
-            </p>
-          )}
+
+          <p className="text-red-400 text-[10px] xs:text-xs md:text-sm mt-1 xs:mt-1 md:mt-2 flex items-center gap-1 xs:gap-1 md:gap-2 animate-shake">
+            <Zap className="h-2.5 w-2.5 xs:h-3 xs:w-3 md:h-4 md:w-4" />
+
+          </p>
+
         </div>
 
         {/* Password Input */}
@@ -329,12 +237,10 @@ const Login = () => {
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
-              {...register("password")}
-              className={`flex h-11 fucus:border-[#10B981] ring-1 ring-[#10B981] xs:h-12 md:h-14 w-full rounded-lg xs:rounded-xl md:rounded-2xl border-1 bg-white/5 px-3 xs:px-3 md:px-4 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base text-gray-900 dark:text-white transition-all duration-500 placeholder:text-gray-500 focus:outline-none focus:ring-1 xs:focus:ring-2 md:focus:ring-4   focus:border-transparent backdrop-blur-sm ${
-                errors.password || apiError
-                  ? 'border-red-400/80 shadow-lg shadow-red-500/30' 
-                  : 'border-gray-500/30  hover:border-[#10B981]'
-              } pl-9 xs:pl-10 md:pl-12 pr-9 xs:pr-10 md:pr-12`}
+
+              className={`flex h-11 fucus:border-[#10B981] ring-1 ring-[#10B981] xs:h-12 md:h-14 w-full rounded-lg xs:rounded-xl md:rounded-2xl border-1 bg-white/5 px-3 xs:px-3 md:px-4 py-2 xs:py-3 md:py-4 text-xs xs:text-sm md:text-base text-gray-900 dark:text-white transition-all duration-500 placeholder:text-gray-500 focus:outline-none focus:ring-1 xs:focus:ring-2 md:focus:ring-4   focus:border-transparent backdrop-blur-sm ${'border-red-400/80 shadow-lg shadow-red-500/30'
+
+                } pl-9 xs:pl-10 md:pl-12 pr-9 xs:pr-10 md:pr-12`}
             />
             <Lock className="absolute left-3 top-1/2 h-3.5 w-3.5 xs:h-4 xs:w-4 md:h-5 md:w-5 -translate-y-1/2 text-gray-400" />
             <button
@@ -342,156 +248,148 @@ const Login = () => {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors duration-300 cursor-pointer"
             >
-              {showPassword ? 
-                <EyeOff className="h-3.5 w-3.5 xs:h-4 xs:w-4 md:h-5 md:w-5" /> : 
+              {showPassword ?
+                <EyeOff className="h-3.5 w-3.5 xs:h-4 xs:w-4 md:h-5 md:w-5" /> :
                 <Eye className="h-3.5 w-3.5 xs:h-4 xs:w-4 md:h-5 md:w-5" />
               }
             </button>
           </div>
-          {errors.password && (
-            <p className="text-red-400 text-[10px] xs:text-xs md:text-sm mt-1 xs:mt-1 md:mt-2 flex items-center gap-1 xs:gap-1 md:gap-2 animate-shake">
-              <Zap className="h-2.5 w-2.5 xs:h-3 xs:w-3 md:h-4 md:w-4" />
-              {errors.password.message}
-            </p>
-          )}
+
         </div>
 
         {/* Forgot Password Link */}
 
-{/* Forgot Password Link */}
-<div className="flex justify-end animate-slide-up delay-150">
-  <Link to="/forgot-password" className="group">
-    <span className="text-[10px] xs:text-xs md:text-sm text-gray-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-1 xs:gap-1 md:gap-2">
-      <Lock className="h-2.5 w-2.5 xs:h-3 xs:w-3 md:h-4 md:w-4 dark:text-white text-gray-800" />
-      <span className="dark:text-white text-gray-800">Forgot your password?</span>
-    </span>
-  </Link>
-</div>
+        {/* Forgot Password Link */}
+        <div className="flex justify-end animate-slide-up delay-150">
+          <Link to="/forgot-password" className="group">
+            <span className="text-[10px] xs:text-xs md:text-sm text-gray-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-1 xs:gap-1 md:gap-2">
+              <Lock className="h-2.5 w-2.5 xs:h-3 xs:w-3 md:h-4 md:w-4 dark:text-white text-gray-800" />
+              <span className="dark:text-white text-gray-800">Forgot your password?</span>
+            </span>
+          </Link>
+        </div>
 
 
 
- 
+
         {/* Submit Button */}
-        <MockButton 
-          type="submit" 
-          disabled={isLoading} 
+        <MockButton
+          type="submit"
+
           variant="success"
           className="w-full h-11 !bg-[#10B981] hover:!bg-[#0ea571] text-white cursor-pointer xs:h-12 md:h-14 text-xs xs:text-sm md:text-lg animate-slide-up delay-300 mt-1 xs:mt-2 md:mt-6"
         >
-          {isLoading ? (
-            <div className="flex items-center gap-1.5 xs:gap-2 md:gap-3">
-              <div className="h-3.5 w-3.5 xs:h-4 xs:w-4 md:h-5 md:w-5 border-2 xs:border-2 md:border-3 border-white border-t-transparent rounded-full animate-spin" />
-              <span className="text-xs xs:text-xs md:text-base">Signing You In...</span>
-            </div>
-          ) : (
-            <>
-              <Rocket className="h-3.5 w-3.5 xs:h-4 xs:w-4 md:h-5 md:w-5 mr-1 xs:mr-1 md:mr-2" />
-              <span className="text-xs xs:text-xs md:text-base">Access Your Account</span>
-            </>
-          )}
+
+          <div className="flex items-center gap-1.5 xs:gap-2 md:gap-3">
+            <div className="h-3.5 w-3.5 xs:h-4 xs:w-4 md:h-5 md:w-5 border-2 xs:border-2 md:border-3 border-white border-t-transparent rounded-full animate-spin" />
+            <span className="text-xs xs:text-xs md:text-base">Signing You In...</span>
+          </div>
+
         </MockButton>
       </form>
     );
-  }, [isLoggedIn, errors, isLoading, apiError, showPassword, handleSubmit, onSubmit]);
+  }, [isLoggedIn, apiError, showPassword, onSubmit]);
 
   return (
 
-<>
 
-<Navbar />
 
-    <div className="min-h-screen   text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
-      <AnimatedBackground />
-      
-      {/* Mobile Image Banner */}
-      <div className="lg:hidden absolute top-0 left-0 right-0 h-32 xs:h-36 md:h-48 overflow-hidden">
-        <div className="absolute inset-0 from-blue-500/10 via-purple-500/10 to-cyan-500/10 z-10"></div>
-        <img
-          src={LOGIN_IMAGE}
-          alt="Collaborative workspace"
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute bottom-3 xs:bottom-4 left-3 xs:left-4 right-3 xs:right-4 bg-black/40 dark:bg-white/40 backdrop-blur-xl rounded-lg xs:rounded-xl p-3 xs:p-4 border border-white/10 dark:border-black/10">
-          <h3 className="text-base xs:text-lg font-bold text-white mb-1.5 xs:mb-2 flex items-center gap-1.5 xs:gap-2">
-            <Sparkles className="h-4 w-4 xs:h-5 xs:w-5 text-[#10B981]" />
-            Achieve Your Italian Fluency Goals.
-          </h3>
-          <p className="text-black dark:text-white text-[10px] xs:text-xs leading-relaxed">
-            Pick up exactly where you left off. Your next lesson is waiting for you.
-          </p>
-        </div>
-      </div>
+    <>
 
-      <div className="w-full max-w-6xl lg:grid lg:grid-cols-2 shadow-xl xs:shadow-3xl rounded-lg xs:rounded-xl md:rounded-3xl overflow-hidden border border-gray-700/50 backdrop-blur-xl transform transition-all duration-1000 hover:shadow-4xl relative z-10 mt-32 xs:mt-36 md:mt-0 lg:mt-0">
-        {/* Left Side: Form */}
-        <div className="flex items-center justify-center py-6 xs:py-8 md:py-16 px-3 xs:px-4 md:px-6 lg:px-16   lg:min-h-[600px]">
-          <div className="mx-auto grid w-full max-w-md gap-4 xs:gap-6 md:gap-10">
-            <div className="grid gap-3 xs:gap-4 md:gap-6 text-center">
-              <div className="inline-flex items-center gap-1.5 xs:gap-2 bg-gray-100 dark:bg-green-50/30 px-3 xs:px-4 py-1.5 xs:py-2 md:px-6 md:py-3 rounded-lg xs:rounded-xl md:rounded-2xl border border-gray-200 dark:border-green-100/30 mb-2 md:mb-4 transform transition-all duration-500 hover:scale-105">
-                <div className="h-1.5 w-1.5 xs:h-2 xs:w-2 md:h-3 md:w-3 bg-[#10B981] rounded-full animate-pulse"></div>
-                <span className="text-[#10B981] text-[10px] xs:text-xs md:text-base font-bold">Welcome Back!</span>
-                <Sparkles className="h-2.5 w-2.5 xs:h-3 xs:w-3 md:h-4 md:w-4 text-[#10B981]" />
-              </div>
-              {/* <h1 className="text-2xl dark:text-white text-gray-800 xs:text-3xl md:text-6xl font-black from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-gradient">
-                Login
-              </h1> */}
-              <p className="text-balance text-gray-300 text-xs dark:text-gray-800 text-left font-bold xs:text-sm md:text-2xl leading-relaxed animate-fade-in">
-                <span className="dark:text-white text-gray-800">Welcome back! Ready to continue your Italian practice?
-                </span>
-                {/* <span className="dark:text-white text-gray-800">Access your account and continue your creative journey with us.</span> */}
-              </p>
-            </div>
+      <div className="min-h-screen   text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
+        <AnimatedBackground />
 
-            {renderContent}
-            
-            <div className="mt-3 xs:mt-4 md:mt-8 text-center text-[10px] xs:text-xs md:text-base text-gray-400 animate-fade-in">
-              {isLoggedIn ? (
-                <div className="flex items-center justify-center gap-1.5 xs:gap-2 md:gap-3 text-green-400 animate-pulse">
-                  <CheckCircle className="h-3 w-3 xs:h-4 xs:w-4 md:h-5 md:w-5" />
-                  <span className="text-[10px] xs:text-xs md:text-base">Redirecting to your dashboard...</span>
-                </div>
-              ) : (
-                <>
-                  New to our platform?{" "}
-                  <Link to="/signup">
-                    <button className="font-bold text-black dark:text-white cursor-pointer hover:text-gray-700 transition-all duration-300  text-[10px] xs:text-xs md:text-base">
-                      Create Account Here
-                    </button>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Side: Visual - Hidden on mobile, shown on desktop */}
-        <div className="hidden lg:block relative overflow-hidden group">
+        {/* Mobile Image Banner */}
+        <div className="lg:hidden absolute top-0 left-0 right-0 h-32 xs:h-36 md:h-48 overflow-hidden">
           <div className="absolute inset-0 from-blue-500/10 via-purple-500/10 to-cyan-500/10 z-10"></div>
           <img
             src={LOGIN_IMAGE}
             alt="Collaborative workspace"
-            className="h-full w-full object-cover transform scale-110 transition-transform duration-7000 group-hover:scale-125"
+            className="h-full w-full object-cover"
           />
-          <div className="absolute bottom-10 left-10 right-10 bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-white/10 transform transition-all duration-500 group-hover:scale-105">
-            {/* <h3 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+          <div className="absolute bottom-3 xs:bottom-4 left-3 xs:left-4 right-3 xs:right-4 bg-black/40 dark:bg-white/40 backdrop-blur-xl rounded-lg xs:rounded-xl p-3 xs:p-4 border border-white/10 dark:border-black/10">
+            <h3 className="text-base xs:text-lg font-bold text-white mb-1.5 xs:mb-2 flex items-center gap-1.5 xs:gap-2">
+              <Sparkles className="h-4 w-4 xs:h-5 xs:w-5 text-[#10B981]" />
+              Achieve Your Italian Fluency Goals.
+            </h3>
+            <p className="text-black dark:text-white text-[10px] xs:text-xs leading-relaxed">
+              Pick up exactly where you left off. Your next lesson is waiting for you.
+            </p>
+          </div>
+        </div>
+
+        <div className="w-full max-w-6xl lg:grid lg:grid-cols-2 shadow-xl xs:shadow-3xl rounded-lg xs:rounded-xl md:rounded-3xl overflow-hidden border border-gray-700/50 backdrop-blur-xl transform transition-all duration-1000 hover:shadow-4xl relative z-10 mt-32 xs:mt-36 md:mt-0 lg:mt-0">
+          {/* Left Side: Form */}
+          <div className="flex items-center justify-center py-6 xs:py-8 md:py-16 px-3 xs:px-4 md:px-6 lg:px-16   lg:min-h-[600px]">
+            <div className="mx-auto grid w-full max-w-md gap-4 xs:gap-6 md:gap-10">
+              <div className="grid gap-3 xs:gap-4 md:gap-6 text-center">
+                <div className="inline-flex items-center gap-1.5 xs:gap-2 bg-gray-100 dark:bg-green-50/30 px-3 xs:px-4 py-1.5 xs:py-2 md:px-6 md:py-3 rounded-lg xs:rounded-xl md:rounded-2xl border border-gray-200 dark:border-green-100/30 mb-2 md:mb-4 transform transition-all duration-500 hover:scale-105">
+                  <div className="h-1.5 w-1.5 xs:h-2 xs:w-2 md:h-3 md:w-3 bg-[#10B981] rounded-full animate-pulse"></div>
+                  <span className="text-[#10B981] text-[10px] xs:text-xs md:text-base font-bold">Welcome Back!</span>
+                  <Sparkles className="h-2.5 w-2.5 xs:h-3 xs:w-3 md:h-4 md:w-4 text-[#10B981]" />
+                </div>
+                {/* <h1 className="text-2xl dark:text-white text-gray-800 xs:text-3xl md:text-6xl font-black from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-gradient">
+                Login
+              </h1> */}
+                <p className="text-balance text-gray-300 text-xs dark:text-gray-800 text-left font-bold xs:text-sm md:text-2xl leading-relaxed animate-fade-in">
+                  <span className="dark:text-white text-gray-800">Welcome back! Ready to continue your Italian practice?
+                  </span>
+                  {/* <span className="dark:text-white text-gray-800">Access your account and continue your creative journey with us.</span> */}
+                </p>
+              </div>
+
+              {renderContent}
+
+              <div className="mt-3 xs:mt-4 md:mt-8 text-center text-[10px] xs:text-xs md:text-base text-gray-400 animate-fade-in">
+                {isLoggedIn ? (
+                  <div className="flex items-center justify-center gap-1.5 xs:gap-2 md:gap-3 text-green-400 animate-pulse">
+                    <CheckCircle className="h-3 w-3 xs:h-4 xs:w-4 md:h-5 md:w-5" />
+                    <span className="text-[10px] xs:text-xs md:text-base">Redirecting to your dashboard...</span>
+                  </div>
+                ) : (
+                  <>
+                    New to our platform?{" "}
+                    <Link to="/signup">
+                      <button className="font-bold text-black dark:text-white cursor-pointer hover:text-gray-700 transition-all duration-300  text-[10px] xs:text-xs md:text-base">
+                        Create Account Here
+                      </button>
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side: Visual - Hidden on mobile, shown on desktop */}
+          <div className="hidden lg:block relative overflow-hidden group">
+            <div className="absolute inset-0 from-blue-500/10 via-purple-500/10 to-cyan-500/10 z-10"></div>
+            <img
+              src={LOGIN_IMAGE}
+              alt="Collaborative workspace"
+              className="h-full w-full object-cover transform scale-110 transition-transform duration-7000 group-hover:scale-125"
+            />
+            <div className="absolute bottom-10 left-10 right-10 bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-white/10 transform transition-all duration-500 group-hover:scale-105">
+              {/* <h3 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
               <Sparkles className="h-8 w-8 text-purple-400" />
               Continue Your Journey
             </h3> */}
 
 
-<h3 className="text-3xl font-bold text-black mb-4 flex items-center gap-3">
-              <Sparkles className="h-8 w-8 text-[#10B981]" />
-              Achieve Your Italian Fluency Goals.
-            </h3>
+              <h3 className="text-3xl font-bold text-black mb-4 flex items-center gap-3">
+                <Sparkles className="h-8 w-8 text-[#10B981]" />
+                Achieve Your Italian Fluency Goals.
+              </h3>
 
 
-            <p className="text-black   text-base leading-relaxed">
-              Pick up exactly where you left off. Your next lesson is waiting for you.
-            </p>
+              <p className="text-black   text-base leading-relaxed">
+                Pick up exactly where you left off. Your next lesson is waiting for you.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+
 
       {/* Footer */}
       <footer className="bg-white dark:bg-gray-900 text-slate-600 dark:text-gray-400 pt-20 pb-10 px-[5%] border-t border-slate-200 dark:border-gray-700">
@@ -500,7 +398,6 @@ const Login = () => {
             <div>
               <Link to="/#home" state={{ from: "/" }} className="flex items-center gap-4">
                 <img src={isDarkMode ? img : logo} alt="ProntoCorso" className="w-50  mb-6 rounded-full" />
-
               </Link>
               <p className="text-sm leading-relaxed mb-8 text-slate-600 dark:text-gray-400">
                 Empowering citizenship applicants with the specific tactical
@@ -525,13 +422,11 @@ const Login = () => {
                     <button
                       onClick={() => {
                         navigate("/#pricing");
-                        // Wait for navigation, then scroll to pricing section
                         setTimeout(() => {
                           const pricingSection = document.getElementById("pricing");
                           if (pricingSection) {
                             pricingSection.scrollIntoView({ behavior: "smooth" });
                           } else {
-                            // If element not found immediately, try again after a short delay
                             setTimeout(() => {
                               const pricingSection = document.getElementById("pricing");
                               pricingSection?.scrollIntoView({ behavior: "smooth" });
@@ -553,12 +448,12 @@ const Login = () => {
                 <ul className="space-y-4 text-sm font-semibold">
                   <li>
                     <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors">
-                    Privacy Policy
+                      Privacy Policy
                     </a>
                   </li>
                   <li>
                     <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors">
-                    Terms of Service
+                      Terms of Service
                     </a>
                   </li>
                 </ul>
@@ -576,7 +471,6 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Disclaimer Text */}
           <div className="mt-12 pt-8 border-t border-slate-200 dark:border-gray-700">
             <p className="text-sm leading-relaxed text-slate-500 dark:text-gray-300 text-center max-w-5xl mx-auto">
               ProntoCorso is an independent educational tool. It accompanies your primary language education. We focus on preparation standards for exams including CILS, CELI, and PLIDA. We are not affiliated with these exam bodies. All content is original. It is not derived from official proprietary exam materials. We strictly adhere to the CEFR B1 Standard. This content is for practice purposes only. It does not guarantee a passing score. CILS is a trademark of the Università per Stranieri di Siena. CELI is a trademark of the Università per Stranieri di Perugia. PLIDA is a trademark of the Dante Alighieri Society. All other trademarks are the property of their respective owners.
@@ -592,19 +486,8 @@ const Login = () => {
           </p>
         </div>
       </footer>
-</>
-
+    </>
   );
 };
 
 export default Login;
-
-
-
-
-
-
-
-
-
- 

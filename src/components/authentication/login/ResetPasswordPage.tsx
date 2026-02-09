@@ -6,9 +6,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { useResetPasswordMutation } from "@/redux/features/auth/authApi";
-
+import {  useNavigate } from "react-router-dom";
+ 
 // Validation Schema
 const resetPasswordSchema = z
   .object({
@@ -26,23 +25,16 @@ const ResetPasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [searchParams] = useSearchParams();
-  const email = searchParams.get("email") || "";
   const navigate = useNavigate();
 
-  const [resetPassword] = useResetPasswordMutation();
-
+ 
   const resetForm = useForm<ResetPasswordInputs>({
     resolver: zodResolver(resetPasswordSchema),
   });
 
-  const onSubmit = async (data: ResetPasswordInputs) => {
+  const onSubmit = async () => {
     try {
-      await resetPassword({
-        email,
-        password: data.password,
-        confirmPassword: data.confirmPassword,
-      }).unwrap();
+      
       alert("Password reset successful!");
       navigate("/login");
     } catch (error: any) {

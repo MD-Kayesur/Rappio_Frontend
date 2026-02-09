@@ -2,9 +2,8 @@
 import React, { useState, useCallback, useMemo, useEffect, ChangeEvent, FormEvent } from 'react';
 import { Mail, Lock, User, Sparkles, Zap, Eye, EyeOff, Target, ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRegisterMutation } from '@/redux/features/auth/authApi';
-import { toast } from 'react-hot-toast';
-import Navbar from '@/Layout/Navbar';
+ import { toast } from 'react-hot-toast';
+ 
 import signupimage from "@/assets/prontocorso/PeopleWorking.png";
 import logoLight from "@/assets/prontocorso/ProntoCorsoLogoLight-removebg-preview.png";
 import logoDark from "@/assets/prontocorso/ProntoCorsoLogoDark-removebg-preview.png";
@@ -226,8 +225,7 @@ const validateForm = (data: FormData): FormErrors => {
 // --- Main Application Component ---
 const App: React.FC = () => {
   const navigate = useNavigate();
-  const [register, { isLoading: isRegistering }] = useRegisterMutation();
-  const { theme } = useTheme();
+   const { theme } = useTheme();
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   // Update dark mode status based on theme
@@ -351,26 +349,14 @@ const App: React.FC = () => {
 
     try {
       // Prepare the data for API call - exactly matches your API structure
-      const userData = {
-        name: formData.name.trim(),
-        username: formData.username.trim().toLowerCase(),
-        email: formData.email.trim().toLowerCase(),
-        password: formData.password,
-        dailyGoalMinutes: formData.dailyGoalMinutes,
-        role: "USER"
-      };
+     
 
       //("Sending registration data:", userData);
 
       // Call the register mutation
-      const response = await register(userData).unwrap();
-
+ 
       // Store user data and tokens
-      if (response.data) {
-        toast.success('Account created successfully! Please verify your email.');
-        navigate('/verify-email', { state: { email: userData.email } });
-        return;
-      }
+      
 
     } catch (error: any) {
       toast.error(error?.data?.message || "Registration failed. Please try again.");
@@ -612,11 +598,11 @@ const App: React.FC = () => {
 
         <MockButton
           type="submit"
-          disabled={isSubmitting || isRegistering || !agreedToTerms}
+          disabled={isSubmitting  || !agreedToTerms}
           variant="success"
           className="w-full h-12 !bg-[#10B981] hover:!bg-[#0ea571] text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer md:h-14 text-sm md:text-lg animate-slide-up delay-400 mt-2 md:mt-6"
         >
-          {isSubmitting || isRegistering ? (
+          {isSubmitting  ? (
             <div className="flex items-center gap-2 md:gap-3">
               <div className="h-4 w-4 md:h-5 md:w-5 border-2 md:border-3 border-white border-t-transparent rounded-full animate-spin" />
               <span className="text-xs md:text-base dark:text-white text-gray-800">Creating Your Account...</span>
@@ -630,12 +616,12 @@ const App: React.FC = () => {
         </MockButton>
       </form>
     );
-  }, [formData, errors, isSubmitting, isRegistering, preview, showPassword, showConfirmPassword, agreedToTerms, handleInputChange, handleSelectChange, handleImageChange, handleSubmit, navigate]);
+  }, [formData, errors, isSubmitting, preview, showPassword, showConfirmPassword, agreedToTerms, handleInputChange, handleSelectChange, handleImageChange, handleSubmit, navigate]);
 
   return (
 
     <>
-      <Navbar />
+
       <div className="min-h-screen   text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
         <AnimatedBackground />
 

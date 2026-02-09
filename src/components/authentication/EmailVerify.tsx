@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { Mail, ShieldCheck, Loader2 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ModeToggle } from "../ThemeToggle/mode-toggle";
-import { useVerifyEmailMutation } from "@/redux/features/auth/authApi";
-import Cookies from "js-cookie";
-import { toast } from "react-hot-toast";
+// import { useVerifyEmailMutation } from "@/redux/features/auth/authApi";
+ 
 
 export default function EmailVerify() {
   const location = useLocation();
@@ -12,7 +11,9 @@ export default function EmailVerify() {
   const [code, setCode] = useState("");
 
   const navigate = useNavigate();
-  const [verifyEmail, { isLoading }] = useVerifyEmailMutation();
+  // const [verifyEmail, { isLoading }] = useVerifyEmailMutation();
+  const isLoading = false; // Mock for now
+  // const verifyEmail = async (_data: any) => ({ data: { accessToken: "mock_token" } }); // Mock
 
   useEffect(() => {
     if (location.state?.email) {
@@ -22,36 +23,34 @@ export default function EmailVerify() {
 
   const handleVerify = async () => {
     try {
-      const res = await verifyEmail({ email, code }).unwrap();
-      
+      // const res = await verifyEmail({ email, code });
+
       // Store tokens in cookies if returned by backend
       // Backend usually returns access_token/refresh_token or accessToken/refreshToken
-      const accessToken = (res as any).data?.accessToken || (res as any).data?.access_token || (res as any).accessToken;
-      const refreshToken = (res as any).data?.refreshToken || (res as any).data?.refresh_token || (res as any).refreshToken;
-      
-      if (accessToken) {
-        Cookies.set("token", accessToken, { expires: 7 });
-        if (refreshToken) {
-          Cookies.set("refreshToken", refreshToken, { expires: 7 });
-        }
-        
-        // Also store user info if available
-        if ((res as any).data?.user) {
-          localStorage.setItem("user", JSON.stringify((res as any).data.user));
-          localStorage.setItem("role", (res as any).data.user.role);
-        }
-      }
+      // const accessToken = (res as any).data?.accessToken || (res as any).data?.access_token || (res as any).accessToken;
+      // const refreshToken = (res as any).data?.refreshToken || (res as any).data?.refresh_token || (res as any).refreshToken;
 
-      toast.success("Email verified successfully!");
-      navigate("/user");
+      // if (accessToken) {
+      //   Cookies.set("token", accessToken, { expires: 7 });
+      //   if (refreshToken) {
+      //     Cookies.set("refreshToken", refreshToken, { expires: 7 });
+      //   }
+
+      //   // Also store user info if available
+      //   if ((res as any).data?.user) {
+      //     localStorage.setItem("user", JSON.stringify((res as any).data.user));
+      //     localStorage.setItem("role", (res as any).data.user.role);
+      //   }
+      // }
+
+       navigate("/user");
     } catch (error: any) {
       console.error("Verification error:", error);
-      toast.error(error?.data?.message || "Verification failed. Please check your code.");
-    }
+     }
   };
 
   // Restrict code input to 6 characters/digits
-  const handleCodeChange = (e:any) => {
+  const handleCodeChange = (e: any) => {
     const value = e.target.value;
     // Optional: allow only digits, remove non-digit characters
     const sanitized = value.replace(/\D/g, "");

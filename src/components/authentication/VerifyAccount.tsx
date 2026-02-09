@@ -1,53 +1,10 @@
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useVerifyResetCodeMutation } from "@/redux/features/auth/authApi";
-import Cookies from "js-cookie";
+  
   
 const VerifyAccount = () => {
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
+  
 
-  const [verifyAccount, { isLoading }] = useVerifyResetCodeMutation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const verify = async () => {
-      if (!token) {
-        navigate("/signup");
-        return;
-      }
-
-      try {
-        const res = await verifyAccount({ token }).unwrap();
-
-        // Store tokens in cookies if returned by backend
-        const accessToken = (res as any).data?.accessToken || (res as any).data?.access_token || (res as any).accessToken;
-        const refreshToken = (res as any).data?.refreshToken || (res as any).data?.refresh_token || (res as any).refreshToken;
-
-        if (accessToken) {
-          Cookies.set("token", accessToken, { expires: 7 });
-          if (refreshToken) {
-            Cookies.set("refreshToken", refreshToken, { expires: 7 });
-          }
-        }
-
-        localStorage.setItem("role", res?.role || (res as any).data?.user?.role || "");
-        localStorage.setItem("email", res?.email || (res as any).data?.user?.email || "");
-
-        toast.success("✅ Your account has been verified!");
-        setTimeout(() => navigate("/user"), 1000);
-      } catch (err: any) {
-        console.error("Verification failed:", err);
-        toast.error("❌ Verification failed or expired. Please sign up again");
-        navigate("/signup");
-      }
-    };
-
-    verify();
-  }, [token, verifyAccount, navigate]);
-
-  return <div className="text-center mt-10">{isLoading ? "Verifying..." : "Redirecting..."}</div>;
+ 
+  return <div className="text-center mt-10">{"Verifying..."}</div>;
 };
 
 export default VerifyAccount;

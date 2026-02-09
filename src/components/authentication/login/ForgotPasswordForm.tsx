@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Key, CheckCircle, ArrowLeft } from "lucide-react";
- 
+
 import { useNavigate } from "react-router-dom";
- 
+
 // Validation schemas
 const forgotPasswordSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -29,26 +29,26 @@ const AnimatedBackground = () => (
 
 const ForgotPasswordForm: React.FC = () => {
   const [step, setStep] = useState<"email" | "code" | "success">("email");
-  const [email, setEmail] = useState("");
+  const [, setEmail] = useState("");
   const [sentEmail, setSentEmail] = useState("");
-  
+
   const navigate = useNavigate();
-  
+
   // Forms
   const emailForm = useForm<ForgotPasswordInputs>({
     resolver: zodResolver(forgotPasswordSchema),
   });
-  
+
   const codeForm = useForm<VerifyCodeInputs>({
     resolver: zodResolver(verifyCodeSchema),
   });
 
- 
+
 
   // Step 1: Send reset code
   const onSendCode = async (data: ForgotPasswordInputs) => {
     try {
-       
+
       setEmail(data.email);
       setSentEmail(data.email);
       setStep("code");
@@ -58,16 +58,16 @@ const ForgotPasswordForm: React.FC = () => {
   };
 
   // Step 2: Verify reset code
-  const onVerifyCode = async (data: VerifyCodeInputs) => {
+  const onVerifyCode = async (_data: VerifyCodeInputs) => {
     try {
-      
+
 
       // Extract token from response if available, otherwise use code as token
-       
+
       setStep("success");
-      
+
       // Navigate to reset password page with email and  
-      
+
     } catch (error: any) {
       alert(error?.data?.message || "Invalid or expired code");
     }
@@ -86,7 +86,7 @@ const ForgotPasswordForm: React.FC = () => {
               <ArrowLeft size={16} />
               Back to Login
             </button>
-            
+
             <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Forgot Password?</h2>
             <p className="text-gray-700 dark:text-gray-300 text-sm mb-6">
               Enter your email and we'll send you a verification code
@@ -113,10 +113,10 @@ const ForgotPasswordForm: React.FC = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-            
+
                 className="w-full cursor-pointer bg-[#10B981] hover:bg-[#0ea571] text-white py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                
+
               </button>
             </form>
           </div>
@@ -132,7 +132,7 @@ const ForgotPasswordForm: React.FC = () => {
               <ArrowLeft size={16} />
               Back
             </button>
-            
+
             <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Enter Verification Code</h2>
             <p className="text-gray-700 dark:text-gray-300 text-sm mb-4">
               We sent a 6-digit code to <strong className="text-gray-800 dark:text-white">{sentEmail}</strong>
@@ -165,12 +165,12 @@ const ForgotPasswordForm: React.FC = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-          
+
                 className="w-full cursor-pointer bg-[#10B981] hover:bg-[#0ea571] text-white py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-             
+
               </button>
-              
+
               {/* Resend Code */}
               <div className="text-center pt-4">
                 <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
@@ -178,7 +178,7 @@ const ForgotPasswordForm: React.FC = () => {
                 </p>
                 <button
                   type="button"
-                 
+
                   className="text-sm font-semibold text-[#10B981] hover:text-[#0ea571] dark:text-[#10B981] dark:hover:text-[#0ea571] cursor-pointer underline transition-colors"
                 >
                   Resend Code
@@ -204,7 +204,7 @@ const ForgotPasswordForm: React.FC = () => {
 
   return (
     <>
-   
+
       <div className="min-h-screen text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
         <AnimatedBackground />
         <div className="relative z-10 w-full flex items-center justify-center">
@@ -222,4 +222,3 @@ export default ForgotPasswordForm;
 
 
 
- 

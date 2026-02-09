@@ -53,7 +53,7 @@ const ResetPasswordForm = () => {
 
  
 
-const onSubmit = async (data: ResetPasswordInputs) => {
+const onSubmit = async () => {
   if (!email) {
     alert("Missing email. Please request a new password reset.");
     navigate("/forgot-password");

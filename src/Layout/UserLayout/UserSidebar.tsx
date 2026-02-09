@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import logoLight from "../../assets/Logo.svg";
 import logoDark from "../../assets/Logo2.svg";
