@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-website-color-black: #212a31;
+  --color-website-color-darkGray: #2e3944;
+  --color-website-color-lightGray: #d3d9d4;
+  --color-website-color-green: #124e66;
+  --color-website-color-lightGreen: #748d92;
+}
+
+
+/* Add this CSS to your project's main or component-specific CSS file */
+
+/* Shared Styles for all corners */
+.corner-border {
+  content: '';
+  position: absolute;
+  width: 70px; /* Length of the border piece */
+  height: 70px; /* Length of the border piece */
+  border-color: #609D60; /* Green color from your original */
+  border-style: solid;
+  border-width: 0; /* Start with no border visible */
+  transition: border-width 0.3s ease; 
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Positioning the Corners */
+.corner-tl { top: 0; left: 0; }
+.corner-tr { top: 0; right: 0; }
+.corner-bl { bottom: 0; left: 0; }
+.corner-br { bottom: 0; right: 0; }
+
+/* HOVER STATES: Applies border thickness (4px) when the parent 'group' is hovered */
+.group:hover .corner-tl {
+  border-top-width: 2px;
+   border-left-width: 2px;
+}
+
+.group:hover .corner-tr {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.group:hover .corner-bl {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.group:hover .corner-br {
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+
+body {
+  font-family: 'MyCustomFont', sans-serif;
+}
