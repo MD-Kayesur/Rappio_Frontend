@@ -25,7 +25,10 @@ const routes = createBrowserRouter([
     children: [
 
 
-
+      {
+        path: "",
+        element: <Home />,
+      },
 
       {
         path: "/login",

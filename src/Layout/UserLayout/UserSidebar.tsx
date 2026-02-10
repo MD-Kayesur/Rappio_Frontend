@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import logoLight from "@/assets/Vector.svg";
 import logoDark from "@/assets/Vector.svg";
-import logo from "@/assets/Vector.svg";
+import logoIcon from "@/assets/vectorLittle.png";
 import {
   LayoutDashboard,
   Video,
@@ -113,7 +113,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                 }`}
             >
               {isCollapsed ? (
-                <img src={logo} alt="ProntoCorso" className="w-10 h-10 rounded-full" />
+                <img src={logoIcon} alt="ProntoCorso" className="w-10 h-10 rounded-full" />
               ) : (
                 <img
                   src={isDarkMode ? logoDark : logoLight}
