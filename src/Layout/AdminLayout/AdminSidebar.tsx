@@ -42,7 +42,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
 
   return (
     <div
-      className={`relative z-50 flex flex-col bg-[#EBEBEB] dark:bg-gray-900 border-r border-[#b9b6b6] dark:border-r-[#536580] transition-all duration-300 ease-in-out h-full ${sidebarOpen
+      className={`relative z-50 flex flex-col bg-[#EBEBEB]   border-r border-[#b9b6b6] dark:border-r-[#536580] transition-all duration-300 ease-in-out h-full ${sidebarOpen
         ? (isCollapsed ? "w-20" : "w-64 sm:w-70")
         : "w-0 overflow-hidden"
         }`}

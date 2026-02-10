@@ -1,11 +1,11 @@
 
 const TopCasinos = () => {
     return (
-        <div className="p-6 min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+        <div className="p-6 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300">
             <h1 className="text-3xl font-extrabold mb-4 tracking-tight">Top Casinos</h1>
             <p className="text-gray-600 dark:text-gray-400">Discover reaching destinations and trending locations.</p>
 
-            <div className="mt-8 overflow-hidden rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-2xl">
+            <div className="mt-8 overflow-hidden rounded-2xl border border-white/20 bg-black/40 backdrop-blur-md shadow-2xl">
                 <table className="w-full text-left">
                     <thead className="bg-gray-50 dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800">
                         <tr>

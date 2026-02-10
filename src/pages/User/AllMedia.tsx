@@ -189,13 +189,13 @@ const AllMedia: React.FC = () => {
             {/* Main Feed */}
             <div
                 ref={containerRef}
-                className="h-screen bg-black overflow-hidden relative"
+                className="h-screen overflow-hidden relative"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
             >
                 {/* Video/Image Background */}
 
-                <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute w-[400px] mx-auto inset-0 overflow-hidden">
                     {currentOffer.video_url && (currentOffer.video_url.includes("youtube.com") || currentOffer.video_url.includes("youtu.be")) ? (
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]">
                             <iframe
@@ -225,7 +225,7 @@ const AllMedia: React.FC = () => {
                 </div>
 
                 {/* Content Overlay - TikTok Style */}
-                <div className="relative h-full flex flex-col justify-end p-4 pb-24">
+                <div className="relative h-full flex  flex-col justify-end p-4 pb-24">
                     {/* Bottom Content */}
                     <div className="space-y-2 max-w-[calc(100%-80px)]">
                         {/* Creator/Title */}
