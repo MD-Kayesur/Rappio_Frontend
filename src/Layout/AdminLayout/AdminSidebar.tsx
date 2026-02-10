@@ -1,12 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import logo from "../../assets/Logo.svg";
+import logoLight from "@/assets/Vector.svg";
+import logoDark from "@/assets/Vector.svg";
+import logo from "@/assets/Vector.svg";
 import {
   LayoutDashboard,
   ListOrdered,
   BarChart3,
   Settings,
-  ShieldCheck,
   LogOut
 } from "lucide-react";
 import {
@@ -25,6 +26,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
 }) => {
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isDarkMode] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -66,14 +68,18 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
                 }`}
             >
               {isCollapsed ? (
-                <img src={logo} alt="Rappio" className="w-10 h-10 rounded-full" />
+                <img src={logo} alt="ProntoCorso" className="w-10 h-10 rounded-full" />
               ) : (
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-8 h-8 text-indigo-600" />
-                  <h1 className="font-bold text-xl sm:text-2xl text-[#111827] dark:text-gray-200 truncate">
-                    Admin Panel
-                  </h1>
-                </div>
+                <img
+                  src={isDarkMode ? logoDark : logoLight}
+                  alt="ProntoCorso"
+                  className="transition-all duration-300 rounded-full w-50"
+                />
+              )}
+              {!isCollapsed && (
+                <h1 className="font-bold text-xl sm:text-2xl text-[#111827] dark:text-gray-200 truncate">
+                  ProntoCorso
+                </h1>
               )}
             </div>
           </Link>

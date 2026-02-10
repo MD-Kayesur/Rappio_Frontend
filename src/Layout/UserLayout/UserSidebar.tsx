@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
-import logoLight from "../../assets/Logo.svg";
-import logoDark from "../../assets/Logo2.svg";
-import logo from "../../assets/Logo.svg";
+import logoLight from "@/assets/Vector.svg";
+import logoDark from "@/assets/Vector.svg";
+import logo from "@/assets/Vector.svg";
 import {
   LayoutDashboard,
   Video,

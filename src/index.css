@@ -15,26 +15,45 @@
 .corner-border {
   content: '';
   position: absolute;
-  width: 70px; /* Length of the border piece */
-  height: 70px; /* Length of the border piece */
-  border-color: #609D60; /* Green color from your original */
+  width: 70px;
+  /* Length of the border piece */
+  height: 70px;
+  /* Length of the border piece */
+  border-color: #609D60;
+  /* Green color from your original */
   border-style: solid;
-  border-width: 0; /* Start with no border visible */
-  transition: border-width 0.3s ease; 
+  border-width: 0;
+  /* Start with no border visible */
+  transition: border-width 0.3s ease;
   z-index: 10;
   pointer-events: none;
 }
 
 /* Positioning the Corners */
-.corner-tl { top: 0; left: 0; }
-.corner-tr { top: 0; right: 0; }
-.corner-bl { bottom: 0; left: 0; }
-.corner-br { bottom: 0; right: 0; }
+.corner-tl {
+  top: 0;
+  left: 0;
+}
+
+.corner-tr {
+  top: 0;
+  right: 0;
+}
+
+.corner-bl {
+  bottom: 0;
+  left: 0;
+}
+
+.corner-br {
+  bottom: 0;
+  right: 0;
+}
 
 /* HOVER STATES: Applies border thickness (4px) when the parent 'group' is hovered */
 .group:hover .corner-tl {
   border-top-width: 2px;
-   border-left-width: 2px;
+  border-left-width: 2px;
 }
 
 .group:hover .corner-tr {
