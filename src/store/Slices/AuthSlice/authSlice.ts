@@ -5,7 +5,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: { role: "user" },
+  user: { role: "admin" },
 };
 
 const authSlice = createSlice({
