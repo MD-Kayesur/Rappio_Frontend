@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import CommonWrapper from "@/common/CommonWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/Vector.svg";
-import bgImage from "@/assets/image.png";
+import bgImage from "@/assets/home.jpg";
 
 const Home = () => {
   const [showWelcome, setShowWelcome] = useState(false);

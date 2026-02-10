@@ -33,7 +33,7 @@ export default function UserLayout() {
 
 
   return (
-    <div className="flex h-screen bg-[#F5F5F5] dark:bg-gray-950 relative overflow-hidden">
+    <div className="flex h-screen relative overflow-hidden">
       {/* Sidebar - Overlay on mobile, fixed on desktop */}
       <div
         className={`fixed lg:static inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 ${sidebarOpen ? "block" : "hidden lg:block"

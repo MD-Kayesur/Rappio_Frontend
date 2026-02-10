@@ -189,11 +189,12 @@ const AllMedia: React.FC = () => {
             {/* Main Feed */}
             <div
                 ref={containerRef}
-                className="h-screen w-full bg-black overflow-hidden relative"
+                className="h-screen bg-black overflow-hidden relative"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
             >
                 {/* Video/Image Background */}
+
                 <div className="absolute inset-0 overflow-hidden">
                     {currentOffer.video_url && (currentOffer.video_url.includes("youtube.com") || currentOffer.video_url.includes("youtu.be")) ? (
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]">
@@ -220,27 +221,19 @@ const AllMedia: React.FC = () => {
                         />
                     )}
 
-                    {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
                 </div>
 
-                {/* Content Overlay */}
-                <div className="relative h-full flex flex-col justify-end p-4 pb-20">
-                    {/* Casino Offer Badge */}
-                    <div className="absolute top-4 left-4">
-                        <span className="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded">
-                            Casino Offer
-                        </span>
-                    </div>
-
+                {/* Content Overlay - TikTok Style */}
+                <div className="relative h-full flex flex-col justify-end p-4 pb-24">
                     {/* Bottom Content */}
-                    <div className="space-y-3">
-                        {/* Title */}
+                    <div className="space-y-2 max-w-[calc(100%-80px)]">
+                        {/* Creator/Title */}
                         <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
-                                <span className="text-white font-bold text-sm">F</span>
+                            <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span className="text-white font-bold">F</span>
                             </div>
-                            <h2 className="text-white font-bold text-lg">
+                            <h2 className="text-white font-bold text-base">
                                 {currentOffer.title}
                             </h2>
                         </div>
@@ -249,31 +242,15 @@ const AllMedia: React.FC = () => {
                         <p className="text-white text-sm leading-relaxed">
                             {currentOffer.subtitle}
                         </p>
-                        <p className="text-white/80 text-xs">
-                            Lorem Ipsum has been the industry's standard dummy...
-                            <button
-                                onClick={() => setShowModal(true)}
-                                className="text-white font-semibold ml-1"
-                            >
-                                See More
-                            </button>
-                        </p>
 
                         {/* Tags */}
-                        <div className="flex gap-2">
-                            <span className="text-white/60 text-xs">#trending-worldwide</span>
-                            <span className="text-white/60 text-xs">#Lifestyle</span>
+                        <div className="flex gap-2 flex-wrap">
+                            <span className="text-white/80 text-sm font-semibold">#trending-worldwide</span>
+                            <span className="text-white/80 text-sm font-semibold">#Lifestyle</span>
                         </div>
-
-                        {/* CTA Button */}
-                        <button
-                            onClick={() => setShowModal(true)}
-                            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
-                        >
-                            {currentOffer.cta}
-                        </button>
                     </div>
                 </div>
+
 
                 {/* Right Side Actions */}
                 <div className="absolute right-4 bottom-32 flex flex-col gap-6">

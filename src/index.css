@@ -74,4 +74,11 @@
 
 body {
   font-family: 'MyCustomFont', sans-serif;
+  background-image: url('/src/assets/home.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #1a1a1a;
+  min-height: 100vh;
 }
