@@ -8,9 +8,16 @@
     "likes": 1400,
     "comments": 1000,
     "image_url": "/media/images/offer-1.jpg",
-    "video_url": "/media/videos/offer-1.mp4",
-    "tags": ["Casino", "Bonus", "VIP"],
-    "terms_highlights": ["Bonus valid for new users", "Wagering applies"],
+    "video_url": "https://www.youtube.com/shorts/QK3va5ev_Gw",
+    "tags": [
+      "Casino",
+      "Bonus",
+      "VIP"
+    ],
+    "terms_highlights": [
+      "Bonus valid for new users",
+      "Wagering applies"
+    ],
     "disclaimer": "Gambling can be addictive. Play responsibly."
   },
   {
@@ -22,9 +29,15 @@
     "likes": 980,
     "comments": 430,
     "image_url": "/media/images/offer-2.jpg",
-    "video_url": "/media/videos/offer-2.mp4",
-    "tags": ["Free Spins", "New Users"],
-    "terms_highlights": ["Free spins expire in 7 days", "Min deposit required"],
+    "video_url": "https://www.youtube.com/shorts/WszylianzB4",
+    "tags": [
+      "Free Spins",
+      "New Users"
+    ],
+    "terms_highlights": [
+      "Free spins expire in 7 days",
+      "Min deposit required"
+    ],
     "disclaimer": "18+ only. Terms apply."
   },
   {
@@ -36,9 +49,15 @@
     "likes": 2300,
     "comments": 780,
     "image_url": "/media/images/offer-3.jpg",
-    "video_url": "/media/videos/offer-3.mp4",
-    "tags": ["Jackpot", "VIP"],
-    "terms_highlights": ["VIP only", "Verification required"],
+    "video_url": "https://www.youtube.com/shorts/sEb2Jju7G4I",
+    "tags": [
+      "Jackpot",
+      "VIP"
+    ],
+    "terms_highlights": [
+      "VIP only",
+      "Verification required"
+    ],
     "disclaimer": "Offer subject to change."
   },
   {
@@ -50,9 +69,15 @@
     "likes": 1500,
     "comments": 620,
     "image_url": "/media/images/offer-4.jpg",
-    "video_url": "/media/videos/offer-4.mp4",
-    "tags": ["Slots", "Instant Withdraw"],
-    "terms_highlights": ["Min deposit $10", "Expires in 7 days"],
+    "video_url": "https://www.youtube.com/watch?v=dAigQy1Pjes",
+    "tags": [
+      "Slots",
+      "Instant Withdraw"
+    ],
+    "terms_highlights": [
+      "Min deposit $10",
+      "Expires in 7 days"
+    ],
     "disclaimer": "Check local laws."
   },
   {
@@ -64,13 +89,17 @@
     "likes": 3100,
     "comments": 1200,
     "image_url": "/media/images/offer-5.jpg",
-    "video_url": "/media/videos/offer-5.mp4",
-    "tags": ["Welcome Bonus", "Live Casino"],
-    "terms_highlights": ["Bonus cap $500", "Wagering 35x"],
+    "video_url": "https://www.youtube.com/watch?v=HdAt1dG7EE8",
+    "tags": [
+      "Welcome Bonus",
+      "Live Casino"
+    ],
+    "terms_highlights": [
+      "Bonus cap $500",
+      "Wagering 35x"
+    ],
     "disclaimer": "18+ only."
   },
-
-
   {
     "id": 6,
     "title": "Mega Dice Casino",
@@ -80,9 +109,15 @@
     "likes": 870,
     "comments": 300,
     "image_url": "/media/images/offer-6.jpg",
-    "video_url": "/media/videos/offer-6.mp4",
-    "tags": ["Crypto", "Dice"],
-    "terms_highlights": ["Crypto deposits only", "No bonus on withdraw"],
+    "video_url": "https://www.youtube.com/shorts/svqHnx9LYvg",
+    "tags": [
+      "Crypto",
+      "Dice"
+    ],
+    "terms_highlights": [
+      "Crypto deposits only",
+      "No bonus on withdraw"
+    ],
     "disclaimer": "Crypto gambling involves risk."
   },
   {
@@ -94,9 +129,15 @@
     "likes": 5400,
     "comments": 2400,
     "image_url": "/media/images/offer-7.jpg",
-    "video_url": "/media/videos/offer-7.mp4",
-    "tags": ["VIP", "Luxury"],
-    "terms_highlights": ["Invite only", "Monthly cashback"],
+    "video_url": "https://www.youtube.com/shorts/9XZEDQL-UQY",
+    "tags": [
+      "VIP",
+      "Luxury"
+    ],
+    "terms_highlights": [
+      "Invite only",
+      "Monthly cashback"
+    ],
     "disclaimer": "Account verification required."
   },
   {
@@ -108,9 +149,15 @@
     "likes": 670,
     "comments": 210,
     "image_url": "/media/images/offer-8.jpg",
-    "video_url": "/media/videos/offer-8.mp4",
-    "tags": ["Neon", "Slots"],
-    "terms_highlights": ["Limited time", "Min bet required"],
+    "video_url": "https://www.youtube.com/shorts/EL1erqvAm30",
+    "tags": [
+      "Neon",
+      "Slots"
+    ],
+    "terms_highlights": [
+      "Limited time",
+      "Min bet required"
+    ],
     "disclaimer": "Regional restrictions apply."
   },
   {
@@ -122,9 +169,15 @@
     "likes": 1250,
     "comments": 500,
     "image_url": "/media/images/offer-9.jpg",
-    "video_url": "/media/videos/offer-9.mp4",
-    "tags": ["Cashback", "Trusted"],
-    "terms_highlights": ["10% cashback", "Weekly payout"],
+    "video_url": "https://www.youtube.com/shorts/_pMAAm44klM",
+    "tags": [
+      "Cashback",
+      "Trusted"
+    ],
+    "terms_highlights": [
+      "10% cashback",
+      "Weekly payout"
+    ],
     "disclaimer": "Cashback rules apply."
   },
   {
@@ -136,12 +189,17 @@
     "likes": 4100,
     "comments": 1900,
     "image_url": "/media/images/offer-10.jpg",
-    "video_url": "/media/videos/offer-10.mp4",
-    "tags": ["Sports", "Casino"],
-    "terms_highlights": ["Bonus valid 14 days", "Wagering applies"],
+    "video_url": "https://www.youtube.com/shorts/NA1zSwLbLso",
+    "tags": [
+      "Sports",
+      "Casino"
+    ],
+    "terms_highlights": [
+      "Bonus valid 14 days",
+      "Wagering applies"
+    ],
     "disclaimer": "Play responsibly."
   },
-
   {
     "id": 11,
     "title": "Emerald Crown Casino",
@@ -151,9 +209,16 @@
     "likes": 2100,
     "comments": 850,
     "image_url": "/media/images/offer-11.jpg",
-    "video_url": "/media/videos/offer-11.mp4",
-    "tags": ["VIP", "Premium", "Cashback"],
-    "terms_highlights": ["VIP approval required", "Cashback up to 20%"],
+    "video_url": "https://www.youtube.com/shorts/cHDxVp85UZU",
+    "tags": [
+      "VIP",
+      "Premium",
+      "Cashback"
+    ],
+    "terms_highlights": [
+      "VIP approval required",
+      "Cashback up to 20%"
+    ],
     "disclaimer": "Subject to verification."
   },
   {
@@ -165,9 +230,16 @@
     "likes": 3300,
     "comments": 1200,
     "image_url": "/media/images/offer-12.jpg",
-    "video_url": "/media/videos/offer-12.mp4",
-    "tags": ["Jackpot", "Slots", "Dragon"],
-    "terms_highlights": ["Jackpot odds vary", "Min bet required"],
+    "video_url": "https://www.youtube.com/shorts/C06MtFoJAM8",
+    "tags": [
+      "Jackpot",
+      "Slots",
+      "Dragon"
+    ],
+    "terms_highlights": [
+      "Jackpot odds vary",
+      "Min bet required"
+    ],
     "disclaimer": "Jackpot results not guaranteed."
   },
   {
@@ -179,9 +251,15 @@
     "likes": 760,
     "comments": 190,
     "image_url": "/media/images/offer-13.jpg",
-    "video_url": "/media/videos/offer-13.mp4",
-    "tags": ["Fast Withdraw", "Trusted"],
-    "terms_highlights": ["KYC required", "Min withdrawal $20"],
+    "video_url": "https://www.youtube.com/shorts/QtASURDEwWo",
+    "tags": [
+      "Fast Withdraw",
+      "Trusted"
+    ],
+    "terms_highlights": [
+      "KYC required",
+      "Min withdrawal $20"
+    ],
     "disclaimer": "Processing time may vary."
   },
   {
@@ -193,9 +271,16 @@
     "likes": 4500,
     "comments": 2200,
     "image_url": "/media/images/offer-14.jpg",
-    "video_url": "/media/videos/offer-14.mp4",
-    "tags": ["Elite", "Royal", "VIP"],
-    "terms_highlights": ["Elite users only", "Monthly rewards"],
+    "video_url": "https://www.youtube.com/shorts/sdCWvUozFZY",
+    "tags": [
+      "Elite",
+      "Royal",
+      "VIP"
+    ],
+    "terms_highlights": [
+      "Elite users only",
+      "Monthly rewards"
+    ],
     "disclaimer": "Invite only program."
   },
   {
@@ -208,8 +293,15 @@
     "comments": 410,
     "image_url": "/media/images/offer-15.jpg",
     "video_url": "/media/videos/offer-15.mp4",
-    "tags": ["Ocean", "Slots", "Theme"],
-    "terms_highlights": ["Limited theme offer", "Min deposit required"],
+    "tags": [
+      "Ocean",
+      "Slots",
+      "Theme"
+    ],
+    "terms_highlights": [
+      "Limited theme offer",
+      "Min deposit required"
+    ],
     "disclaimer": "Theme may change."
   },
   {
@@ -222,8 +314,14 @@
     "comments": 930,
     "image_url": "/media/images/offer-16.jpg",
     "video_url": "/media/videos/offer-16.mp4",
-    "tags": ["High RTP", "Phoenix"],
-    "terms_highlights": ["High risk games", "Bonus expires in 3 days"],
+    "tags": [
+      "High RTP",
+      "Phoenix"
+    ],
+    "terms_highlights": [
+      "High risk games",
+      "Bonus expires in 3 days"
+    ],
     "disclaimer": "High volatility warning."
   },
   {
@@ -236,8 +334,14 @@
     "comments": 500,
     "image_url": "/media/images/offer-17.jpg",
     "video_url": "/media/videos/offer-17.mp4",
-    "tags": ["Dark Theme", "Night Mode"],
-    "terms_highlights": ["Event limited", "Night bonus only"],
+    "tags": [
+      "Dark Theme",
+      "Night Mode"
+    ],
+    "terms_highlights": [
+      "Event limited",
+      "Night bonus only"
+    ],
     "disclaimer": "Event schedule may change."
   },
   {
@@ -250,8 +354,15 @@
     "comments": 1500,
     "image_url": "/media/images/offer-18.jpg",
     "video_url": "/media/videos/offer-18.mp4",
-    "tags": ["Crypto", "BTC", "ETH"],
-    "terms_highlights": ["Crypto only", "No fiat supported"],
+    "tags": [
+      "Crypto",
+      "BTC",
+      "ETH"
+    ],
+    "terms_highlights": [
+      "Crypto only",
+      "No fiat supported"
+    ],
     "disclaimer": "Crypto price volatility applies."
   },
   {
@@ -264,8 +375,14 @@
     "comments": 800,
     "image_url": "/media/images/offer-19.jpg",
     "video_url": "/media/videos/offer-19.mp4",
-    "tags": ["Lightning", "Jackpot"],
-    "terms_highlights": ["Lightning rounds limited", "Auto spin enabled"],
+    "tags": [
+      "Lightning",
+      "Jackpot"
+    ],
+    "terms_highlights": [
+      "Lightning rounds limited",
+      "Auto spin enabled"
+    ],
     "disclaimer": "Lightning mode random."
   },
   {
@@ -278,8 +395,14 @@
     "comments": 720,
     "image_url": "/media/images/offer-20.jpg",
     "video_url": "/media/videos/offer-20.mp4",
-    "tags": ["Wheel", "Prizes"],
-    "terms_highlights": ["Daily spin limit", "Rewards random"],
+    "tags": [
+      "Wheel",
+      "Prizes"
+    ],
+    "terms_highlights": [
+      "Daily spin limit",
+      "Rewards random"
+    ],
     "disclaimer": "Prizes not guaranteed."
   },
   {
@@ -292,8 +415,14 @@
     "comments": 1100,
     "image_url": "/media/images/offer-21.jpg",
     "video_url": "/media/videos/offer-21.mp4",
-    "tags": ["Poker", "Royal Flush"],
-    "terms_highlights": ["Poker only", "Table limits apply"],
+    "tags": [
+      "Poker",
+      "Royal Flush"
+    ],
+    "terms_highlights": [
+      "Poker only",
+      "Table limits apply"
+    ],
     "disclaimer": "Poker rules apply."
   },
   {
@@ -306,8 +435,14 @@
     "comments": 600,
     "image_url": "/media/images/offer-22.jpg",
     "video_url": "/media/videos/offer-22.mp4",
-    "tags": ["Tiger", "Neon"],
-    "terms_highlights": ["Theme event only", "Limited slots"],
+    "tags": [
+      "Tiger",
+      "Neon"
+    ],
+    "terms_highlights": [
+      "Theme event only",
+      "Limited slots"
+    ],
     "disclaimer": "Theme limited time."
   },
   {
@@ -320,8 +455,14 @@
     "comments": 1700,
     "image_url": "/media/images/offer-23.jpg",
     "video_url": "/media/videos/offer-23.mp4",
-    "tags": ["Desert", "Luxury"],
-    "terms_highlights": ["Festival duration 7 days", "VIP rewards"],
+    "tags": [
+      "Desert",
+      "Luxury"
+    ],
+    "terms_highlights": [
+      "Festival duration 7 days",
+      "VIP rewards"
+    ],
     "disclaimer": "Festival subject to change."
   },
   {
@@ -334,8 +475,14 @@
     "comments": 400,
     "image_url": "/media/images/offer-24.jpg",
     "video_url": "/media/videos/offer-24.mp4",
-    "tags": ["Moon", "Mystic"],
-    "terms_highlights": ["Night event only", "Special slots"],
+    "tags": [
+      "Moon",
+      "Mystic"
+    ],
+    "terms_highlights": [
+      "Night event only",
+      "Special slots"
+    ],
     "disclaimer": "Night mode only."
   },
   {
@@ -348,8 +495,14 @@
     "comments": 1400,
     "image_url": "/media/images/offer-25.jpg",
     "video_url": "/media/videos/offer-25.mp4",
-    "tags": ["Samurai", "Asian"],
-    "terms_highlights": ["Asian market only", "Min deposit required"],
+    "tags": [
+      "Samurai",
+      "Asian"
+    ],
+    "terms_highlights": [
+      "Asian market only",
+      "Min deposit required"
+    ],
     "disclaimer": "Regional restrictions."
   },
   {
@@ -362,8 +515,14 @@
     "comments": 1100,
     "image_url": "/media/images/offer-26.jpg",
     "video_url": "/media/videos/offer-26.mp4",
-    "tags": ["Queen", "Elegant"],
-    "terms_highlights": ["VIP approval", "Cashback 15%"],
+    "tags": [
+      "Queen",
+      "Elegant"
+    ],
+    "terms_highlights": [
+      "VIP approval",
+      "Cashback 15%"
+    ],
     "disclaimer": "Verification required."
   },
   {
@@ -376,8 +535,14 @@
     "comments": 2100,
     "image_url": "/media/images/offer-27.jpg",
     "video_url": "/media/videos/offer-27.mp4",
-    "tags": ["Dragon", "Dark"],
-    "terms_highlights": ["Jackpot only slots", "Min bet applies"],
+    "tags": [
+      "Dragon",
+      "Dark"
+    ],
+    "terms_highlights": [
+      "Jackpot only slots",
+      "Min bet applies"
+    ],
     "disclaimer": "Dragon event limited."
   },
   {
@@ -390,8 +555,14 @@
     "comments": 700,
     "image_url": "/media/images/offer-28.jpg",
     "video_url": "/media/videos/offer-28.mp4",
-    "tags": ["Space", "Galaxy"],
-    "terms_highlights": ["Event limited", "Bonus expires 5 days"],
+    "tags": [
+      "Space",
+      "Galaxy"
+    ],
+    "terms_highlights": [
+      "Event limited",
+      "Bonus expires 5 days"
+    ],
     "disclaimer": "Galaxy event random."
   },
   {
@@ -404,8 +575,14 @@
     "comments": 1600,
     "image_url": "/media/images/offer-29.jpg",
     "video_url": "/media/videos/offer-29.mp4",
-    "tags": ["Lion", "King"],
-    "terms_highlights": ["King tier users", "Bonus capped"],
+    "tags": [
+      "Lion",
+      "King"
+    ],
+    "terms_highlights": [
+      "King tier users",
+      "Bonus capped"
+    ],
     "disclaimer": "Tier required."
   },
   {
@@ -418,9 +595,14 @@
     "comments": 900,
     "image_url": "/media/images/offer-30.jpg",
     "video_url": "/media/videos/offer-30.mp4",
-    "tags": ["Cyber", "Samurai"],
-    "terms_highlights": ["Cyber event limited", "Special slots"],
+    "tags": [
+      "Cyber",
+      "Samurai"
+    ],
+    "terms_highlights": [
+      "Cyber event limited",
+      "Special slots"
+    ],
     "disclaimer": "Cyber mode temporary."
   }
-
 ]

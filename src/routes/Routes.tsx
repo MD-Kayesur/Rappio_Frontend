@@ -7,8 +7,7 @@ import AdminRoute from "./AdminRoutes";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import UserLayout from "@/Layout/UserLayout/UserLayout";
-import All from "@/pages/User/All";
-import Videos from "@/pages/User/Videos";
+ import Videos from "@/pages/User/Videos";
 import Photos from "@/pages/User/Photos";
 import Favorites from "@/pages/User/Favorites";
 import TopCasinos from "@/pages/User/TopCasinos";
@@ -17,6 +16,7 @@ import Overview from "@/pages/Admin/Overview";
 import FeedOrdering from "@/pages/Admin/FeedOrdering";
 import Analytics from "@/pages/Admin/Analytics";
 import Settings from "@/pages/Admin/Settings";
+import AllMedia from "@/pages/User/AllMedia";
 
 const routes = createBrowserRouter([
   {
@@ -42,8 +42,8 @@ const routes = createBrowserRouter([
         path: "/user",
         element: <UserLayout />,
         children: [
-          { path: "", element: <All /> },
-          { path: "all", element: <All /> },
+          { path: "", element: <AllMedia /> },
+          { path: "all", element: <AllMedia /> },
           { path: "videos", element: <Videos /> },
           { path: "photos", element: <Photos /> },
           { path: "favorites", element: <Favorites /> },

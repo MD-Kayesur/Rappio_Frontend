@@ -62,6 +62,40 @@ export const LayoutNavber: React.FC = () => {
           <div className="text-xs text-gray-500 dark:text-gray-300">{userRoleToShow}</div>
         </div>
       </Link>
+<div className="relative w-full max-w-3xl group">
+  {/* Search Icon */}
+  <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+    <svg 
+      className="w-5 h-5 text-gray-500" 
+      fill="none" 
+      stroke="currentColor" 
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+  </div>
+
+  {/* Input Field */}
+  <input
+    type="text"
+    placeholder="Search"
+    className="w-full py-2.5 pl-11 pr-11 bg-[#121212] text-gray-200 text-sm border border-[#2a2a2a] rounded-full focus:outline-none focus:border-gray-600 focus:bg-[#1a1a1a] transition-all placeholder-gray-600"
+  />
+
+  {/* Clear/X Icon */}
+  <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+    <button className="flex items-center justify-center w-5 h-5 bg-[#2a2a2a] rounded-full hover:bg-gray-700 transition-colors">
+      <svg 
+        className="w-3 h-3 text-black" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+</div>
       <div className="flex items-center gap-2">
         <GoogleTranslate />
         <ModeToggle />
