@@ -264,7 +264,7 @@ const Favorites = () => {
       </div>
 
       {/* Add custom scrollbar styles */}
-      <style jsx>{`
+      <style>{`
         .overflow-x-auto::-webkit-scrollbar {
           display: none;
         }

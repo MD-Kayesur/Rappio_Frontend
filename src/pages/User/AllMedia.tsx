@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import logo from "../../assets/Vector.svg";
 import {
     Heart,
     MessageCircle,
@@ -557,14 +558,12 @@ const AllMedia: React.FC = () => {
 
             {/* Name Setup Modal */}
             {showNameSetup && (
-                <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-gradient-to-b from-gray-900 to-black rounded-2xl p-8 max-w-md w-full text-center relative">
                         <div className="mb-6">
-                            <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                <span className="text-white text-3xl font-bold">L</span>
-                            </div>
-                            <h2 className="text-red-600 text-2xl font-bold mb-2">LogoIpsum</h2>
-                        </div>
+                            
+                                <img src={logo} alt="Logo" />
+                         </div>
 
                         <h3 className="text-white text-xl font-bold mb-2">Setup a Name</h3>
                         <p className="text-gray-400 text-sm mb-6">
