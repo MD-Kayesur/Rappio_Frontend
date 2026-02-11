@@ -17,6 +17,7 @@ import FeedOrdering from "@/pages/Admin/FeedOrdering";
 import Analytics from "@/pages/Admin/Analytics";
 import Settings from "@/pages/Admin/Settings";
 import AllMedia from "@/pages/User/AllMedia";
+import Sittings from "@/pages/User/Sittings";
 
 const routes = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ const routes = createBrowserRouter([
           { path: "videos", element: <Videos /> },
           { path: "photos", element: <Photos /> },
           { path: "favorites", element: <Favorites /> },
+          { path: "sittings", element: <Sittings /> },
           { path: "top-casinos", element: <TopCasinos /> },
         ],
       },
