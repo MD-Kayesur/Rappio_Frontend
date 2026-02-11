@@ -48,7 +48,7 @@ const routes = createBrowserRouter([
           { path: "videos", element: <Videos /> },
           { path: "photos", element: <Photos /> },
           { path: "favorites", element: <Favorites /> },
-          { path: "sittings", element: <Sittings /> },
+          { path: "settings", element: <Sittings /> },
           { path: "top-casinos", element: <TopCasinos /> },
         ],
       },
