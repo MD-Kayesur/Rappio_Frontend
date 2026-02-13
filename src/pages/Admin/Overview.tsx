@@ -201,41 +201,7 @@ const Overview = () => {
       {/* Content Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top performing items (CTR) */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
-          <h3 className="text-lg font-semibold mb-6">Top performing items (CTR)</h3>
-          <div className="space-y-4">
-            {topItems.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center gap-4 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-14 h-14 rounded-lg object-cover"
-                />
-                <div className="flex-1">
-                  <h4 className="font-medium text-sm">{item.title}</h4>
-                  <p className="text-xs text-gray-400">{item.subtitle}</p>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="flex items-center gap-1 text-yellow-500">
-                    <Eye className="h-4 w-4" />
-                    <span>{item.views}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-red-500">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span>{item.likes}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-blue-500">
-                    <Share2 className="h-4 w-4" />
-                    <span>{item.shares}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        
 
         {/* Feed Performance */}
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
