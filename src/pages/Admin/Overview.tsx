@@ -204,20 +204,7 @@ const Overview = () => {
         
 
         {/* Feed Performance */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold">Feed Performance</h3>
-            <Select value={feedView} onValueChange={setFeedView}>
-              <SelectTrigger className="w-24 bg-gray-800 border-gray-700">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-gray-800 border-gray-700">
-                <SelectItem value="web">Web</SelectItem>
-                <SelectItem value="mobile">Mobile</SelectItem>
-                <SelectItem value="tablet">Tablet</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+    
 
           {/* Chart */}
           <div className="h-80">
