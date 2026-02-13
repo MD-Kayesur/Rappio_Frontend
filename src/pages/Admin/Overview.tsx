@@ -1,48 +1,311 @@
-import { LayoutDashboard } from "lucide-react";
+import { useState } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import {
+  FileText,
+  Clock,
+  Eye,
+  CreditCard,
+  TrendingUp,
+  Share2,
+  ThumbsUp,
+} from 'lucide-react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
+
+// Sample data for the chart
+const chartData = [
+  { month: 'JAN', videos: 450, photos: 420 },
+  { month: 'FEB', videos: 480, photos: 440 },
+  { month: 'MAR', videos: 460, photos: 450 },
+  { month: 'APR', videos: 520, photos: 480 },
+  { month: 'MAY', videos: 550, photos: 500 },
+  { month: 'JUN', videos: 530, photos: 520 },
+  { month: 'JUL', videos: 580, photos: 540 },
+  { month: 'AUG', videos: 620, photos: 560 },
+  { month: 'SEP', videos: 600, photos: 580 },
+  { month: 'OCT', videos: 680, photos: 620 },
+  { month: 'NOV', videos: 720, photos: 660 },
+  { month: 'DEC', videos: 700, photos: 680 },
+];
+
+// Top performing items data
+const topItems = [
+  {
+    id: 1,
+    title: 'Total Published Items',
+    subtitle: 'Total Published Items',
+    image: '/api/placeholder/60/60',
+    views: '41k',
+    likes: '522',
+    shares: '2k',
+  },
+  {
+    id: 2,
+    title: 'Total Published Items',
+    subtitle: 'Total Published Items',
+    image: '/api/placeholder/60/60',
+    views: '41k',
+    likes: '522',
+    shares: '2k',
+  },
+  {
+    id: 3,
+    title: 'Total Published Items',
+    subtitle: 'Total Published Items',
+    image: '/api/placeholder/60/60',
+    views: '41k',
+    likes: '522',
+    shares: '2k',
+  },
+  {
+    id: 4,
+    title: 'Total Published Items',
+    subtitle: 'Total Published Items',
+    image: '/api/placeholder/60/60',
+    views: '41k',
+    likes: '522',
+    shares: '2k',
+  },
+  {
+    id: 5,
+    title: 'Total Published Items',
+    subtitle: 'Total Published Items',
+    image: '/api/placeholder/60/60',
+    views: '41k',
+    likes: '522',
+    shares: '2k',
+  },
+];
 
 const Overview = () => {
-    return (
-        <div className="p-6">
-            <div className="flex items-center gap-3 mb-8">
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
-                    <LayoutDashboard className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Admin Overview</h1>
-                    <p className="text-gray-500 dark:text-gray-400">Welcome back to your dashboard command center.</p>
-                </div>
-            </div>
+  const [timeFilter, setTimeFilter] = useState('all');
+  const [yearFilter, setYearFilter] = useState('2026');
+  const [feedView, setFeedView] = useState('web');
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[
-                    { label: "Total Users", value: "1,234", change: "+12%", color: "blue" },
-                    { label: "Active Revenue", value: "$12,450", change: "+5%", color: "green" },
-                    { label: "New Signups", value: "48", change: "+18%", color: "purple" },
-                    { label: "Conversion Rate", value: "3.2%", change: "-2%", color: "orange" },
-                ].map((stat, i) => (
-                    <div key={i} className="bg-black/40 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-white/10">
-                        <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{stat.label}</p>
-                        <div className="flex items-end justify-between mt-2">
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</h3>
-                            <span className={`text-xs font-bold px-2 py-1 rounded-full ${stat.change.startsWith('+')
-                                ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400"
-                                : "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
-                                }`}>
-                                {stat.change}
-                            </span>
-                        </div>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div className="min-h-screen bg-black text-white p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold">Overview</h1>
+          
+          {/* Dropdowns */}
+          <Select value={timeFilter} onValueChange={setTimeFilter}>
+            <SelectTrigger className="w-32 bg-gray-900 border-gray-800">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-900 border-gray-800">
+              <SelectItem value="all">All time</SelectItem>
+              <SelectItem value="today">Today</SelectItem>
+              <SelectItem value="week">This week</SelectItem>
+              <SelectItem value="month">This month</SelectItem>
+              <SelectItem value="year">This year</SelectItem>
+            </SelectContent>
+          </Select>
 
-            <div className="mt-8 bg-black/40 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-white/10 min-h-[400px]">
-                <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Platform Growth</h2>
-                <div className="flex items-center justify-center h-[300px] text-gray-400 italic">
-                    Performance visualization would be here
-                </div>
-            </div>
+          <Select value={yearFilter} onValueChange={setYearFilter}>
+            <SelectTrigger className="w-32 bg-gray-900 border-gray-800">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-900 border-gray-800">
+              <SelectItem value="2026">2026</SelectItem>
+              <SelectItem value="2025">2025</SelectItem>
+              <SelectItem value="2024">2024</SelectItem>
+              <SelectItem value="2023">2023</SelectItem>
+              <SelectItem value="2022">2022</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-    );
+
+        <Button className="bg-red-600 hover:bg-red-700">New Post</Button>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {/* Total Published Items */}
+        <div className="bg-gray-900 rounded-lg p-6 relative overflow-hidden border border-gray-800">
+          <div className="flex items-start justify-between mb-4">
+            <div className="p-3 bg-gray-800 rounded-lg">
+              <FileText className="h-6 w-6 text-white" />
+            </div>
+            <div className="flex items-center gap-1 text-green-500 text-sm">
+              <TrendingUp className="h-4 w-4" />
+              <span>12%</span>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold mb-2">12,450</h2>
+          <p className="text-gray-400 text-sm">Total Published Items</p>
+        </div>
+
+        {/* Favourite Count Trend */}
+        <div className="bg-gray-900 rounded-lg p-6 relative overflow-hidden border border-gray-800">
+          <div className="flex items-start justify-between mb-4">
+            <div className="p-3 bg-gray-800 rounded-lg">
+              <Clock className="h-6 w-6 text-white" />
+            </div>
+            <div className="flex items-center gap-1 text-green-500 text-sm">
+              <TrendingUp className="h-4 w-4" />
+              <span>12%</span>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold mb-2">1M +</h2>
+          <p className="text-gray-400 text-sm">Favourite Count Trend</p>
+        </div>
+
+        {/* Total Views */}
+        <div className="bg-gray-900 rounded-lg p-6 relative overflow-hidden border border-gray-800">
+          <div className="flex items-start justify-between mb-4">
+            <div className="p-3 bg-gray-800 rounded-lg">
+              <Eye className="h-6 w-6 text-white" />
+            </div>
+            <div className="flex items-center gap-1 text-green-500 text-sm">
+              <TrendingUp className="h-4 w-4" />
+              <span>12%</span>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold mb-2">9,92,66,978</h2>
+          <p className="text-gray-400 text-sm">Total Views</p>
+        </div>
+
+        {/* Clicks over time */}
+        <div className="bg-gray-900 rounded-lg p-6 relative overflow-hidden border border-gray-800">
+          <div className="flex items-start justify-between mb-4">
+            <div className="p-3 bg-gray-800 rounded-lg">
+              <CreditCard className="h-6 w-6 text-white" />
+            </div>
+            <div className="flex items-center gap-1 text-green-500 text-sm">
+              <TrendingUp className="h-4 w-4" />
+              <span>12%</span>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold mb-2">12,450</h2>
+          <p className="text-gray-400 text-sm">Clicks over time</p>
+        </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Top performing items (CTR) */}
+        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+          <h3 className="text-lg font-semibold mb-6">Top performing items (CTR)</h3>
+          <div className="space-y-4">
+            {topItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center gap-4 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-14 h-14 rounded-lg object-cover"
+                />
+                <div className="flex-1">
+                  <h4 className="font-medium text-sm">{item.title}</h4>
+                  <p className="text-xs text-gray-400">{item.subtitle}</p>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    <Eye className="h-4 w-4" />
+                    <span>{item.views}</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-red-500">
+                    <ThumbsUp className="h-4 w-4" />
+                    <span>{item.likes}</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-blue-500">
+                    <Share2 className="h-4 w-4" />
+                    <span>{item.shares}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Feed Performance */}
+        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold">Feed Performance</h3>
+            <Select value={feedView} onValueChange={setFeedView}>
+              <SelectTrigger className="w-24 bg-gray-800 border-gray-700">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-800 border-gray-700">
+                <SelectItem value="web">Web</SelectItem>
+                <SelectItem value="mobile">Mobile</SelectItem>
+                <SelectItem value="tablet">Tablet</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Chart */}
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis
+                  dataKey="month"
+                  stroke="#9CA3AF"
+                  style={{ fontSize: '12px' }}
+                />
+                <YAxis stroke="#9CA3AF" style={{ fontSize: '12px' }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#1F2937',
+                    border: '1px solid #374151',
+                    borderRadius: '8px',
+                    color: '#fff',
+                  }}
+                />
+                <Legend
+                  wrapperStyle={{ paddingTop: '20px' }}
+                  iconType="circle"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="videos"
+                  stroke="#EF4444"
+                  strokeWidth={2}
+                  dot={{ fill: '#EF4444', r: 4 }}
+                  name="Videos"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="photos"
+                  stroke="#3B82F6"
+                  strokeWidth={2}
+                  dot={{ fill: '#3B82F6', r: 4 }}
+                  name="Photos"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Restore Up Button (as shown in image) */}
+          <div className="absolute top-24 left-1/2 transform -translate-x-1/2">
+            <button className="px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-gray-100 transition-colors">
+              Restore Up
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Overview;

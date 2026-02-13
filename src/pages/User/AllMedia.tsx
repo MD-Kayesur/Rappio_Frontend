@@ -349,13 +349,34 @@ const AllMedia: React.FC = () => {
                         </button>
 
                         {/* Left - Image */}
-                        <div className="relative bg-black flex items-center justify-center p-8">
+                        {/* <div className="relative bg-black flex items-center justify-center p-8">
                             <img
                                 src={currentOffer.image_url}
                                 alt={currentOffer.title}
                                 className="w-full h-full object-cover rounded-lg"
                             />
+                        </div> */}
+
+ <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${currentOffer.video_url.includes('watch?v=')
+                                    ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
+                                    : currentOffer.video_url.split('/').pop()}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&playlist=${currentOffer.video_url.includes('watch?v=')
+                                        ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
+                                        : currentOffer.video_url.split('/').pop()}`}
+                                className="w-full h-full"
+                                allow="autoplay; encrypted-media"
+                                allowFullScreen
+                                style={{
+                                    border: 'none',
+                                    pointerEvents: 'none'
+                                }}
+                            />
                         </div>
+
+
+
+
 
                         {/* Right - Content */}
                         <div className="bg-gradient-to-b from-gray-900 to-black text-white p-8 overflow-y-auto">
