@@ -105,32 +105,7 @@ const Overview = () => {
           <h1 className="text-2xl font-bold">Overview</h1>
           
           {/* Dropdowns */}
-          <Select value={timeFilter} onValueChange={setTimeFilter}>
-            <SelectTrigger className="w-32 bg-gray-900 border-gray-800">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-800">
-              <SelectItem value="all">All time</SelectItem>
-              <SelectItem value="today">Today</SelectItem>
-              <SelectItem value="week">This week</SelectItem>
-              <SelectItem value="month">This month</SelectItem>
-              <SelectItem value="year">This year</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value={yearFilter} onValueChange={setYearFilter}>
-            <SelectTrigger className="w-32 bg-gray-900 border-gray-800">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-800">
-              <SelectItem value="2026">2026</SelectItem>
-              <SelectItem value="2025">2025</SelectItem>
-              <SelectItem value="2024">2024</SelectItem>
-              <SelectItem value="2023">2023</SelectItem>
-              <SelectItem value="2022">2022</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+          
 
         <Button className="bg-red-600 hover:bg-red-700">New Post</Button>
       </div>
