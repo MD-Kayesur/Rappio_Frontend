@@ -162,8 +162,7 @@ const AllFeeds = () => {
           </Select>
         </div>
 
-        <Button className="bg-red-600 hover:bg-red-700">New Post</Button>
-      </div>
+       </div>
 
       {/* Table */}
       <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">

@@ -141,8 +141,7 @@ const Analytics = () => {
           </Select>
         </div>
 
-        <Button className="bg-red-600 hover:bg-red-700">New Post</Button>
-      </div>
+       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
