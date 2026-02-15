@@ -6,14 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import {
+ import {
   FileText,
   Clock,
   Eye,
   Sparkles,
   TrendingUp,
-  ThumbsUp,
   Heart,
   Share2,
 } from 'lucide-react';
