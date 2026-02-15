@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { UserCircle, Shield, Upload, Edit, X } from 'lucide-react';
+import { UserCircle, Shield, Edit, X } from 'lucide-react';
 
 interface Language {
   id: number;
