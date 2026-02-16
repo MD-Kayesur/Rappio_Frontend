@@ -5,6 +5,7 @@
 
 
 import React, { useState, useRef, useEffect } from 'react';
+import ReactPlayer from 'react-player';
 import { useLocation } from 'react-router-dom';
 import logo from "../../assets/Vector.svg";
 import {
@@ -15,7 +16,8 @@ import {
     X,
     ChevronUp,
     ChevronDown,
-    Search
+    Search,
+    Play
 } from 'lucide-react';
 
 interface Comment {
@@ -52,6 +54,9 @@ const AllMedia: React.FC = () => {
     const [commentText, setCommentText] = useState('');
     const [likedOffers, setLikedOffers] = useState<Set<number>>(new Set());
     const [savedOffers, setSavedOffers] = useState<Set<number>>(new Set());
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [progress, setProgress] = useState(0);
+    const [videoReady, setVideoReady] = useState(false);
 
     const [comments, setComments] = useState<Comment[]>([
         {
@@ -122,6 +127,13 @@ const AllMedia: React.FC = () => {
             setUsername(savedUsername);
         }
     }, [feedType, initialIndex, initialCategory]);
+
+    useEffect(() => {
+        setIsPlaying(true);
+        setProgress(0);
+        setVideoReady(false);
+        setIsDescriptionExpanded(false);
+    }, [currentIndex]);
 
     const handleScroll = (direction: 'up' | 'down') => {
         if (direction === 'down' && currentIndex < offers.length - 1) {
@@ -209,6 +221,12 @@ const AllMedia: React.FC = () => {
 
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
+    const getYouTubeId = (url: string) => {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    };
+
     const currentOffer = offers[currentIndex];
 
     if (!currentOffer) {
@@ -218,6 +236,8 @@ const AllMedia: React.FC = () => {
             </div>
         );
     }
+
+    const Player = ReactPlayer as any;
 
     return (
         <>
@@ -249,21 +269,52 @@ const AllMedia: React.FC = () => {
 
                     {/* Video/Image Content */}
                     <div className="absolute inset-0">
-                        {currentOffer.video_url && (currentOffer.video_url.includes("youtube.com") || currentOffer.video_url.includes("youtu.be")) ? (
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]">
-                                <iframe
-                                    src={`https://www.youtube.com/embed/${currentOffer.video_url.includes('watch?v=')
-                                        ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
-                                        : currentOffer.video_url.split('/').pop()}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&playlist=${currentOffer.video_url.includes('watch?v=')
-                                            ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
-                                            : currentOffer.video_url.split('/').pop()}`}
-                                    className="w-full h-full"
-                                    allow="autoplay; encrypted-media"
-                                    allowFullScreen
-                                    style={{
-                                        border: 'none',
-                                        pointerEvents: 'none'
-                                    }}
+                        {currentOffer.video_url ? (
+                            <div className="absolute inset-0 overflow-hidden">
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full lg:scale-[1.5] bg-black">
+                                    {getYouTubeId(currentOffer.video_url) ? (
+                                        <iframe
+                                            width="100%"
+                                            height="100%"
+                                            src={`https://www.youtube.com/embed/${getYouTubeId(currentOffer.video_url)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(currentOffer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`}
+                                            title="YouTube video player"
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            onLoad={() => {
+                                                setVideoReady(true);
+                                                setIsPlaying(true);
+                                            }}
+                                            className="w-full h-full pointer-events-none"
+                                        ></iframe>
+                                    ) : (
+                                        <Player
+                                            url={currentOffer.video_url}
+                                            playing={isPlaying}
+                                            loop
+                                            muted={true}
+                                            playsinline={true}
+                                            width="100%"
+                                            height="100%"
+                                            onReady={() => {
+                                                setVideoReady(true);
+                                                setIsPlaying(true);
+                                            }}
+                                            onProgress={(state: any) => setProgress(state.played * 100)}
+                                            className="pointer-events-none"
+                                            config={{
+                                                file: {
+                                                    attributes: {
+                                                        style: { width: '100%', height: '100%', objectFit: 'cover' }
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                                {/* Transparent Overlay to capture clicks - placed AFTER player for stacking */}
+                                <div
+                                    className="absolute inset-0 z-20 cursor-pointer"
+                                    onClick={() => setIsPlaying(!isPlaying)}
                                 />
                             </div>
                         ) : (
@@ -273,6 +324,30 @@ const AllMedia: React.FC = () => {
                                 className="w-full h-full object-cover"
                             />
                         )}
+
+                        {/* Play Icon Overlay or Loading */}
+                        {currentOffer.video_url && (
+                            <>
+                                {!videoReady ? (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none">
+                                        <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                                    </div>
+                                ) : !isPlaying && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none">
+                                        <Play size={60} className="text-white opacity-80" fill="white" />
+                                    </div>
+                                )}
+
+                                {/* Progress Bar */}
+                                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30">
+                                    <div
+                                        className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                                        style={{ width: `${progress}%` }}
+                                    />
+                                </div>
+                            </>
+                        )}
+
                         {/* Gradient Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
                     </div>
