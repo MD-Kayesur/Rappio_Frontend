@@ -9,9 +9,14 @@ export const LANGUAGES = [
   { code: "de", label: "German", flag: "de" },
   { code: "it", label: "Italian", flag: "it" },
   { code: "pt", label: "Portuguese", flag: "pt" },
-  // { code: "bn", label: "Bangla", flag: "bd" },
-  // { code: "hi", label: "Hindi", flag: "in" },
+  { code: "bn", label: "Bangla", flag: "bd" },
+  { code: "hi", label: "Hindi", flag: "in" },
 ];
+
+
+// English, Finnish, Portuguese, Spanish, Hindi 
+
+
 const GoogleTranslate: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState("en");

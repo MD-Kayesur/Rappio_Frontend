@@ -5,6 +5,7 @@
 
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import logo from "../../assets/Vector.svg";
 import {
     Heart,
@@ -82,12 +83,36 @@ const AllMedia: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const touchStartY = useRef<number>(0);
 
+    const location = useLocation();
+    const { feedType, initialIndex, initialCategory } = (location.state as { feedType?: string; initialIndex?: number; initialCategory?: string }) || {};
+
     useEffect(() => {
         // Fetch offers data
         fetch('/mediaData.json')
             .then(response => response.json())
             .then(data => {
-                setOffers(Array.isArray(data) ? data : [data]);
+                let allOffers: Offer[] = Array.isArray(data) ? data : [data];
+
+                // Load favorites for filtering if needed
+                const savedFavorites = localStorage.getItem('favorites');
+                const favoritesSet = new Set<number>(savedFavorites ? JSON.parse(savedFavorites) : []);
+
+                // Filter based on feedType
+                if (feedType === 'favorites') {
+                    allOffers = allOffers.filter(o => favoritesSet.has(o.id));
+                }
+
+                // Filter based on initialCategory if provided
+                if (initialCategory && initialCategory !== 'All') {
+                    allOffers = allOffers.filter(o => o.tags.includes(initialCategory));
+                }
+
+                setOffers(allOffers);
+
+                // Set initial index if provided
+                if (typeof initialIndex === 'number' && initialIndex < allOffers.length) {
+                    setCurrentIndex(initialIndex);
+                }
             })
             .catch(error => console.error('Error fetching offers:', error));
 
@@ -96,7 +121,7 @@ const AllMedia: React.FC = () => {
         if (savedUsername) {
             setUsername(savedUsername);
         }
-    }, []);
+    }, [feedType, initialIndex, initialCategory]);
 
     const handleScroll = (direction: 'up' | 'down') => {
         if (direction === 'down' && currentIndex < offers.length - 1) {

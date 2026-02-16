@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Heart, ThumbsUp, MessageCircle, Bookmark, Play } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Offer {
   id: number;
@@ -11,6 +12,7 @@ interface Offer {
   comments: number;
   image_url: string;
   video_url: string;
+  website_url: string;
   tags: string[];
   terms_highlights: string[];
   disclaimer: string;
@@ -20,6 +22,7 @@ const TopCasinos = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
+  const navigate = useNavigate();
 
   // Helper function to extract YouTube video ID
   const extractYouTubeID = (url: string): string => {
@@ -91,7 +94,7 @@ const TopCasinos = () => {
   };
 
   return (
-    <div className="min-h-full  text-white">
+    <div className="min-h-full text-white overflow-hidden">
       {/* Category Filter Tabs */}
       <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-gray-800">
         <div className="overflow-x-auto">
@@ -113,9 +116,9 @@ const TopCasinos = () => {
       </div>
 
       {/* Grid Layout */}
-      <div className="p-4">
+      <div className="p-4 overflow-y-auto h-[calc(100vh-70px)] no-scrollbar">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {filteredOffers.map((offer) => {
+          {filteredOffers.map((offer, index) => {
             const youtubeID = extractYouTubeID(offer.video_url);
             const thumbnailUrl = youtubeID
               ? `https://img.youtube.com/vi/${youtubeID}/maxresdefault.jpg`
@@ -124,6 +127,15 @@ const TopCasinos = () => {
             return (
               <div
                 key={offer.id}
+                onClick={() => {
+                  navigate('/user/all', {
+                    state: {
+                      feedType: 'top-casinos',
+                      initialIndex: index,
+                      initialCategory: selectedCategory
+                    }
+                  });
+                }}
                 className="group relative bg-[#1A1C1D] rounded-xl overflow-hidden hover:ring-2 hover:ring-gray-600 transition-all duration-300 cursor-pointer"
               >
                 {/* Image Container */}
@@ -165,29 +177,14 @@ const TopCasinos = () => {
 
                   {/* Bottom Info */}
                   <div className="absolute bottom-0 left-0 right-0 p-3">
-                    {/* Title & Verified Badge */}
                     <div className="flex items-start gap-2 mb-2">
                       <div className="flex-1 min-w-0">
                         <h3 className="text-xs font-semibold text-white line-clamp-2 leading-tight">
                           {offer.title}
                         </h3>
                       </div>
-                      <div className="flex-shrink-0 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                        <svg
-                          className="w-2.5 h-2.5 text-white"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
                     </div>
 
-                    {/* Stats */}
                     <div className="flex items-center gap-3 text-xs text-gray-300">
                       <div className="flex items-center gap-1">
                         <ThumbsUp className="h-3 w-3" />
@@ -197,52 +194,8 @@ const TopCasinos = () => {
                         <MessageCircle className="h-3 w-3" />
                         <span>{formatNumber(offer.comments)}</span>
                       </div>
-                      <span className="ml-auto text-gray-400">12 pm</span>
                     </div>
                   </div>
-                </div>
-
-                {/* Hover Overlay with More Info */}
-                <div className="absolute inset-0 bg-black/96 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-between overflow-y-auto">
-                  <div className="space-y-3">
-                    <div>
-                      <h3 className="text-base font-bold mb-1 leading-tight">{offer.title}</h3>
-                      <p className="text-xs text-gray-400 mb-2">{offer.subtitle}</p>
-                    </div>
-
-                    <p className="text-xs text-gray-300 line-clamp-3">{offer.description}</p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {offer.tags.slice(0, 3).map((tag, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-0.5 bg-gray-800 text-xs rounded-full text-gray-300"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Terms Highlights */}
-                    <div>
-                      <h4 className="text-xs font-semibold text-gray-400 mb-1.5">Highlights:</h4>
-                      <ul className="space-y-1">
-                        {offer.terms_highlights.map((term, index) => (
-                          <li key={index} className="text-xs text-gray-300 flex items-start">
-                            <span className="mr-1.5 text-green-500">•</span>
-                            <span className="line-clamp-1">{term}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <p className="text-xs text-gray-500 italic line-clamp-2">{offer.disclaimer}</p>
-                  </div>
-
-                  <button className="w-full mt-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-2.5 rounded-lg transition-all text-sm">
-                    {offer.cta}
-                  </button>
                 </div>
               </div>
             );
@@ -261,15 +214,12 @@ const TopCasinos = () => {
         )}
       </div>
 
-      {/* Add custom scrollbar styles */}
+      {/* Add custom styles */}
       <style>{`
-        .overflow-x-auto::-webkit-scrollbar {
-          display: none;
-        }
-        .overflow-x-auto {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+        .overflow-x-auto::-webkit-scrollbar { display: none; }
+        .overflow-x-auto { -ms-overflow-style: none; scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </div>
   );
