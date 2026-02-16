@@ -61,10 +61,10 @@ const TopCasinos = () => {
     'Roulette',
     'Blackjack'
   ];
-  
+
   // Get unique tags from offers data
   const tagCategories = Array.from(new Set(offers.flatMap((offer) => offer.tags)));
-  
+
   // Combine and remove duplicates
   const categories = [
     ...predefinedCategories,
@@ -91,7 +91,7 @@ const TopCasinos = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-full bg-black text-white">
       {/* Category Filter Tabs */}
       <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-gray-800">
         <div className="overflow-x-auto">
@@ -100,11 +100,10 @@ const TopCasinos = () => {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
-                  selectedCategory === category
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category
                     ? 'bg-white text-black'
                     : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                }`}
+                  }`}
               >
                 {category}
               </button>
@@ -159,9 +158,8 @@ const TopCasinos = () => {
                     className="absolute top-2 right-2 p-1.5 bg-black/70 backdrop-blur-sm rounded-lg hover:bg-black/90 transition-colors z-10"
                   >
                     <Bookmark
-                      className={`h-4 w-4 ${
-                        favorites.has(offer.id) ? 'fill-white text-white' : 'text-white'
-                      }`}
+                      className={`h-4 w-4 ${favorites.has(offer.id) ? 'fill-white text-white' : 'text-white'
+                        }`}
                     />
                   </button>
 

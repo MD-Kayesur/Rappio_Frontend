@@ -153,7 +153,7 @@ const FeedOrdering = () => {
 
   // Handle Pin/Unpin
   const handlePin = (id: number) => {
-    setFeeds(feeds.map(feed => 
+    setFeeds(feeds.map(feed =>
       feed.id === id ? { ...feed, isPinned: !feed.isPinned } : feed
     ));
   };
@@ -164,13 +164,13 @@ const FeedOrdering = () => {
       setFeeds(feeds.map(feed =>
         feed.id === selectedFeed.id
           ? {
-              ...feed,
-              name: formData.title,
-              title: formData.title,
-              description: formData.description,
-              link: formData.affiliateLink,
-              image: formData.mediaPreview,
-            }
+            ...feed,
+            name: formData.title,
+            title: formData.title,
+            description: formData.description,
+            link: formData.affiliateLink,
+            image: formData.mediaPreview,
+          }
           : feed
       ));
       setShowEditModal(false);
@@ -201,7 +201,7 @@ const FeedOrdering = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-full bg-black text-white p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
@@ -303,17 +303,16 @@ const FeedOrdering = () => {
                   {/* Views */}
                   <td className="px-6 py-4">
                     <span
-                      className={`text-sm font-medium ${
-                        feed.views.includes('M')
+                      className={`text-sm font-medium ${feed.views.includes('M')
                           ? 'text-purple-400'
                           : feed.views.includes('k') &&
                             parseInt(feed.views) > 100
-                          ? 'text-orange-400'
-                          : feed.views.includes('k') &&
-                            parseInt(feed.views) > 50
-                          ? 'text-yellow-400'
-                          : 'text-white'
-                      }`}
+                            ? 'text-orange-400'
+                            : feed.views.includes('k') &&
+                              parseInt(feed.views) > 50
+                              ? 'text-yellow-400'
+                              : 'text-white'
+                        }`}
                     >
                       {feed.views}
                     </span>
@@ -332,11 +331,10 @@ const FeedOrdering = () => {
                   {/* Status */}
                   <td className="px-6 py-4">
                     <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded ${
-                        feed.status === 'Active'
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded ${feed.status === 'Active'
                           ? 'text-green-400 bg-green-900/30'
                           : 'text-orange-400 bg-orange-900/30'
-                      }`}
+                        }`}
                     >
                       {feed.status}
                     </span>
@@ -391,7 +389,7 @@ const FeedOrdering = () => {
 
       {/* Edit Modal */}
       <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
-        <DialogContent className="max-w-4xl bg-gray-950 text-white border-gray-800 max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-7xl bg-gray-950 text-white border-gray-800 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Create New post</DialogTitle>
             <p className="text-sm text-gray-400">Fill out this form to publish a new post.</p>

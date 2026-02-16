@@ -42,7 +42,7 @@ export default function UserLayout() {
         {/* Mobile overlay backdrop */}
         {isMobile && sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 bg-black/50 backdrop-blur-lg lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
@@ -66,12 +66,12 @@ export default function UserLayout() {
         )}
 
         {/* Layout Navbar */}
-        <div className="sticky top-0 z-30">
+        <div className="sticky top-0 z-30 hidden lg:block">
           <LayoutNavber />
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-auto ">
+        <div className="flex-1 overflow-auto no-scrollbar">
           <Outlet />
         </div>
       </div>

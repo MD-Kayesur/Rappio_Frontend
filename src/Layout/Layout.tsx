@@ -9,7 +9,7 @@ import { Outlet } from 'react-router-dom';
 const Layout: React.FC = () => {
   return (
     <div
-      className="flex flex-col min-h-screen"
+      className="flex flex-col h-screen overflow-hidden"
       style={{
         backgroundImage: 'url(/src/assets/home.jpg)',
         backgroundSize: 'cover',

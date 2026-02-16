@@ -74,31 +74,31 @@ const Home = () => {
               <p className="text-xl text-gray-200">
                 Your journey starts here.
               </p> */}
- 
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="relative max-w-md w-full mx-4 bg-gray-900 rounded-2xl shadow-2xl border border-gray-800 p-8">
-        {/* Close Button */}
-        <button className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
-          <X className="h-5 w-5" />
-        </button>
 
-        {/* Title */}
-        <h2 className="text-2xl font-bold text-white text-center mb-4">
-          18+ Disclosure
-        </h2>
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-lg">
+                <div className="relative max-w-md w-full mx-4 bg-gray-900 rounded-2xl shadow-2xl border border-gray-800 p-8">
+                  {/* Close Button */}
+                  <button className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                    <X className="h-5 w-5" />
+                  </button>
 
-        {/* Description */}
-        <p className="text-sm text-gray-400 text-center leading-relaxed mb-6">
-          This platform promotes casino offers via affiliate links only no real-money gambling occurs on-site. All outbound links redirect to third-party operators. The following disclosure combines the required elements from your spec (section 6: Compliance & Legal Page)—clear 18+ warning, responsible play messaging, affiliate disclosure, and redirection notice.
-        </p>
+                  {/* Title */}
+                  <h2 className="text-2xl font-bold text-white text-center mb-4">
+                    18+ Disclosure
+                  </h2>
 
-        {/* Continue Button */}
-        <Button onClick={() => navigate("/user/all")} className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg">
-          Continue
-        </Button>
-      </div>
-    </div>
- 
+                  {/* Description */}
+                  <p className="text-sm text-gray-400 text-center leading-relaxed mb-6">
+                    This platform promotes casino offers via affiliate links only no real-money gambling occurs on-site. All outbound links redirect to third-party operators. The following disclosure combines the required elements from your spec (section 6: Compliance & Legal Page)—clear 18+ warning, responsible play messaging, affiliate disclosure, and redirection notice.
+                  </p>
+
+                  {/* Continue Button */}
+                  <Button onClick={() => navigate("/user/all")} className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg">
+                    Continue
+                  </Button>
+                </div>
+              </div>
+
 
             </motion.div>
           )}

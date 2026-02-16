@@ -187,7 +187,7 @@ const Overview = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-full bg-black text-white p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
@@ -382,7 +382,7 @@ const Overview = () => {
 
       {/* Create New Post Dialog */}
       <Dialog open={showCreatePost} onOpenChange={setShowCreatePost}>
-        <DialogContent className="max-w-4xl bg-gray-950 text-white border-gray-800 max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-7xl bg-gray-950 text-white border-gray-800 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Create New post</DialogTitle>
             <p className="text-sm text-gray-400">Fill out this form to publish a new post.</p>
@@ -631,7 +631,7 @@ const Overview = () => {
 
       {/* Preview Post Dialog */}
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
-        <DialogContent className="max-w-3xl bg-gray-950 text-white border-gray-800">
+        <DialogContent className="max-w-7xl bg-gray-950 text-white border-gray-800 overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Preview Post</DialogTitle>
             <p className="text-sm text-gray-400">Your post will be like this preview.</p>

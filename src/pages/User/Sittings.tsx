@@ -41,7 +41,7 @@ function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-full bg-black text-white">
       {/* Profile Header */}
       <div className="relative mx-auto max-w-5xl">
         <div className="mx-4 mt-8 rounded-2xl bg-gradient-to-br from-red-900 to-red-800 p-8">
@@ -325,7 +325,7 @@ function Settings() {
             </div>
           </div>
 
-         
+
         </div>
       </div>
     </div>

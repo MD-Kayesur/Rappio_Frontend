@@ -15,13 +15,13 @@ const Settings = () => {
   const [showUpdateInfoModal, setShowUpdateInfoModal] = useState(false);
   const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/80');
-  
+
   // Form states
   const [userInfo, setUserInfo] = useState({
     name: '',
     address: '',
   });
-  
+
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
     newPassword: '',
@@ -72,7 +72,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-full bg-black text-white p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold">Settings</h1>
@@ -82,21 +82,19 @@ const Settings = () => {
       <div className="flex gap-2 mb-6">
         <button
           onClick={() => setActiveTab('general')}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === 'general'
+          className={`px-6 py-2 rounded-lg font-medium transition-colors ${activeTab === 'general'
               ? 'bg-red-600 text-white'
               : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-          }`}
+            }`}
         >
           General
         </button>
         <button
           onClick={() => setActiveTab('languages')}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === 'languages'
+          className={`px-6 py-2 rounded-lg font-medium transition-colors ${activeTab === 'languages'
               ? 'bg-red-600 text-white'
               : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-          }`}
+            }`}
         >
           Languages
         </button>

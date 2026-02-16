@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
- import {
+import {
   FileText,
   Clock,
   Eye,
@@ -105,7 +105,7 @@ const Analytics = () => {
   const [languageView, setLanguageView] = useState('web');
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-full bg-black text-white p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
@@ -139,7 +139,7 @@ const Analytics = () => {
           </Select>
         </div>
 
-       </div>
+      </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

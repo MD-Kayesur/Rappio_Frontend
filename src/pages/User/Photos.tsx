@@ -214,11 +214,11 @@ const Photos: React.FC = () => {
                             />
                         </div>
                     ) : ( */}
-                        <img
-                            src={currentOffer.image_url}
-                            alt={currentOffer.title}
-                            className="w-full h-full object-cover"
-                        />
+                    <img
+                        src={currentOffer.image_url}
+                        alt={currentOffer.title}
+                        className="w-full h-full object-cover"
+                    />
                     {/* )} */}
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
@@ -335,9 +335,8 @@ const Photos: React.FC = () => {
                 </div>
             </div>
 
-            {/* Detail Modal */}
             {showModal && (
-                <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-50 flex items-center justify-center p-4">
                     <div className="max-w-4xl w-full grid md:grid-cols-2 bg-black rounded-2xl overflow-hidden shadow-2xl relative max-h-[90vh]">
                         {/* Close Button */}
                         <button
@@ -429,9 +428,8 @@ const Photos: React.FC = () => {
                 </div>
             )}
 
-            {/* Comments Modal */}
             {showComments && (
-                <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-50 flex items-center justify-center p-4">
                     <div className="max-w-4xl w-full grid md:grid-cols-2 bg-black rounded-2xl overflow-hidden shadow-2xl relative max-h-[90vh]">
                         {/* Close Button */}
                         <button
@@ -555,9 +553,8 @@ const Photos: React.FC = () => {
                 </div>
             )}
 
-            {/* Name Setup Modal */}
             {showNameSetup && (
-                <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-50 flex items-center justify-center p-4">
                     <div className="bg-gradient-to-b from-gray-900 to-black rounded-2xl p-8 max-w-md w-full text-center relative">
                         <div className="mb-6">
                             <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">

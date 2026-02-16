@@ -1,5 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/Slices/AuthSlice/authSlice";
 import logoLight from "@/assets/Vector.svg";
 import logoDark from "@/assets/Vector.svg";
 import logoIcon from "@/assets/vectorLittle.png";
@@ -25,11 +27,12 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
   setSidebarOpen,
 }) => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDarkMode] = useState(false);
 
   const handleLogout = () => {
-    localStorage.clear();
+    dispatch(logout());
     window.location.href = "/login";
   };
 

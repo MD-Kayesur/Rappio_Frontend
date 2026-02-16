@@ -32,7 +32,7 @@ export default function AdminLayout() {
       >
         {isMobile && sidebarOpen && (
           <div
-            className="fixed inset-0   backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 bg-black/50 backdrop-blur-lg lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
@@ -57,7 +57,7 @@ export default function AdminLayout() {
           <LayoutNavber />
         </div>
 
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto no-scrollbar">
           <Outlet />
         </div>
       </div>

@@ -1,4 +1,5 @@
- 
+
+
 
 
 
@@ -12,7 +13,8 @@ import {
     Share2,
     X,
     ChevronUp,
-    ChevronDown
+    ChevronDown,
+    Search
 } from 'lucide-react';
 
 interface Comment {
@@ -42,7 +44,6 @@ interface Offer {
 const AllMedia: React.FC = () => {
     const [offers, setOffers] = useState<Offer[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [showModal, setShowModal] = useState(false);
     const [showComments, setShowComments] = useState(false);
     const [showNameSetup, setShowNameSetup] = useState(false);
     const [username, setUsername] = useState('');
@@ -180,11 +181,13 @@ const AllMedia: React.FC = () => {
         }
     };
 
+    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
     const currentOffer = offers[currentIndex];
 
     if (!currentOffer) {
         return (
-            <div className="h-screen bg-black flex items-center justify-center">
+            <div className="h-full bg-black flex items-center justify-center">
                 <div className="text-white text-xl">Loading...</div>
             </div>
         );
@@ -192,389 +195,295 @@ const AllMedia: React.FC = () => {
 
     return (
         <>
-            {/* Main Feed */}
+            {/* Main Feed Container */}
             <div
                 ref={containerRef}
-                className="h-screen overflow-hidden relative"
+                className="h-full bg-[#0F0F0F] flex items-center justify-center relative overflow-hidden no-scrollbar"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
             >
-                {/* Video/Image Background */}
+                {/* Central Media Container - Full screen on mobile, phone-shaped on lg */}
+                <div className="relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-[420px] sm:aspect-[9/19] bg-black sm:rounded-[3rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group">
 
-                <div className="absolute w-[400px] mx-auto inset-0 overflow-hidden">
-                    {currentOffer.video_url && (currentOffer.video_url.includes("youtube.com") || currentOffer.video_url.includes("youtu.be")) ? (
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]">
-                            <iframe
-                                src={`https://www.youtube.com/embed/${currentOffer.video_url.includes('watch?v=')
-                                    ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
-                                    : currentOffer.video_url.split('/').pop()}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&playlist=${currentOffer.video_url.includes('watch?v=')
-                                        ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
-                                        : currentOffer.video_url.split('/').pop()}`}
-                                className="w-full h-full"
-                                allow="autoplay; encrypted-media"
-                                allowFullScreen
-                                style={{
-                                    border: 'none',
-                                    pointerEvents: 'none'
-                                }}
-                            />
+                    {/* Top Navigation - Mobile Only */}
+                    <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between p-6 sm:hidden pointer-events-none">
+                        <button className="text-white hover:opacity-80 transition-opacity pointer-events-auto">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-6 h-6 drop-shadow-lg">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                        <div className="px-5 py-2 bg-black/30 backdrop-blur-lg rounded-full border border-white/10 pointer-events-auto shadow-sm">
+                            <span className="text-white text-[13px] font-bold tracking-tight">Open App</span>
                         </div>
-                    ) : (
-                        <img
-                            src={currentOffer.image_url}
-                            alt={currentOffer.title}
-                            className="w-full h-full object-cover"
-                        />
-                    )}
+                        <button className="text-white hover:opacity-80 transition-opacity pointer-events-auto">
+                            <Search size={24} className="drop-shadow-lg" />
+                        </button>
+                    </div>
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-                </div>
-
-                {/* Content Overlay - TikTok Style */}
-                <div className="relative h-full flex  flex-col justify-end p-4 pb-24">
-                    {/* Bottom Content */}
-                    <div className="space-y-2 max-w-[calc(100%-80px)]">
-                        {/* Creator/Title */}
-                        <div className="flex items-center gap-2">
-                            <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
-                                <span className="text-white font-bold">F</span>
+                    {/* Video/Image Content */}
+                    <div className="absolute inset-0">
+                        {currentOffer.video_url && (currentOffer.video_url.includes("youtube.com") || currentOffer.video_url.includes("youtu.be")) ? (
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]">
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${currentOffer.video_url.includes('watch?v=')
+                                        ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
+                                        : currentOffer.video_url.split('/').pop()}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&playlist=${currentOffer.video_url.includes('watch?v=')
+                                            ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
+                                            : currentOffer.video_url.split('/').pop()}`}
+                                    className="w-full h-full"
+                                    allow="autoplay; encrypted-media"
+                                    allowFullScreen
+                                    style={{
+                                        border: 'none',
+                                        pointerEvents: 'none'
+                                    }}
+                                />
                             </div>
-                            <h2 className="text-white font-bold text-base">
-                                {currentOffer.title}
+                        ) : (
+                            <img
+                                src={currentOffer.image_url}
+                                alt={currentOffer.title}
+                                className="w-full h-full object-cover"
+                            />
+                        )}
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
+                    </div>
+
+                    {/* Content Overlay (Bottom Left) */}
+                    <div className="absolute bottom-4 left-0 right-16 p-4 z-20 select-none space-y-1.5">
+                        <div className="flex items-center gap-1.5">
+                            <h2 className="text-white font-bold text-[17px] tracking-wide pointer-events-auto cursor-pointer hover:underline">
+                                {currentOffer.title} <span className="text-[14px]">🍎</span> mart <span className="text-[14px]">📲</span>
                             </h2>
                         </div>
 
-                        {/* Description */}
-                        <p className="text-white text-sm leading-relaxed">
-                            {currentOffer.subtitle}
-                        </p>
+                        <div className="space-y-0.5">
+                            <div className={`text-white text-[14px] leading-[1.4] drop-shadow-md ${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
+                                <span className="font-semibold block mb-0.5">💥 Student OFFER ⚡️ Price 83,000 Only</span>
+                                <span className="text-white/95">{currentOffer.subtitle || "🤳 iPhone 13 Pro max ✅ Pta"}</span>
+                                <div className="text-blue-400 font-medium mt-1 flex flex-wrap gap-1">
+                                    {currentOffer.tags?.map(tag => (
+                                        <span key={tag}>#{tag.replace(/\s+/g, '')}</span>
+                                    )) || <span>#apple #iphone13promax</span>}
+                                </div>
+                            </div>
+                            {!isDescriptionExpanded && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setIsDescriptionExpanded(true);
+                                    }}
+                                    className="text-white font-bold text-[14px] hover:opacity-80 transition-opacity"
+                                >
+                                    more
+                                </button>
+                            )}
+                        </div>
 
-                        {/* Tags */}
-                        <div className="flex gap-2 flex-wrap">
-                            <span className="text-white/80 text-sm font-semibold">#trending-worldwide</span>
-                            <span className="text-white/80 text-sm font-semibold">#Lifestyle</span>
+                        {/* Music info with Marquee */}
+                        <div className="flex items-center gap-2 pt-1">
+                            <span className="text-white text-[12px] opacity-90">♫</span>
+                            <div className="overflow-hidden w-[180px]">
+                                <div className="flex whitespace-nowrap animate-marquee">
+                                    <span className="text-white text-[13px] font-medium mr-12 drop-shadow-sm">
+                                        original sound - {currentOffer.title} - original sound...
+                                    </span>
+                                    <span className="text-white text-[13px] font-medium mr-12 drop-shadow-sm">
+                                        original sound - {currentOffer.title} - original sound...
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Action Bar (Inside Media) - Always Overlay on Small, but can be side on LG if preferred */}
+                    <div className="absolute right-2 bottom-6 w-14 flex flex-col items-center gap-5 z-20">
+                        {/* Profile with Plus */}
+                        <div className="relative mb-2 pointer-events-auto group cursor-pointer">
+                            <div className="w-11 h-11 rounded-full border-2 border-white overflow-hidden bg-gray-500 shadow-xl group-hover:scale-105 transition-transform">
+                                <img src={currentOffer.image_url} alt="User" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4.5 h-4.5 bg-[#EE2B3E] rounded-full flex items-center justify-center text-white border-2 border-black">
+                                <span className="text-[14px] font-bold">+</span>
+                            </div>
+                        </div>
+
+                        {/* Like */}
+                        <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleLike(currentOffer.id);
+                                }}
+                                className="hover:scale-110 transition-transform active:scale-95"
+                            >
+                                <Heart
+                                    size={36}
+                                    className={`transition-colors duration-200 drop-shadow-lg ${likedOffers.has(currentOffer.id)
+                                        ? 'fill-[#EE2B3E] text-[#EE2B3E]'
+                                        : 'text-white'
+                                        }`}
+                                />
+                            </button>
+                            <span className="text-white text-[12px] font-bold drop-shadow-md">{formatNumber(currentOffer.likes)}</span>
+                        </div>
+
+                        {/* Comment */}
+                        <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowComments(true);
+                                }}
+                                className="hover:scale-110 transition-transform active:scale-95"
+                            >
+                                <MessageCircle size={36} className="text-white drop-shadow-lg" />
+                            </button>
+                            <span className="text-white text-[12px] font-bold drop-shadow-md">{formatNumber(currentOffer.comments + comments.length)}</span>
+                        </div>
+
+                        {/* Bookmark */}
+                        <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleSave(currentOffer.id);
+                                }}
+                                className="hover:scale-110 transition-transform active:scale-95"
+                            >
+                                <Bookmark
+                                    size={34}
+                                    className={`transition-colors duration-200 drop-shadow-lg ${savedOffers.has(currentOffer.id)
+                                        ? 'fill-[#facd3b] text-[#facd3b]'
+                                        : 'text-white'
+                                        }`}
+                                />
+                            </button>
+                        </div>
+
+                        {/* Share */}
+                        <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    // logic for share
+                                }}
+                                className="w-10 h-10 bg-[#3482F6] rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition-colors"
+                            >
+                                <Share2 size={20} className="text-white" />
+                            </button>
+                            <span className="text-white text-[11px] font-bold drop-shadow-md">Share</span>
+                        </div>
+
+                        {/* Music disk */}
+                        <div className="mt-3 pointer-events-none">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1a1a1a] to-[#333] border-[5px] border-[#222] animate-spin-slow overflow-hidden flex items-center justify-center relative shadow-2xl">
+                                <div className="absolute inset-0 bg-[repeating-conic-gradient(#000_0_15deg,#222_0_30deg)] opacity-40"></div>
+                                <div className="w-5 h-5 rounded-full overflow-hidden bg-gray-400 z-10">
+                                    <img src={currentOffer.image_url} alt="disk" className="w-full h-full object-cover" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-
-                {/* Right Side Actions */}
-                <div className="absolute right-4 bottom-32 flex flex-col gap-6">
-                    {/* Like */}
-                    <button
-                        onClick={() => toggleLike(currentOffer.id)}
-                        className="flex flex-col items-center gap-1"
-                    >
-                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                            <Heart
-                                size={24}
-                                className={`transition-colors ${likedOffers.has(currentOffer.id)
-                                    ? 'fill-red-500 text-red-500'
-                                    : 'text-white'
-                                    }`}
-                            />
-                        </div>
-                        <span className="text-white text-xs font-semibold">
-                            {formatNumber(currentOffer.likes + (likedOffers.has(currentOffer.id) ? 1 : 0))}
-                        </span>
-                    </button>
-
-                    {/* Comments */}
-                    <button
-                        onClick={() => setShowComments(true)}
-                        className="flex flex-col items-center gap-1"
-                    >
-                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                            <MessageCircle size={24} className="text-white" />
-                        </div>
-                        <span className="text-white text-xs font-semibold">
-                            {formatNumber(currentOffer.comments + comments.length)}
-                        </span>
-                    </button>
-
-                    {/* Save */}
-                    <button
-                        onClick={() => toggleSave(currentOffer.id)}
-                        className="flex flex-col items-center gap-1"
-                    >
-                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                            <Bookmark
-                                size={24}
-                                className={`transition-colors ${savedOffers.has(currentOffer.id)
-                                    ? 'fill-white text-white'
-                                    : 'text-white'
-                                    }`}
-                            />
-                        </div>
-                    </button>
-
-                    {/* Share */}
-                    <button className="flex flex-col items-center gap-1">
-                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                            <Share2 size={24} className="text-white" />
-                        </div>
-                    </button>
-                </div>
-
-                {/* Navigation Arrows - Only visible on large screens */}
-                <div className="hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 flex-col gap-4">
+                {/* Desktop Side Navigation Arrows - Outside the central container */}
+                <div className="hidden sm:flex absolute bottom-10 right-10 flex-col gap-3">
                     <button
                         onClick={() => handleScroll('up')}
                         disabled={currentIndex === 0}
-                        className={`w-10 h-10 rounded-full backdrop-blur-md flex items-center justify-center transition-colors ${currentIndex === 0
-                            ? 'bg-white/5 text-white/30'
-                            : 'bg-white/10 text-white hover:bg-white/20'
+                        className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0
+                            ? 'bg-white/5 text-white/20 cursor-not-allowed'
+                            : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'
                             }`}
                     >
-                        <ChevronUp size={24} />
+                        <ChevronUp size={28} />
                     </button>
                     <button
                         onClick={() => handleScroll('down')}
                         disabled={currentIndex === offers.length - 1}
-                        className={`w-10 h-10 rounded-full backdrop-blur-md flex items-center justify-center transition-colors ${currentIndex === offers.length - 1
-                            ? 'bg-white/5 text-white/30'
-                            : 'bg-white/10 text-white hover:bg-white/20'
+                        className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1
+                            ? 'bg-white/5 text-white/20 cursor-not-allowed'
+                            : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'
                             }`}
                     >
-                        <ChevronDown size={24} />
+                        <ChevronDown size={28} />
                     </button>
                 </div>
             </div>
 
-            {/* Detail Modal */}
-            {showModal && (
-                <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
-                    <div className="max-w-4xl w-full grid md:grid-cols-2 bg-black rounded-2xl overflow-hidden shadow-2xl relative max-h-[90vh]">
-                        {/* Close Button */}
-                        <button
-                            onClick={() => setShowModal(false)}
-                            className="absolute top-4 right-4 z-50 text-white/70 hover:text-white transition-colors"
-                        >
-                            <X size={24} />
-                        </button>
+            {/* Custom Animations for Marquee and Spin */}
+            <style>{`
+                @keyframes marquee {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                .animate-marquee {
+                    animation: marquee 12s linear infinite;
+                }
+                .animate-spin-slow {
+                    animation: spin 6s linear infinite;
+                }
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+            `}</style>
 
-                        {/* Left - Image */}
-                        {/* <div className="relative bg-black flex items-center justify-center p-8">
-                            <img
-                                src={currentOffer.image_url}
-                                alt={currentOffer.title}
-                                className="w-full h-full object-cover rounded-lg"
-                            />
-                        </div> */}
-
- <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]">
-                            <iframe
-                                src={`https://www.youtube.com/embed/${currentOffer.video_url.includes('watch?v=')
-                                    ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
-                                    : currentOffer.video_url.split('/').pop()}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&playlist=${currentOffer.video_url.includes('watch?v=')
-                                        ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
-                                        : currentOffer.video_url.split('/').pop()}`}
-                                className="w-full h-full"
-                                allow="autoplay; encrypted-media"
-                                allowFullScreen
-                                style={{
-                                    border: 'none',
-                                    pointerEvents: 'none'
-                                }}
-                            />
-                        </div>
-
-
-
-
-
-                        {/* Right - Content */}
-                        <div className="bg-gradient-to-b from-gray-900 to-black text-white p-8 overflow-y-auto">
-                            {/* Header */}
-                            <div className="mb-6">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">F</span>
-                                    </div>
-                                    <h1 className="text-xl font-bold">{currentOffer.title}</h1>
-                                </div>
-                                <p className="text-gray-400 text-sm">{currentOffer.subtitle}</p>
-                            </div>
-
-                            {/* CTA Button */}
-                            <button className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg mb-6">
-                                {currentOffer.cta}
-                            </button>
-
-                            {/* Interaction Icons */}
-                            <div className="flex items-center gap-6 mb-6 pb-6 border-b border-gray-800">
-                                <button className="flex items-center gap-2">
-                                    <Heart size={20} className={likedOffers.has(currentOffer.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'} />
-                                    <span className="text-sm">{formatNumber(currentOffer.likes)}</span>
-                                </button>
-                                <button className="flex items-center gap-2">
-                                    <MessageCircle size={20} className="text-gray-400" />
-                                    <span className="text-sm">{formatNumber(currentOffer.comments)}</span>
-                                </button>
-                                <button>
-                                    <Bookmark size={20} className={savedOffers.has(currentOffer.id) ? 'fill-white text-white' : 'text-gray-400'} />
-                                </button>
-                                <button>
-                                    <Share2 size={20} className="text-gray-400" />
-                                </button>
-                            </div>
-
-                            {/* Description */}
-                            <div className="mb-6">
-                                <h3 className="text-white font-semibold mb-2">Description:</h3>
-                                <p className="text-gray-400 text-sm mb-3">{currentOffer.subtitle}</p>
-                                <div className="flex gap-2 mb-3">
-                                    {currentOffer.tags.slice(0, 2).map((tag, i) => (
-                                        <span key={i} className="bg-gray-800 px-3 py-1 rounded text-xs">{tag}</span>
-                                    ))}
-                                </div>
-                                <p className="text-gray-400 text-sm">
-                                    It is a long established fact that a reader will be distract.
-                                </p>
-                            </div>
-
-                            {/* Terms */}
-                            <div className="mb-6">
-                                <h3 className="text-white font-semibold mb-2">Terms highlights:</h3>
-                                <p className="text-gray-400 text-sm">
-                                    {currentOffer.terms_highlights.join('. ')}
-                                </p>
-                            </div>
-
-                            {/* Disclaimer */}
-                            <div className="bg-yellow-900/20 border border-yellow-700/30 rounded-lg p-4">
-                                <div className="flex items-start gap-2">
-                                    <span className="text-yellow-500">⚠️</span>
-                                    <div>
-                                        <h3 className="text-yellow-400 font-semibold text-sm mb-1">Disclaimers:</h3>
-                                        <p className="text-yellow-200/80 text-xs">{currentOffer.disclaimer}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            {/* Disclaimer */}
+            <div className="bg-yellow-900/20 border border-yellow-700/30 rounded-lg p-4">
+                <div className="flex items-start gap-2">
+                    <span className="text-yellow-500">⚠️</span>
+                    <div>
+                        <h3 className="text-yellow-400 font-semibold text-sm mb-1">Disclaimers:</h3>
+                        <p className="text-yellow-200/80 text-xs">{currentOffer.disclaimer}</p>
                     </div>
                 </div>
-            )}
+            </div>
 
             {/* Comments Modal */}
             {showComments && (
-                <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
-                    <div className="max-w-4xl w-full grid md:grid-cols-2 bg-black rounded-2xl overflow-hidden shadow-2xl relative max-h-[90vh]">
-                        {/* Close Button */}
-                        <button
-                            onClick={() => setShowComments(false)}
-                            className="absolute top-4 right-4 z-50 text-white/70 hover:text-white transition-colors"
-                        >
-                            <X size={24} />
-                        </button>
-
-                        {/* Left - Image */}
-                        <div className="relative bg-black flex items-center justify-center p-8">
-                            <img
-                                src={currentOffer.image_url}
-                                alt={currentOffer.title}
-                                className="w-full h-full object-cover rounded-lg"
-                            />
-                        </div>
-
-                        {/* Right - Comments */}
-                        <div className="bg-gradient-to-b from-gray-900 to-black text-white p-8 flex flex-col">
-                            {/* Header */}
-                            <div className="mb-6">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">F</span>
-                                    </div>
-                                    <h1 className="text-xl font-bold">{currentOffer.title}</h1>
-                                </div>
-                                <p className="text-gray-400 text-sm">{currentOffer.subtitle}</p>
-                            </div>
-
-                            {/* CTA Button */}
-                            <button className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg mb-6">
-                                {currentOffer.cta}
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+                    <div className="max-w-2xl w-full bg-[#121212] rounded-3xl overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] border border-white/10">
+                        <div className="p-5 border-b border-white/5 flex items-center justify-between">
+                            <h3 className="text-white font-bold text-lg">Comments ({comments.length})</h3>
+                            <button onClick={() => setShowComments(false)} className="text-white/70 hover:text-white">
+                                <X size={24} />
                             </button>
-
-                            {/* Interaction Icons */}
-                            <div className="flex items-center gap-6 mb-6 pb-6 border-b border-gray-800">
-                                <button className="flex items-center gap-2">
-                                    <Heart size={20} className={likedOffers.has(currentOffer.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'} />
-                                    <span className="text-sm">{formatNumber(currentOffer.likes)}</span>
-                                </button>
-                                <button className="flex items-center gap-2">
-                                    <MessageCircle size={20} className="text-blue-400" />
-                                    <span className="text-sm">{formatNumber(currentOffer.comments + comments.length)}</span>
-                                </button>
-                                <button>
-                                    <Bookmark size={20} className={savedOffers.has(currentOffer.id) ? 'fill-white text-white' : 'text-gray-400'} />
-                                </button>
-                                <button>
-                                    <Share2 size={20} className="text-gray-400" />
-                                </button>
-                            </div>
-
-                            {/* Comments Section */}
-                            <div className="flex-1 overflow-y-auto mb-4">
-                                <h3 className="text-white font-semibold mb-4">Comments:</h3>
-                                <div className="space-y-4">
-                                    {comments.map((comment) => (
-                                        <div key={comment.id} className="flex gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
-                                                {comment.avatar}
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-white text-sm font-semibold">{comment.user}</span>
-                                                    <span className="text-gray-500 text-xs">{comment.timestamp}</span>
-                                                </div>
-                                                <p className="text-gray-300 text-sm mb-2">{comment.text}</p>
-                                                <div className="flex items-center gap-4">
-                                                    <button className="text-gray-500 hover:text-red-500 transition-colors">
-                                                        <Heart size={14} />
-                                                    </button>
-                                                    <button className="text-gray-500 text-xs hover:text-white transition-colors">
-                                                        Reply
-                                                    </button>
-                                                </div>
-                                            </div>
+                        </div>
+                        <div className="flex-1 overflow-y-auto p-5 space-y-5">
+                            {comments.map((comment) => (
+                                <div key={comment.id} className="flex gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-xl flex-shrink-0">
+                                        {comment.avatar}
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="text-white/80 text-[14px] font-bold">{comment.user}</span>
+                                            <span className="text-white/30 text-[12px]">{comment.timestamp}</span>
                                         </div>
-                                    ))}
+                                        <p className="text-white/90 text-[15px] leading-relaxed">{comment.text}</p>
+                                    </div>
                                 </div>
-                            </div>
-
-                            {/* Comment Input */}
-                            <div className="border-t border-gray-800 pt-4">
-                                <div className="flex gap-3">
-                                    <input
-                                        type="text"
-                                        value={commentText}
-                                        onChange={(e) => setCommentText(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
-                                        placeholder="Type your comment here..."
-                                        className="flex-1 bg-gray-800 text-white px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
-                                    />
-                                    <button
-                                        onClick={handleCommentSubmit}
-                                        className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-                                    >
-                                        Comment
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Up/Down Navigation */}
-                            <div className="absolute bottom-8 right-8 flex flex-col gap-2">
+                            ))}
+                        </div>
+                        <div className="p-5 border-t border-white/5 bg-[#1a1a1a]">
+                            <div className="flex gap-3">
+                                <input
+                                    type="text"
+                                    value={commentText}
+                                    onChange={(e) => setCommentText(e.target.value)}
+                                    placeholder="Add a comment..."
+                                    className="flex-1 bg-white/5 text-white px-5 py-3 rounded-2xl outline-none focus:ring-1 focus:ring-red-500 text-[15px]"
+                                    onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
+                                />
                                 <button
-                                    onClick={() => handleScroll('up')}
-                                    className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                                    onClick={handleCommentSubmit}
+                                    className="text-red-500 font-bold px-4 text-[15px] hover:opacity-80 transition-opacity"
                                 >
-                                    <ChevronUp size={20} />
-                                </button>
-                                <button
-                                    onClick={() => handleScroll('down')}
-                                    className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-                                >
-                                    <ChevronDown size={20} />
+                                    Post
                                 </button>
                             </div>
                         </div>
@@ -584,33 +493,25 @@ const AllMedia: React.FC = () => {
 
             {/* Name Setup Modal */}
             {showNameSetup && (
-<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-gradient-to-b from-gray-900 to-black rounded-2xl p-8 max-w-md w-full text-center relative">
-                        <div className="mb-6">
-                            
-                                <img src={logo} alt="Logo" />
-                         </div>
-
-                        <h3 className="text-white text-xl font-bold mb-2">Setup a Name</h3>
-                        <p className="text-gray-400 text-sm mb-6">
-                            Before commenting, you are required to provide a name for your comment.
-                        </p>
-
-                        <div className="mb-6">
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder="Your full name"
-                                className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-600 mb-2"
-                            />
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
+                    <div className="bg-[#1a1a1a] rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 shadow-3xl">
+                        <div className="w-20 h-20 bg-red-600 rounded-2xl mx-auto mb-8 flex items-center justify-center rotate-12 shadow-red-600/20 shadow-2xl">
+                            <img src={logo} alt="Logo" className="w-12 -rotate-12" />
                         </div>
-
+                        <h3 className="text-white text-2xl font-bold mb-3">Set your name</h3>
+                        <p className="text-white/50 text-sm mb-8 leading-relaxed">Choose a name to join the conversation and start commenting.</p>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Enter your name"
+                            className="w-full bg-white/5 text-white px-6 py-4 rounded-2xl outline-none border border-white/10 mb-5 focus:border-red-500 transition-all text-center"
+                        />
                         <button
                             onClick={handleNameSetup}
-                            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-colors"
+                            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4.5 rounded-2xl transition-all shadow-[0_8px_30px_rgb(220,38,38,0.2)]"
                         >
-                            Continue
+                            Get Started
                         </button>
                     </div>
                 </div>
