@@ -154,12 +154,12 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                     setSidebarOpen(false);
                   }
                 }}
-                className={`group flex font-semibold items-center gap-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer
+                className={`group flex font-normal items-center gap-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer
                   ${isDisabled
                     ? "opacity-50 cursor-not-allowed bg-gray-200 dark:bg-gray-800 text-gray-400"
                     : isActive
-                      ? "bg-[#111827] dark:bg-[#AFC7FF] dark:text-[#111827] text-white shadow-md"
-                      : "text-[#686565] dark:text-gray-200 hover:bg-[#111827] dark:hover:bg-gray-800 hover:text-white"
+                      ? "bg-[#DF2E38] text-white shadow-md shadow-[#DF2E38]/20"
+                      : "text-[#686565] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#DF2E38] dark:hover:text-white"
                   }
                   ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
                 `}

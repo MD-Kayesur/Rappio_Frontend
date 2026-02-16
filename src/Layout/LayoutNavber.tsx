@@ -62,6 +62,9 @@ export const LayoutNavber: React.FC = () => {
           <div className="text-xs text-gray-500 dark:text-gray-300">{userRoleToShow}</div>
         </div>
       </Link> */}
+      <div>
+        
+      </div>
 <div className="relative w-full max-w-3xl group">
   {/* Search Icon */}
   <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
