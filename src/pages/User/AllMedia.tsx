@@ -36,6 +36,7 @@ interface Offer {
     comments: number;
     image_url: string;
     video_url: string;
+    website_url: string;
     tags: string[];
     terms_highlights: string[];
     disclaimer: string;
@@ -252,9 +253,32 @@ const AllMedia: React.FC = () => {
                     </div>
 
                     {/* Content Overlay (Bottom Left) */}
-                    <div className="absolute bottom-4 left-0 right-16 p-4 z-20 select-none space-y-1.5">
-                        <div className="flex items-center gap-1.5">
-                            <h2 className="text-white font-bold text-[17px] tracking-wide pointer-events-auto cursor-pointer hover:underline">
+                    <div className="absolute bottom-4 left-0 right-16 p-4 z-20 select-none space-y-3">
+                        <div className="pointer-events-auto">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (currentOffer.website_url) {
+                                        window.open(currentOffer.website_url, '_blank');
+                                    }
+                                }}
+                                className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2.5 px-6 rounded-lg text-[15px] shadow-lg transition-all active:scale-95 flex items-center gap-2"
+                            >
+                                {currentOffer.cta || 'Claim Offer'}
+                                <span className="text-[18px]">→</span>
+                            </button>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 pt-1">
+                            <h2
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (currentOffer.website_url) {
+                                        window.open(currentOffer.website_url, '_blank');
+                                    }
+                                }}
+                                className="text-white font-bold text-[17px] tracking-wide pointer-events-auto cursor-pointer hover:underline"
+                            >
                                 {currentOffer.title} <span className="text-[14px]">🍎</span> mart <span className="text-[14px]">📲</span>
                             </h2>
                         </div>

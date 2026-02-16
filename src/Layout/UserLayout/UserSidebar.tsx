@@ -88,7 +88,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
 
   return (
     <div
-      className={`relative z-50 flex flex-col  border-r border-[#b9b6b6] dark:border-r-[#536580] transition-all duration-300 ease-in-out h-full ${sidebarOpen
+      className={`relative z-50 flex flex-col  transition-all duration-300 ease-in-out h-full ${sidebarOpen
         ? (isCollapsed ? "w-20" : "w-64 sm:w-70")
         : "w-0 overflow-hidden"
         }`}
@@ -111,7 +111,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
         <div className="md:px-3 pt-4 sm:pt-6">
           <Link to="/" className="block">
             <div
-              className={`flex items-center gap-3 border-b border-[#b9b6b6] dark:border-b-[#536580] transition-all duration-300 pb-4 ${isCollapsed ? "justify-center px-2" : "px-4 sm:px-6"
+              className={`flex items-center gap-3 transition-all duration-300 pb-4 ${isCollapsed ? "justify-center px-2" : "px-4 sm:px-6"
                 }`}
             >
               {isCollapsed ? (
@@ -188,7 +188,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
 
       {/* Logout */}
       {sidebarOpen && (
-        <div className="p-3 border-t border-[#C6C8CB] dark:border-gray-700">
+        <div className="p-3 ">
           <button
             onClick={handleLogout}
             className={`group w-full cursor-pointer flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-500 hover:text-white dark:hover:bg-red-600 transition-colors ${isCollapsed ? "justify-center" : ""
@@ -202,7 +202,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
 
       {/* Collapse Button - Desktop only */}
       {sidebarOpen && (
-        <div className="hidden lg:block border-t border-[#C6C8CB] dark:border-gray-700 p-3">
+        <div className="hidden lg:block p-3">
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="flex items-center justify-center w-full gap-2 px-3 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"

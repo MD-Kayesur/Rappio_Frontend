@@ -187,7 +187,7 @@ const Overview = () => {
   };
 
   return (
-    <div className="min-h-full bg-black text-white p-6">
+    <div className="min-h-full   text-white p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
