@@ -27,6 +27,8 @@ import {
   Bookmark,
   Share,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import {
   LineChart,
@@ -63,6 +65,8 @@ const Overview = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [contains18Plus, setContains18Plus] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   // Form state
   const [formData, setFormData] = useState({
@@ -92,7 +96,15 @@ const Overview = () => {
 
   const totalLikes = offers.reduce((acc, curr) => acc + (curr.likes || 0), 0);
   const totalComments = offers.reduce((acc, curr) => acc + (curr.comments || 0), 0);
-  const topPerforming = [...offers].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 10);
+  const sortedOffers = [...offers].sort((a, b) => (b.likes || 0) - (a.likes || 0));
+
+  // Pagination logic
+  const totalPages = Math.ceil(sortedOffers.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedOffers.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Actually, we'll just paginate the list view using currentItems which are sliced from sortedOffers.
 
   // Trend data matching the user's provided image
   const monthlyData = [
@@ -268,7 +280,7 @@ const Overview = () => {
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
           <h3 className="text-lg font-semibold mb-6">Top performing items</h3>
           <div className="space-y-4">
-            {topPerforming.map((item) => (
+            {currentItems.map((item) => (
               <div
                 key={item.id}
                 className="flex items-center gap-4 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
@@ -295,6 +307,35 @@ const Overview = () => {
               </div>
             ))}
           </div>
+
+          {/* Pagination Controls */}
+          {offers.length > itemsPerPage && (
+            <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-800">
+              <div className="text-xs text-gray-400">
+                Page {currentPage} of {totalPages}
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 p-2 h-8 w-8"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 p-2 h-8 w-8"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Feed Performance Chart */}

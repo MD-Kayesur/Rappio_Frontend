@@ -14,7 +14,10 @@ import {
   TrendingUp,
   Heart,
   Share2,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   LineChart,
   Line,
@@ -40,54 +43,21 @@ const chartData = [
   { month: 'DEC', videos: 580, photos: 540 },
 ];
 
-// Top performing items
-const topItems = [
-  {
-    id: 1,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-  {
-    id: 2,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-  {
-    id: 3,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-  {
-    id: 4,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-  {
-    id: 5,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-];
+interface Offer {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  cta: string;
+  likes: number;
+  comments: number;
+  image_url: string;
+  video_url: string;
+  website_url: string;
+  tags: string[];
+  terms_highlights: string[];
+  disclaimer: string;
+}
 
 // Language performance data
 const languageData = [
@@ -98,11 +68,42 @@ const languageData = [
   { name: 'Hindi', flag: '🇮🇳', percentage: 32 },
 ];
 
+import { useEffect } from 'react';
+
 const Analytics = () => {
+  const [offers, setOffers] = useState<Offer[]>([]);
   const [timeFilter, setTimeFilter] = useState('all');
   const [yearFilter, setYearFilter] = useState('2026');
   const [feedView, setFeedView] = useState('web');
   const [languageView, setLanguageView] = useState('web');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  useEffect(() => {
+    fetch('/mediaData.json')
+      .then(res => res.json())
+      .then(data => {
+        setOffers(Array.isArray(data) ? data : [data]);
+      })
+      .catch(err => console.error('Error fetching media data:', err));
+  }, []);
+
+  const totalLikes = offers.reduce((acc, curr) => acc + (curr.likes || 0), 0);
+  // const totalComments = offers.reduce((acc, curr) => acc + (curr.comments || 0), 0);
+  const totalViews = totalLikes * 15; // Mocking views based on likes
+  const totalClicks = Math.floor(totalLikes * 0.4);
+
+  const sortedOffers = [...offers].sort((a, b) => (b.likes || 0) - (a.likes || 0));
+  const totalPages = Math.ceil(sortedOffers.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedOffers.slice(indexOfFirstItem, indexOfLastItem);
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M+';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K+';
+    return num.toString();
+  };
 
   return (
     <div className="min-h-full  text-white p-6">
@@ -154,8 +155,8 @@ const Analytics = () => {
               <span>9.6%</span>
             </div>
           </div>
-          <h2 className="text-3xl font-bold mb-2">12M+</h2>
-          <p className="text-gray-400 text-sm">Search Usage</p>
+          <h2 className="text-3xl font-bold mb-2">{formatNumber(offers.length)}</h2>
+          <p className="text-gray-400 text-sm">Total Published Items</p>
         </div>
 
         {/* Favourite Count Trend */}
@@ -169,8 +170,8 @@ const Analytics = () => {
               <span>12%</span>
             </div>
           </div>
-          <h2 className="text-3xl font-bold mb-2">1M +</h2>
-          <p className="text-gray-400 text-sm">Favourite Count Trend</p>
+          <h2 className="text-3xl font-bold mb-2">{formatNumber(totalLikes)}</h2>
+          <p className="text-gray-400 text-sm">Total Likes/Favorites</p>
         </div>
 
         {/* Total Views */}
@@ -184,7 +185,7 @@ const Analytics = () => {
               <span>12%</span>
             </div>
           </div>
-          <h2 className="text-3xl font-bold mb-2">25M+</h2>
+          <h2 className="text-3xl font-bold mb-2">{formatNumber(totalViews)}</h2>
           <p className="text-gray-400 text-sm">Total Views</p>
         </div>
 
@@ -199,7 +200,7 @@ const Analytics = () => {
               <span>12%</span>
             </div>
           </div>
-          <h2 className="text-3xl font-bold mb-2">29K+</h2>
+          <h2 className="text-3xl font-bold mb-2">{formatNumber(totalClicks)}</h2>
           <p className="text-gray-400 text-sm">Clicks to affiliate link</p>
         </div>
       </div>
@@ -210,13 +211,13 @@ const Analytics = () => {
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
           <h3 className="text-lg font-semibold mb-6">Top performing items (CTR)</h3>
           <div className="space-y-4">
-            {topItems.map((item) => (
+            {currentItems.map((item) => (
               <div
                 key={item.id}
                 className="flex items-center gap-4 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
               >
                 <img
-                  src={item.image}
+                  src={item.image_url}
                   alt={item.title}
                   className="w-14 h-14 rounded-lg object-cover"
                 />
@@ -227,7 +228,7 @@ const Analytics = () => {
                 <div className="flex items-center gap-3 text-sm">
                   <div className="flex items-center gap-1 text-yellow-500">
                     <Eye className="h-4 w-4" />
-                    <span>{item.views}</span>
+                    <span>{(item.likes || 0) * 15}</span>
                   </div>
                   <div className="flex items-center gap-1 text-red-500">
                     <Heart className="h-4 w-4" />
@@ -235,12 +236,41 @@ const Analytics = () => {
                   </div>
                   <div className="flex items-center gap-1 text-blue-500">
                     <Share2 className="h-4 w-4" />
-                    <span>{item.shares}</span>
+                    <span>{item.comments}</span>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Pagination Controls */}
+          {offers.length > itemsPerPage && (
+            <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-800">
+              <div className="text-xs text-gray-400">
+                Page {currentPage} of {totalPages}
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 p-2 h-8 w-8"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 p-2 h-8 w-8"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Column - Feed Performance Chart */}
