@@ -1,24 +1,24 @@
 "use client"
 import { ModeToggle } from "@/components/ThemeToggle/mode-toggle"
 import React, { useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import GoogleTranslate from "@/components/LanguageToggle/GoogleTranslate"
 
 // Helper function to get initials from name
-const getInitials = (name: string) => {
-  if (!name) return 'U';
-  return name
-    .split(' ')
-    .map(word => word[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-};
+// const getInitials = (name: string) => {
+//   if (!name) return 'U';
+//   return name
+//     .split(' ')
+//     .map(word => word[0])
+//     .join('')
+//     .toUpperCase()
+//     .slice(0, 2);
+// };
 
 export const LayoutNavber: React.FC = () => {
   const [showLogout] = useState(false)
   const navigate = useNavigate()
-  const [user, setUser] = useState<{ name: string, role: string, avatar: string } | null>(null);
+  const [_user, setUser] = useState<{ name: string, role: string, avatar: string } | null>(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -37,15 +37,15 @@ export const LayoutNavber: React.FC = () => {
   }
 
   // Determine settings route based on role
-  const settingsRoute = user?.role === 'Admin' || user?.role === 'SUPER_ADMIN' ? '/admin/settings' : '/user/settings';
+  // const settingsRoute = user?.role === 'Admin' || user?.role === 'SUPER_ADMIN' ? '/admin/settings' : '/user/settings';
 
-  const userNameToShow = user?.name || "Guest";
-  const userRoleToShow = user?.role || "User";
-  const userImageToShow = user?.avatar || "";
+  // const userNameToShow = user?.name || "Guest";
+  // const userRoleToShow = user?.role || "User";
+  // const userImageToShow = user?.avatar || "";
 
   return (
     <div className="md:px-10 pl-5 pr-15 z-9999     py-5 flex items-center justify-between  ">
-      <Link to={settingsRoute} className="flex items-center gap-3 cursor-pointer">
+      {/* <Link to={settingsRoute} className="flex items-center gap-3 cursor-pointer">
         {userImageToShow ? (
           <img
             src={userImageToShow}
@@ -61,7 +61,7 @@ export const LayoutNavber: React.FC = () => {
           <div className="font-semibold text-sm text-gray-900 dark:text-white">{userNameToShow}</div>
           <div className="text-xs text-gray-500 dark:text-gray-300">{userRoleToShow}</div>
         </div>
-      </Link>
+      </Link> */}
 <div className="relative w-full max-w-3xl group">
   {/* Search Icon */}
   <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">

@@ -91,7 +91,7 @@ const Favorites = () => {
   };
 
   return (
-    <div className="min-h-full bg-black text-white">
+    <div className="min-h-full   text-white">
       {/* Category Filter Tabs */}
       <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-gray-800">
         <div className="overflow-x-auto">

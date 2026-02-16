@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Select,
   SelectContent,
@@ -17,13 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuTrigger,
-// } from '@/components/ui/dropdown-menu';
-import { MoreVertical, Edit, Trash2, Eye, Pin, Upload, X, Heart, MessageCircle, Bookmark, Share } from 'lucide-react';
+import { MoreVertical, Edit, Trash2, Eye, Pin, Upload, X, Heart, MessageCircle, Bookmark, Share, ChevronLeft, ChevronRight } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 
 interface Feed {
@@ -36,6 +30,7 @@ interface Feed {
   device: 'Phone' | 'Desktop';
   status: 'Active' | 'Disabled';
   title?: string;
+  subtitle?: string;
   type?: string;
   bonuses?: string;
   description?: string;
@@ -59,47 +54,40 @@ const FeedOrdering = () => {
     both: true,
   });
   const [contains18Plus, setContains18Plus] = useState(false);
+  const [feeds, setFeeds] = useState<Feed[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-  const [feeds, setFeeds] = useState<Feed[]>([
-    {
-      id: 1,
-      name: 'The Top Most Casino',
-      image: 'https://via.placeholder.com/40',
-      link: 'https://www.google.com/search?q=sun%20bat...',
-      views: '1k',
-      clicks: '29',
-      device: 'Phone',
-      status: 'Active',
-      title: "Fortune's Fortune Casino",
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      isPinned: false,
-    },
-    {
-      id: 2,
-      name: 'The Top Most Casino',
-      image: 'https://via.placeholder.com/40',
-      link: 'https://www.google.com/search?q=sun%20bat...',
-      views: '325k',
-      clicks: '1k',
-      device: 'Desktop',
-      status: 'Active',
-      title: "Fortune's Fortune Casino",
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      isPinned: false,
-    },
-    {
-      id: 3,
-      name: 'The Top Most Casino',
-      image: 'https://via.placeholder.com/40',
-      link: 'https://www.google.com/search?q=sun%20bat...',
-      views: '5k',
-      clicks: '100',
-      device: 'Phone',
-      status: 'Active',
-      isPinned: false,
-    },
-    // ... add more feeds
-  ]);
+  useEffect(() => {
+    fetch('/mediaData.json')
+      .then(res => res.json())
+      .then(data => {
+        const formattedFeeds: Feed[] = data.map((item: any) => ({
+          id: item.id,
+          name: item.title,
+          image: item.image_url,
+          link: item.website_url,
+          views: item.likes > 1000 ? (item.likes / 1000).toFixed(1) + 'k' : item.likes.toString(),
+          clicks: (item.likes * 0.2).toFixed(0),
+          device: 'Phone',
+          status: 'Active',
+          title: item.title,
+          subtitle: item.subtitle,
+          description: item.description,
+          termsHighlights: item.terms_highlights?.join(', '),
+          disclaimers: item.disclaimer,
+          isPinned: false,
+        }));
+        setFeeds(formattedFeeds);
+      })
+      .catch(err => console.error('Error fetching feeds:', err));
+  }, []);
+
+  // Pagination logic
+  const totalPages = Math.ceil(feeds.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = feeds.slice(indexOfFirstItem, indexOfLastItem);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -126,7 +114,7 @@ const FeedOrdering = () => {
       bonuses: feed.bonuses || '',
       description: feed.description || '',
       termsHighlights: feed.termsHighlights || '',
-      affiliateLink: feed.affiliateLink || feed.link,
+      affiliateLink: feed.link,
       languages: feed.languages || '',
       categories: feed.categories || '',
       disclaimers: feed.disclaimers || '',
@@ -170,6 +158,8 @@ const FeedOrdering = () => {
             description: formData.description,
             link: formData.affiliateLink,
             image: formData.mediaPreview,
+            termsHighlights: formData.termsHighlights,
+            disclaimers: formData.disclaimers
           }
           : feed
       ));
@@ -237,7 +227,7 @@ const FeedOrdering = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+      <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden mb-20">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-800/50 border-b border-gray-800">
@@ -266,7 +256,7 @@ const FeedOrdering = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
-              {feeds.map((feed) => (
+              {currentItems.map((feed) => (
                 <tr
                   key={feed.id}
                   className="hover:bg-gray-800/30 transition-colors"
@@ -304,14 +294,14 @@ const FeedOrdering = () => {
                   <td className="px-6 py-4">
                     <span
                       className={`text-sm font-medium ${feed.views.includes('M')
-                          ? 'text-purple-400'
+                        ? 'text-purple-400'
+                        : feed.views.includes('k') &&
+                          parseInt(feed.views) > 100
+                          ? 'text-orange-400'
                           : feed.views.includes('k') &&
-                            parseInt(feed.views) > 100
-                            ? 'text-orange-400'
-                            : feed.views.includes('k') &&
-                              parseInt(feed.views) > 50
-                              ? 'text-yellow-400'
-                              : 'text-white'
+                            parseInt(feed.views) > 50
+                            ? 'text-yellow-400'
+                            : 'text-white'
                         }`}
                     >
                       {feed.views}
@@ -332,8 +322,8 @@ const FeedOrdering = () => {
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded ${feed.status === 'Active'
-                          ? 'text-green-400 bg-green-900/30'
-                          : 'text-orange-400 bg-orange-900/30'
+                        ? 'text-green-400 bg-green-900/30'
+                        : 'text-orange-400 bg-orange-900/30'
                         }`}
                     >
                       {feed.status}
@@ -385,6 +375,53 @@ const FeedOrdering = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination Controls */}
+        {feeds.length > itemsPerPage && (
+          <div className="flex items-center justify-between px-6 py-4 bg-gray-900/50 border-t border-gray-800">
+            <div className="text-sm text-gray-400">
+              Showing <span className="text-white font-medium">{indexOfFirstItem + 1}</span> to{' '}
+              <span className="text-white font-medium">{Math.min(indexOfLastItem, feeds.length)}</span> of{' '}
+              <span className="text-white font-medium">{feeds.length}</span> results
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="bg-gray-800 border-gray-700 hover:bg-gray-700 disabled:opacity-50 h-8 w-8 p-0"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <Button
+                    key={page}
+                    size="sm"
+                    variant={currentPage === page ? 'default' : 'outline'}
+                    className={`h-8 w-8 p-0 text-xs ${currentPage === page
+                        ? 'bg-red-600 hover:bg-red-700 border-red-600'
+                        : 'bg-gray-800 border-gray-700 hover:bg-gray-700'
+                      }`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="bg-gray-800 border-gray-700 hover:bg-gray-700 disabled:opacity-50 h-8 w-8 p-0"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Edit Modal */}
@@ -617,7 +654,7 @@ const FeedOrdering = () => {
 
       {/* View/Preview Modal */}
       <Dialog open={showViewModal} onOpenChange={setShowViewModal}>
-        <DialogContent className="max-w-3xl bg-gray-950 text-white border-gray-800">
+        <DialogContent className="max-w-7xl bg-gray-950 text-white border-gray-800">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Preview Post</DialogTitle>
             <p className="text-sm text-gray-400">Your post will be like this preview.</p>

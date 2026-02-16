@@ -194,7 +194,7 @@ const Videos: React.FC = () => {
             {/* Main Feed Container */}
             <div
                 ref={containerRef}
-                className="h-full bg-[#0F0F0F] flex items-center justify-center relative overflow-hidden no-scrollbar"
+                className="h-full  flex items-center justify-center relative overflow-hidden no-scrollbar"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
             >
