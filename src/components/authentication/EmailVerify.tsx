@@ -58,7 +58,7 @@ export default function EmailVerify() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-200">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gray-100 text-gray-900 dark:bg-[#1A1C1D] dark:text-gray-200">
       {/* Theme toggle */}
       <div className="absolute top-8 right-8">
         <ModeToggle />
@@ -89,7 +89,7 @@ export default function EmailVerify() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full px-4 py-3 rounded-xl border dark:bg-gray-900 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 rounded-xl border dark:bg-[#1A1C1D] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -102,7 +102,7 @@ export default function EmailVerify() {
               onChange={handleCodeChange}
               placeholder="Enter 6-digit code"
               maxLength={6} // HTML maxLength attribute
-              className="w-full px-4 py-3 rounded-xl border tracking-widest dark:bg-gray-900 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 rounded-xl border tracking-widest dark:bg-[#1A1C1D] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 

@@ -114,10 +114,10 @@ const Analytics = () => {
 
           {/* Dropdowns */}
           <Select value={timeFilter} onValueChange={setTimeFilter}>
-            <SelectTrigger className="w-32 bg-gray-900 border-gray-800 text-white">
+            <SelectTrigger className="w-32 bg-[#1A1C1D] border-gray-800 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-800 text-white">
+            <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
               <SelectItem value="all">All time</SelectItem>
               <SelectItem value="today">Today</SelectItem>
               <SelectItem value="week">This week</SelectItem>
@@ -127,10 +127,10 @@ const Analytics = () => {
           </Select>
 
           <Select value={yearFilter} onValueChange={setYearFilter}>
-            <SelectTrigger className="w-32 bg-gray-900 border-gray-800 text-white">
+            <SelectTrigger className="w-32 bg-[#1A1C1D] border-gray-800 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-800 text-white">
+            <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
               <SelectItem value="2026">2026</SelectItem>
               <SelectItem value="2025">2025</SelectItem>
               <SelectItem value="2024">2024</SelectItem>
@@ -145,7 +145,7 @@ const Analytics = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {/* Search Usage */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <FileText className="h-6 w-6 text-white" />
@@ -160,7 +160,7 @@ const Analytics = () => {
         </div>
 
         {/* Favourite Count Trend */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <Clock className="h-6 w-6 text-white" />
@@ -175,7 +175,7 @@ const Analytics = () => {
         </div>
 
         {/* Total Views */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <Eye className="h-6 w-6 text-white" />
@@ -190,7 +190,7 @@ const Analytics = () => {
         </div>
 
         {/* Clicks to affiliate link */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <Sparkles className="h-6 w-6 text-white" />
@@ -208,7 +208,7 @@ const Analytics = () => {
       {/* Bottom Section - Two Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Left Column - Top performing items */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <h3 className="text-lg font-semibold mb-6">Top performing items (CTR)</h3>
           <div className="space-y-4">
             {currentItems.map((item) => (
@@ -274,7 +274,7 @@ const Analytics = () => {
         </div>
 
         {/* Right Column - Feed Performance Chart */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold">Feed Performance</h3>
             <Select value={feedView} onValueChange={setFeedView}>
@@ -331,7 +331,7 @@ const Analytics = () => {
       </div>
 
       {/* Language Performance - Full Width */}
-      <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+      <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold">Top performing feed by language</h3>
           <Select value={languageView} onValueChange={setLanguageView}>

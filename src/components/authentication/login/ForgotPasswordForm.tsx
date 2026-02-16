@@ -78,7 +78,7 @@ const ForgotPasswordForm: React.FC = () => {
     switch (step) {
       case "email":
         return (
-          <div className="w-full max-w-md bg-white/10 dark:bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50 transition-colors">
+          <div className="w-full max-w-md bg-white/10 dark:bg-[#1A1C1D]/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50 transition-colors">
             <button
               onClick={() => navigate("/login")}
               className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white mb-6 cursor-pointer"
@@ -124,7 +124,7 @@ const ForgotPasswordForm: React.FC = () => {
 
       case "code":
         return (
-          <div className="w-full max-w-md bg-white/10 dark:bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50 transition-colors">
+          <div className="w-full max-w-md bg-white/10 dark:bg-[#1A1C1D]/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50 transition-colors">
             <button
               onClick={() => setStep("email")}
               className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white mb-6 cursor-pointer"
@@ -190,7 +190,7 @@ const ForgotPasswordForm: React.FC = () => {
 
       case "success":
         return (
-          <div className="w-full max-w-md bg-white/10 dark:bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50 text-center">
+          <div className="w-full max-w-md bg-white/10 dark:bg-[#1A1C1D]/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50 text-center">
             <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-4 animate-pulse" />
             <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Code Verified!</h2>
             <p className="text-gray-700 dark:text-gray-300 mb-6 text-sm">

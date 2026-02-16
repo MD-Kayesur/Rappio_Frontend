@@ -12,26 +12,25 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Check if user has already accepted the disclosure
+    const hasAccepted = localStorage.getItem("age-verification-accepted");
+    if (hasAccepted) {
+      navigate("/user/all");
+      return;
+    }
+
     // Start the transition after the logo animation duration
     const timer = setTimeout(() => {
       setShowWelcome(true);
     }, 2500); // Adjust timing based on logo animation duration
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [navigate]);
 
-
-
-
-  // useEffect(() => {
-  //   if (showWelcome) {
-  //     const redirectTimer = setTimeout(() => {
-  //       navigate("/user/all");
-  //     }, 5000);
-
-  //     return () => clearTimeout(redirectTimer);
-  //   }
-  // }, [showWelcome, navigate]);
+  const handleContinue = () => {
+    localStorage.setItem("age-verification-accepted", "true");
+    navigate("/user/all");
+  };
 
   return (
     <CommonWrapper
@@ -68,17 +67,13 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              {/* <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-                Welcome to Rappio
-              </h1>
-              <p className="text-xl text-gray-200">
-                Your journey starts here.
-              </p> */}
-
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-lg">
-                <div className="relative max-w-md w-full mx-4 bg-gray-900 rounded-2xl shadow-2xl border border-gray-800 p-8">
+                <div className="relative max-w-md w-full mx-4 bg-[#1A1C1D] rounded-2xl shadow-2xl border border-gray-800 p-8">
                   {/* Close Button */}
-                  <button className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                  <button
+                    onClick={() => setShowWelcome(false)}
+                    className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                  >
                     <X className="h-5 w-5" />
                   </button>
 
@@ -93,13 +88,11 @@ const Home = () => {
                   </p>
 
                   {/* Continue Button */}
-                  <Button onClick={() => navigate("/user/all")} className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg">
+                  <Button onClick={handleContinue} className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg">
                     Continue
                   </Button>
                 </div>
               </div>
-
-
             </motion.div>
           )}
         </AnimatePresence>

@@ -82,7 +82,7 @@ function Settings() {
                     <Input
                       type="password"
                       placeholder="Password"
-                      className="border-gray-700 bg-gray-900 pr-10"
+                      className="border-gray-700 bg-[#1A1C1D] pr-10"
                     />
                     <button className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
                       👁
@@ -97,7 +97,7 @@ function Settings() {
                     <Input
                       type="password"
                       placeholder="New Password"
-                      className="border-gray-700 bg-gray-900 pr-10"
+                      className="border-gray-700 bg-[#1A1C1D] pr-10"
                     />
                     <button className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
                       👁
@@ -107,7 +107,7 @@ function Settings() {
                     <Input
                       type="password"
                       placeholder="Retype Password"
-                      className="border-gray-700 bg-gray-900 pr-10"
+                      className="border-gray-700 bg-[#1A1C1D] pr-10"
                     />
                     <button className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
                       👁
@@ -125,7 +125,7 @@ function Settings() {
         {/* Content Grid */}
         <div className="mx-4 mt-8 grid gap-6 pb-8 lg:grid-cols-2">
           {/* Personal Details */}
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6">
+          <div className="rounded-2xl border border-gray-800 bg-[#1A1C1D]/50 p-6">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xl font-semibold">Personal details</h2>
               {!isEditing ? (
@@ -241,7 +241,7 @@ function Settings() {
           </div>
 
           {/* Account Details */}
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6">
+          <div className="rounded-2xl border border-gray-800 bg-[#1A1C1D]/50 p-6">
             <h2 className="mb-6 text-xl font-semibold">Account Details</h2>
 
             <div className="space-y-4">
@@ -279,7 +279,7 @@ function Settings() {
         </div>
 
         {/* Preferences */}
-        <div className="mx-4 mb-8 rounded-2xl border border-gray-800 bg-gray-900/50 p-6">
+        <div className="mx-4 mb-8 rounded-2xl border border-gray-800 bg-[#1A1C1D]/50 p-6">
           <h2 className="mb-6 text-xl font-semibold">Preferences</h2>
 
           <div className="space-y-6">

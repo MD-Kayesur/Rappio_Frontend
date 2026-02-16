@@ -199,10 +199,10 @@ const FeedOrdering = () => {
 
           {/* Dropdowns */}
           <Select value={timeFilter} onValueChange={setTimeFilter}>
-            <SelectTrigger className="w-32 bg-gray-900 border-gray-800 text-white">
+            <SelectTrigger className="w-32 bg-[#1A1C1D] border-gray-800 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-800 text-white">
+            <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
               <SelectItem value="all">All time</SelectItem>
               <SelectItem value="today">Today</SelectItem>
               <SelectItem value="week">This week</SelectItem>
@@ -212,10 +212,10 @@ const FeedOrdering = () => {
           </Select>
 
           <Select value={yearFilter} onValueChange={setYearFilter}>
-            <SelectTrigger className="w-32 bg-gray-900 border-gray-800 text-white">
+            <SelectTrigger className="w-32 bg-[#1A1C1D] border-gray-800 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-800 text-white">
+            <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
               <SelectItem value="2026">2026</SelectItem>
               <SelectItem value="2025">2025</SelectItem>
               <SelectItem value="2024">2024</SelectItem>
@@ -227,7 +227,7 @@ const FeedOrdering = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden mb-20">
+      <div className="bg-[#1A1C1D] rounded-xl border border-gray-800 overflow-hidden mb-20">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-800/50 border-b border-gray-800">
@@ -338,7 +338,7 @@ const FeedOrdering = () => {
                           <MoreVertical className="h-5 w-5" />
                         </button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className="bg-gray-900 border-gray-800 text-white">
+                      <DropdownMenuContent className="bg-[#1A1C1D] border-gray-800 text-white">
                         <DropdownMenuItem
                           onClick={() => handleView(feed)}
                           className="flex items-center gap-2 cursor-pointer hover:bg-gray-800"
@@ -378,7 +378,7 @@ const FeedOrdering = () => {
 
         {/* Pagination Controls */}
         {feeds.length > itemsPerPage && (
-          <div className="flex items-center justify-between px-6 py-4 bg-gray-900/50 border-t border-gray-800">
+          <div className="flex items-center justify-between px-6 py-4 bg-[#1A1C1D]/50 border-t border-gray-800">
             <div className="text-sm text-gray-400">
               Showing <span className="text-white font-medium">{indexOfFirstItem + 1}</span> to{' '}
               <span className="text-white font-medium">{Math.min(indexOfLastItem, feeds.length)}</span> of{' '}
@@ -439,7 +439,7 @@ const FeedOrdering = () => {
                 <Label className="text-sm mb-2 block">Title / Casino name:</Label>
                 <Input
                   placeholder="Title or casino name here..."
-                  className="bg-gray-900 border-gray-800 text-white"
+                  className="bg-[#1A1C1D] border-gray-800 text-white"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 />
@@ -448,10 +448,10 @@ const FeedOrdering = () => {
               <div>
                 <Label className="text-sm mb-2 block">Type:</Label>
                 <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
-                  <SelectTrigger className="bg-gray-900 border-gray-800 text-white">
+                  <SelectTrigger className="bg-[#1A1C1D] border-gray-800 text-white">
                     <SelectValue placeholder="Choose One..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-gray-800 text-white">
+                  <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
                     <SelectItem value="casino">Casino</SelectItem>
                     <SelectItem value="poker">Poker</SelectItem>
                     <SelectItem value="sports">Sports Betting</SelectItem>
@@ -463,7 +463,7 @@ const FeedOrdering = () => {
                 <Label className="text-sm mb-2 block">Bonuses:</Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.bonuses}
                   onChange={(e) => setFormData({ ...formData, bonuses: e.target.value })}
                 />
@@ -473,7 +473,7 @@ const FeedOrdering = () => {
                 <Label className="text-sm mb-2 block">Short description:</Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
@@ -483,7 +483,7 @@ const FeedOrdering = () => {
                 <Label className="text-sm mb-2 block">Terms highlights:</Label>
                 <Textarea
                   placeholder="Provide your highlighted terms"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.termsHighlights}
                   onChange={(e) => setFormData({ ...formData, termsHighlights: e.target.value })}
                 />
@@ -493,7 +493,7 @@ const FeedOrdering = () => {
                 <Label className="text-sm mb-2 block">Affiliate link:</Label>
                 <Input
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white"
+                  className="bg-[#1A1C1D] border-gray-800 text-white"
                   value={formData.affiliateLink}
                   onChange={(e) => setFormData({ ...formData, affiliateLink: e.target.value })}
                 />
@@ -502,10 +502,10 @@ const FeedOrdering = () => {
               <div>
                 <Label className="text-sm mb-2 block">Languages:</Label>
                 <Select value={formData.languages} onValueChange={(value) => setFormData({ ...formData, languages: value })}>
-                  <SelectTrigger className="bg-gray-900 border-gray-800 text-white">
+                  <SelectTrigger className="bg-[#1A1C1D] border-gray-800 text-white">
                     <SelectValue placeholder="Choose One..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-gray-800 text-white">
+                  <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
                     <SelectItem value="english">English</SelectItem>
                     <SelectItem value="spanish">Spanish</SelectItem>
                   </SelectContent>
@@ -518,7 +518,7 @@ const FeedOrdering = () => {
                   <Button
                     type="button"
                     variant={deviceVisibility.mobile ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.mobile ? 'bg-white text-black' : 'bg-gray-900 border-gray-800'}`}
+                    className={`flex-1 ${deviceVisibility.mobile ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
                     onClick={() => setDeviceVisibility({ mobile: true, desktop: false, both: false })}
                   >
                     Mobile
@@ -526,7 +526,7 @@ const FeedOrdering = () => {
                   <Button
                     type="button"
                     variant={deviceVisibility.desktop ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.desktop ? 'bg-white text-black' : 'bg-gray-900 border-gray-800'}`}
+                    className={`flex-1 ${deviceVisibility.desktop ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
                     onClick={() => setDeviceVisibility({ mobile: false, desktop: true, both: false })}
                   >
                     Desktop
@@ -534,7 +534,7 @@ const FeedOrdering = () => {
                   <Button
                     type="button"
                     variant={deviceVisibility.both ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.both ? 'bg-white text-black' : 'bg-gray-900 border-gray-800'}`}
+                    className={`flex-1 ${deviceVisibility.both ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
                     onClick={() => setDeviceVisibility({ mobile: false, desktop: false, both: true })}
                   >
                     Both
@@ -546,7 +546,7 @@ const FeedOrdering = () => {
                 <Label className="text-sm mb-2 block">Categories/tags:</Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.categories}
                   onChange={(e) => setFormData({ ...formData, categories: e.target.value })}
                 />
@@ -556,7 +556,7 @@ const FeedOrdering = () => {
                 <Label className="text-sm mb-2 block">Disclaimers:</Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.disclaimers}
                   onChange={(e) => setFormData({ ...formData, disclaimers: e.target.value })}
                 />
@@ -572,7 +572,7 @@ const FeedOrdering = () => {
             <div className="space-y-4">
               <div>
                 <Label className="text-sm mb-2 block">Upload Media:</Label>
-                <div className="border-2 border-dashed border-gray-800 rounded-lg p-8 bg-gray-900/50 flex flex-col items-center justify-center min-h-[300px] relative">
+                <div className="border-2 border-dashed border-gray-800 rounded-lg p-8 bg-[#1A1C1D]/50 flex flex-col items-center justify-center min-h-[300px] relative">
                   {formData.mediaPreview ? (
                     <div className="relative w-full h-full">
                       <img src={formData.mediaPreview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
@@ -604,7 +604,7 @@ const FeedOrdering = () => {
 
               <div>
                 <Label className="text-sm mb-2 block">Upload Thumbnail:</Label>
-                <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 bg-gray-900/50 flex flex-col items-center justify-center relative">
+                <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 bg-[#1A1C1D]/50 flex flex-col items-center justify-center relative">
                   {formData.thumbnailPreview ? (
                     <div className="relative w-full">
                       <img src={formData.thumbnailPreview} alt="Thumbnail" className="w-full h-32 object-cover rounded-lg" />
@@ -644,7 +644,7 @@ const FeedOrdering = () => {
             <Button
               onClick={() => setShowEditModal(false)}
               variant="outline"
-              className="bg-gray-900 border-gray-800"
+              className="bg-[#1A1C1D] border-gray-800"
             >
               Cancel
             </Button>
@@ -744,7 +744,7 @@ const FeedOrdering = () => {
             <Button
               onClick={() => setShowViewModal(false)}
               variant="outline"
-              className="bg-gray-900 border-gray-800"
+              className="bg-[#1A1C1D] border-gray-800"
             >
               Close
             </Button>

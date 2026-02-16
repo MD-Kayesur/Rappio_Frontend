@@ -101,7 +101,7 @@ const Settings = () => {
       </div>
 
       {/* Content */}
-      <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+      <div className="bg-[#1A1C1D] rounded-2xl border border-gray-800 p-6">
         {activeTab === 'general' ? (
           <div className="space-y-4">
             {/* Image Upload */}
@@ -223,13 +223,13 @@ const Settings = () => {
                 placeholder="Name"
                 value={userInfo.name}
                 onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
-                className="bg-gray-900 border-gray-800 text-white placeholder:text-gray-500"
+                className="bg-[#1A1C1D] border-gray-800 text-white placeholder:text-gray-500"
               />
               <Input
                 placeholder="Address"
                 value={userInfo.address}
                 onChange={(e) => setUserInfo({ ...userInfo, address: e.target.value })}
-                className="bg-gray-900 border-gray-800 text-white placeholder:text-gray-500"
+                className="bg-[#1A1C1D] border-gray-800 text-white placeholder:text-gray-500"
               />
             </div>
 
@@ -262,21 +262,21 @@ const Settings = () => {
                 placeholder="Old Password"
                 value={passwordData.oldPassword}
                 onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
-                className="bg-gray-900 border-gray-800 text-white placeholder:text-gray-500"
+                className="bg-[#1A1C1D] border-gray-800 text-white placeholder:text-gray-500"
               />
               <Input
                 type="password"
                 placeholder="New Password"
                 value={passwordData.newPassword}
                 onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                className="bg-gray-900 border-gray-800 text-white placeholder:text-gray-500"
+                className="bg-[#1A1C1D] border-gray-800 text-white placeholder:text-gray-500"
               />
               <Input
                 type="password"
                 placeholder="Confirm Password"
                 value={passwordData.confirmPassword}
                 onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                className="bg-gray-900 border-gray-800 text-white placeholder:text-gray-500"
+                className="bg-[#1A1C1D] border-gray-800 text-white placeholder:text-gray-500"
               />
             </div>
 

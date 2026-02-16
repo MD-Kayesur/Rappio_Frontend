@@ -48,7 +48,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-950">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 dark:border dark:border-gray-800 p-6 rounded-lg shadow-md">
+      <div className="w-full max-w-md bg-white dark:bg-[#1A1C1D] dark:border dark:border-gray-800 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-center text-gray-900 dark:text-white">Login</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
           {/* Email Field */}

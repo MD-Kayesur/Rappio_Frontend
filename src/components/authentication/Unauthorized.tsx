@@ -24,7 +24,7 @@ const Unauthorized = () => {
 
           <Link
             to="/"
-            className="px-6 py-3 rounded-xl bg-gray-800 text-white text-sm font-medium hover:bg-gray-900 transition-all duration-300"
+            className="px-6 py-3 rounded-xl bg-gray-800 text-white text-sm font-medium hover:bg-[#1A1C1D] transition-all duration-300"
           >
             Home
           </Link>

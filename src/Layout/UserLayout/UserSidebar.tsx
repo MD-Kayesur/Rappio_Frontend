@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { logout } from "@/store/Slices/AuthSlice/authSlice";
+// import { useDispatch } from "react-redux";
+// import { logout } from "@/store/Slices/AuthSlice/authSlice";
 
 import logoLight from "@/assets/Vector.svg";
 import logoDark from "@/assets/Vector.svg";
@@ -19,7 +19,7 @@ import {
 import {
   MdKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
-  MdLogout,
+  // MdLogout,
 } from "react-icons/md";
 
 // import { useGetMySubscriptionQuery } from "@/redux/features/subscriptions/subscriptionsApi";
@@ -39,7 +39,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
   setSidebarOpen,
 }) => {
   const location = useLocation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDarkMode] = useState(false);
 
@@ -47,10 +47,10 @@ export const UserSidebar: React.FC<SidebarProps> = ({
   // const isLifetime = subscriptionData?.data?.planAlias === "PRO_LIFETIME" || subscriptionData?.data?.plan === "PRO_LIFETIME";
   // const prodata = (subscriptionData?.data?.isPro || isLifetime) ?? false;
 
-  const handleLogout = () => {
-    dispatch(logout());
-    window.location.href = "/login";
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   window.location.href = "/login";
+  // };
 
   // Update dark mode status based on theme
   // useEffect(() => {
@@ -98,7 +98,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
         <div className="absolute top-3 right-3 lg:hidden z-10">
           <button
             onClick={() => setSidebarOpen(false)}
-            className="w-8 h-8 bg-gray-900 dark:bg-gray-800 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer shadow-lg"
+            className="w-8 h-8 bg-[#1A1C1D] dark:bg-gray-800 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer shadow-lg"
             aria-label="Close menu"
           >
             ✖
@@ -187,7 +187,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
       )}
 
       {/* Logout */}
-      {sidebarOpen && (
+      {/* {sidebarOpen && (
         <div className="p-3 ">
           <button
             onClick={handleLogout}
@@ -198,7 +198,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
             {!isCollapsed && <span className="text-sm sm:text-base dark:text-white text-black">Logout</span>}
           </button>
         </div>
-      )}
+      )} */}
 
       {/* Collapse Button - Desktop only */}
       {sidebarOpen && (

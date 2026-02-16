@@ -5,7 +5,7 @@ export default function FullPageEmailVerificationSuccess() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-6 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300"
+      className="min-h-screen flex flex-col items-center justify-center px-6 bg-gray-50 text-gray-900 dark:bg-[#1A1C1D] dark:text-gray-200 transition-colors duration-300"
     >
       {/* Beautiful Email Success SVG */}
       <div className="w-full max-w-lg mb-12">

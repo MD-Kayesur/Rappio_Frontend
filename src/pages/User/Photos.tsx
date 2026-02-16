@@ -446,7 +446,7 @@ const Photos: React.FC = () => {
             {/* Comments Modal */}
             {showComments && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-                    <div className="max-w-2xl w-full bg-[#121212] rounded-3xl overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] border border-white/10">
+                    <div className="max-w-2xl w-full bg-[#1A1C1D] rounded-3xl overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] border border-white/10">
                         <div className="p-5 border-b border-white/5 flex items-center justify-between">
                             <h3 className="text-white font-bold text-lg">Comments ({comments.length})</h3>
                             <button onClick={() => setShowComments(false)} className="text-white/70 hover:text-white">

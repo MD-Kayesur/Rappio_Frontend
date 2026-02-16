@@ -183,10 +183,10 @@ const Overview = () => {
           <h1 className="text-2xl font-bold">Overview</h1>
 
           <Select value={timeFilter} onValueChange={setTimeFilter}>
-            <SelectTrigger className="w-32 bg-gray-900 border-gray-800 text-white">
+            <SelectTrigger className="w-32 bg-[#1A1C1D] border-gray-800 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-800 text-white">
+            <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
               <SelectItem value="all">All time</SelectItem>
               <SelectItem value="today">Today</SelectItem>
               <SelectItem value="week">This week</SelectItem>
@@ -196,10 +196,10 @@ const Overview = () => {
           </Select>
 
           <Select value={yearFilter} onValueChange={setYearFilter}>
-            <SelectTrigger className="w-32 bg-gray-900 border-gray-800 text-white">
+            <SelectTrigger className="w-32 bg-[#1A1C1D] border-gray-800 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-800 text-white">
+            <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
               <SelectItem value="2026">2026</SelectItem>
               <SelectItem value="2025">2025</SelectItem>
               <SelectItem value="2024">2024</SelectItem>
@@ -217,7 +217,7 @@ const Overview = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <FileText className="h-6 w-6 text-white" />
@@ -231,7 +231,7 @@ const Overview = () => {
           <p className="text-gray-400 text-sm">Total Published Items</p>
         </div>
 
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <Heart className="h-6 w-6 text-white" />
@@ -245,7 +245,7 @@ const Overview = () => {
           <p className="text-gray-400 text-sm">Total Performance (Likes)</p>
         </div>
 
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <MessageCircle className="h-6 w-6 text-white" />
@@ -259,7 +259,7 @@ const Overview = () => {
           <p className="text-gray-400 text-sm">Total Engagement (Comments)</p>
         </div>
 
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <CreditCard className="h-6 w-6 text-white" />
@@ -277,7 +277,7 @@ const Overview = () => {
       {/* Content Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top performing items */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <h3 className="text-lg font-semibold mb-6">Top performing items</h3>
           <div className="space-y-4">
             {currentItems.map((item) => (
@@ -339,7 +339,7 @@ const Overview = () => {
         </div>
 
         {/* Feed Performance Chart */}
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold">Feed Performance</h3>
             <Select value={feedView} onValueChange={setFeedView}>
@@ -423,7 +423,7 @@ const Overview = () => {
                 </Label>
                 <Input
                   placeholder="Title or Casino name here..."
-                  className="bg-gray-900 border-gray-800 text-white"
+                  className="bg-[#1A1C1D] border-gray-800 text-white"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 />
@@ -434,10 +434,10 @@ const Overview = () => {
                   Type: <span className="text-red-500">*</span>
                 </Label>
                 <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
-                  <SelectTrigger className="bg-gray-900 border-gray-800 text-white">
+                  <SelectTrigger className="bg-[#1A1C1D] border-gray-800 text-white">
                     <SelectValue placeholder="Choose One..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-gray-800 text-white">
+                  <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
                     <SelectItem value="casino">Casino</SelectItem>
                     <SelectItem value="poker">Poker</SelectItem>
                     <SelectItem value="sports">Sports Betting</SelectItem>
@@ -452,7 +452,7 @@ const Overview = () => {
                 </Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.bonuses}
                   onChange={(e) => setFormData({ ...formData, bonuses: e.target.value })}
                 />
@@ -462,7 +462,7 @@ const Overview = () => {
                 <Label className="text-sm mb-2 block">Short description:</Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
@@ -472,7 +472,7 @@ const Overview = () => {
                 <Label className="text-sm mb-2 block">Terms highlights:</Label>
                 <Textarea
                   placeholder="Provide your highlighted terms"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.termsHighlights}
                   onChange={(e) => setFormData({ ...formData, termsHighlights: e.target.value })}
                 />
@@ -484,7 +484,7 @@ const Overview = () => {
                 </Label>
                 <Input
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white"
+                  className="bg-[#1A1C1D] border-gray-800 text-white"
                   value={formData.affiliateLink}
                   onChange={(e) => setFormData({ ...formData, affiliateLink: e.target.value })}
                 />
@@ -495,10 +495,10 @@ const Overview = () => {
                   Languages: <span className="text-red-500">*</span>
                 </Label>
                 <Select value={formData.languages} onValueChange={(value) => setFormData({ ...formData, languages: value })}>
-                  <SelectTrigger className="bg-gray-900 border-gray-800 text-white">
+                  <SelectTrigger className="bg-[#1A1C1D] border-gray-800 text-white">
                     <SelectValue placeholder="Choose One..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-gray-800 text-white">
+                  <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
                     <SelectItem value="english">English</SelectItem>
                     <SelectItem value="spanish">Spanish</SelectItem>
                     <SelectItem value="french">French</SelectItem>
@@ -510,7 +510,7 @@ const Overview = () => {
                 <Label className="text-sm mb-2 block">Categories/tags:</Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.categories}
                   onChange={(e) => setFormData({ ...formData, categories: e.target.value })}
                 />
@@ -520,7 +520,7 @@ const Overview = () => {
                 <Label className="text-sm mb-2 block">Disclaimers:</Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
-                  className="bg-gray-900 border-gray-800 text-white min-h-20"
+                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
                   value={formData.disclaimers}
                   onChange={(e) => setFormData({ ...formData, disclaimers: e.target.value })}
                 />
@@ -538,7 +538,7 @@ const Overview = () => {
                 <Label className="text-sm mb-2 block">
                   Upload Media: <span className="text-red-500">*</span>
                 </Label>
-                <div className="border-2 border-dashed border-gray-800 rounded-lg p-8 bg-gray-900/50 flex flex-col items-center justify-center min-h-[300px]">
+                <div className="border-2 border-dashed border-gray-800 rounded-lg p-8 bg-[#1A1C1D]/50 flex flex-col items-center justify-center min-h-[300px]">
                   {formData.mediaPreview ? (
                     <div className="relative w-full h-full">
                       {formData.mediaFile?.type.startsWith('video') ? (
@@ -574,7 +574,7 @@ const Overview = () => {
 
               <div>
                 <Label className="text-sm mb-2 block">Upload Thumbnail:</Label>
-                <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 bg-gray-900/50 flex flex-col items-center justify-center">
+                <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 bg-[#1A1C1D]/50 flex flex-col items-center justify-center">
                   {formData.thumbnailPreview ? (
                     <div className="relative w-full">
                       <img src={formData.thumbnailPreview} alt="Thumbnail" className="w-full h-32 object-cover rounded-lg" />
@@ -611,13 +611,13 @@ const Overview = () => {
             <Button onClick={handlePreview} className="bg-red-600 hover:bg-red-700">
               Publish
             </Button>
-            <Button onClick={handlePreview} variant="outline" className="bg-gray-900 border-gray-800">
+            <Button onClick={handlePreview} variant="outline" className="bg-[#1A1C1D] border-gray-800">
               Preview
             </Button>
             <Button
               onClick={() => setShowCreatePost(false)}
               variant="outline"
-              className="ml-auto bg-gray-900 border-gray-800"
+              className="ml-auto bg-[#1A1C1D] border-gray-800"
             >
               Cancel
             </Button>
@@ -721,7 +721,7 @@ const Overview = () => {
                 setShowCreatePost(true);
               }}
               variant="outline"
-              className="bg-gray-900 border-gray-800"
+              className="bg-[#1A1C1D] border-gray-800"
             >
               Back to Edit
             </Button>

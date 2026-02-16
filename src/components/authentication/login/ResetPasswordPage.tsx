@@ -44,7 +44,7 @@ const ResetPasswordForm = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-4 transition-colors">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg dark:shadow-black/50 transition-colors">
+      <div className="w-full max-w-md bg-white dark:bg-[#1A1C1D] p-8 rounded-2xl shadow-lg dark:shadow-black/50 transition-colors">
         <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">Reset Password</h2>
         <p className="text-gray-500 dark:text-gray-300 text-sm mb-6">Enter your new password below</p>
 

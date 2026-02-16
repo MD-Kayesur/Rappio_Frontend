@@ -392,7 +392,7 @@ const Login = () => {
 
 
       {/* Footer */}
-      <footer className="bg-white dark:bg-gray-900 text-slate-600 dark:text-gray-400 pt-20 pb-10 px-[5%] border-t border-slate-200 dark:border-gray-700">
+      <footer className="bg-white dark:bg-[#1A1C1D] text-slate-600 dark:text-gray-400 pt-20 pb-10 px-[5%] border-t border-slate-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-16 mb-16 text-left">
             <div>

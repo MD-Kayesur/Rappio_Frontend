@@ -9,7 +9,7 @@ interface Props {
 const SuccessView = ({ onBackToLogin }: Props) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-4 transition-colors">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg dark:shadow-black/50 relative transition-colors">
+      <div className="w-full max-w-md bg-white dark:bg-[#1A1C1D] p-8 rounded-2xl shadow-lg dark:shadow-black/50 relative transition-colors">
         <button
           onClick={onBackToLogin}
           className="absolute cursor-pointer top-4 right-4 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
