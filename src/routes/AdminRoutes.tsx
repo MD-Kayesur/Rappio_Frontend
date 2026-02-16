@@ -1,4 +1,4 @@
-import {  Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 
@@ -6,10 +6,10 @@ const AdminRoute = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   // Check if the user is logged in and is an admin
-  // if (!user || user.role !== "admin") {
-  //   console.log("AdminRoute: Access denied", user);
-  //   return <Navigate to="/login" replace />;
-  // }
+  if (!user || user.role !== "admin") {
+    console.log("AdminRoute: Access denied", user);
+    return <Navigate to="/signup" replace />;
+  }
 
   console.log("AdminRoute: Access granted", user);
 

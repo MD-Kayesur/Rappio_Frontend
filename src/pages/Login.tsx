@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/store/Slices/AuthSlice/authSlice";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -20,10 +22,28 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onSubmit = (data: LoginFormInputs) => {
     console.log("Login Data:", data);
-    navigate("/");
+
+    // Simulate API call and success
+    const userData = {
+      name: "Logged User",
+      email: data.email,
+      role: data.email.includes("admin") ? "admin" : "user", // Dummy logic for roles
+    };
+
+    dispatch(setCredentials({
+      user: userData,
+      token: "dummy-access-token-" + Math.random().toString(36).substr(2, 9)
+    }));
+
+    if (userData.role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/user/all");
+    }
   };
 
   return (

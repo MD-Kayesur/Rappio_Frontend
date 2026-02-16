@@ -4,6 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CiSquarePlus } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/store/Slices/AuthSlice/authSlice";
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -20,6 +22,7 @@ type SignupFormInputs = z.infer<typeof signupSchema>;
 
 const Signup = () => {
   const [preview, setPreview] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -37,18 +40,23 @@ const Signup = () => {
     const userData = {
       name: data.name,
       email: data.email,
-      role: data.role === "admin" ? "Admin" : "User",
+      role: data.role,
       avatar: preview || ""
     };
 
-    localStorage.setItem("user", JSON.stringify(userData));
+    // Set credentials in Redux and Cookies
+    dispatch(setCredentials({
+      user: userData,
+      token: "dummy-access-token-" + Math.random().toString(36).substr(2, 9)
+    }));
+
     console.log("Registered User:", userData);
 
     // Redirect based on role
     if (data.role === "admin") {
       navigate("/admin");
     } else {
-      navigate("/user");
+      navigate("/user/all");
     }
   };
 

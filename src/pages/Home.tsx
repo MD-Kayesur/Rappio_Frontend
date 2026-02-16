@@ -39,7 +39,7 @@ const Home = () => {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* Overlay for better text readability if needed */}
-      <div className="absolute inset-0 bg-black/30 bg-opacity-30"></div>
+      <div className="absolute inset-0 bg-black/50 bg-opacity-30"></div>
       <div className="relative z-10 w-full flex justify-center">
         <AnimatePresence mode="wait">
           {!showWelcome ? (
@@ -75,7 +75,7 @@ const Home = () => {
                 Your journey starts here.
               </p> */}
  
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="relative max-w-md w-full mx-4 bg-gray-900 rounded-2xl shadow-2xl border border-gray-800 p-8">
         {/* Close Button */}
         <button className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">

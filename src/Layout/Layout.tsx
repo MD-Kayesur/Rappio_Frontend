@@ -22,7 +22,7 @@ const Layout: React.FC = () => {
 
 
 
-      <main className="flex-grow">
+      <main className="flex-grow backdrop-blur-lg">
         <Outlet />
       </main>
 
