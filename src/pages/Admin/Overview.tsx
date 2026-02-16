@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Select,
   SelectContent,
@@ -19,12 +19,8 @@ import {
 } from '@/components/ui/dialog';
 import {
   FileText,
-  Clock,
-  Eye,
   CreditCard,
   TrendingUp,
-  Share2,
-  ThumbsUp,
   Upload,
   Heart,
   MessageCircle,
@@ -43,82 +39,29 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Sample data for the chart
-const chartData = [
-  { month: 'JAN', videos: 450, photos: 420 },
-  { month: 'FEB', videos: 480, photos: 440 },
-  { month: 'MAR', videos: 460, photos: 450 },
-  { month: 'APR', videos: 520, photos: 480 },
-  { month: 'MAY', videos: 550, photos: 500 },
-  { month: 'JUN', videos: 530, photos: 520 },
-  { month: 'JUL', videos: 580, photos: 540 },
-  { month: 'AUG', videos: 620, photos: 560 },
-  { month: 'SEP', videos: 600, photos: 580 },
-  { month: 'OCT', videos: 680, photos: 620 },
-  { month: 'NOV', videos: 720, photos: 660 },
-  { month: 'DEC', videos: 700, photos: 680 },
-];
-
-// Top performing items data
-const topItems = [
-  {
-    id: 1,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-  {
-    id: 2,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-  {
-    id: 3,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-  {
-    id: 4,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-  {
-    id: 5,
-    title: 'Total Published Items',
-    subtitle: 'Total Published Items',
-    image: 'https://via.placeholder.com/60',
-    views: '41k',
-    likes: '522',
-    shares: '2k',
-  },
-];
+interface Offer {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  cta: string;
+  likes: number;
+  comments: number;
+  image_url: string;
+  video_url: string;
+  website_url: string;
+  tags: string[];
+  terms_highlights: string[];
+  disclaimer: string;
+}
 
 const Overview = () => {
+  const [offers, setOffers] = useState<Offer[]>([]);
   const [timeFilter, setTimeFilter] = useState('all');
   const [yearFilter, setYearFilter] = useState('2026');
   const [feedView, setFeedView] = useState('web');
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [deviceVisibility, setDeviceVisibility] = useState({
-    mobile: false,
-    desktop: false,
-    both: true,
-  });
   const [contains18Plus, setContains18Plus] = useState(false);
 
   // Form state
@@ -137,6 +80,41 @@ const Overview = () => {
     thumbnailFile: null as File | null,
     thumbnailPreview: '',
   });
+
+  useEffect(() => {
+    fetch('/mediaData.json')
+      .then(res => res.json())
+      .then(data => {
+        setOffers(Array.isArray(data) ? data : [data]);
+      })
+      .catch(err => console.error('Error fetching media data:', err));
+  }, []);
+
+  const totalLikes = offers.reduce((acc, curr) => acc + (curr.likes || 0), 0);
+  const totalComments = offers.reduce((acc, curr) => acc + (curr.comments || 0), 0);
+  const topPerforming = [...offers].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 10);
+
+  // Trend data matching the user's provided image
+  const monthlyData = [
+    { name: 'JAN', videos: 10, photos: 8 },
+    { name: 'FEB', videos: 25, photos: 5 },
+    { name: 'MAR', videos: 20, photos: 8 },
+    { name: 'APR', videos: 42, photos: 18 },
+    { name: 'MAY', videos: 35, photos: 12 },
+    { name: 'JUN', videos: 32, photos: 6 },
+    { name: 'JUL', videos: 22, photos: 18 },
+    { name: 'AUG', videos: 28, photos: 12 },
+    { name: 'SEP', videos: 42, photos: 6 },
+    { name: 'OCT', videos: 55, photos: 25 },
+    { name: 'NOV', videos: 40, photos: 12 },
+    { name: 'DEC', videos: 30, photos: 18 },
+  ];
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+    return num.toString();
+  };
 
   const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -166,7 +144,6 @@ const Overview = () => {
   };
 
   const handlePublish = () => {
-    // Handle publish logic here
     console.log('Publishing post:', formData);
     setShowPreview(false);
     setFormData({
@@ -187,13 +164,12 @@ const Overview = () => {
   };
 
   return (
-    <div className="min-h-full   text-white p-6">
+    <div className="min-h-full text-white p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
           <h1 className="text-2xl font-bold">Overview</h1>
 
-          {/* Dropdowns */}
           <Select value={timeFilter} onValueChange={setTimeFilter}>
             <SelectTrigger className="w-32 bg-gray-900 border-gray-800 text-white">
               <SelectValue />
@@ -215,8 +191,6 @@ const Overview = () => {
               <SelectItem value="2026">2026</SelectItem>
               <SelectItem value="2025">2025</SelectItem>
               <SelectItem value="2024">2024</SelectItem>
-              <SelectItem value="2023">2023</SelectItem>
-              <SelectItem value="2022">2022</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -241,36 +215,36 @@ const Overview = () => {
               <span>12%</span>
             </div>
           </div>
-          <h2 className="text-3xl font-bold mb-2">12,450</h2>
+          <h2 className="text-3xl font-bold mb-2">{formatNumber(offers.length)}</h2>
           <p className="text-gray-400 text-sm">Total Published Items</p>
         </div>
 
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
-              <Clock className="h-6 w-6 text-white" />
+              <Heart className="h-6 w-6 text-white" />
             </div>
             <div className="flex items-center gap-1 text-green-500 text-sm">
               <TrendingUp className="h-4 w-4" />
-              <span>12%</span>
+              <span>8%</span>
             </div>
           </div>
-          <h2 className="text-3xl font-bold mb-2">1M +</h2>
-          <p className="text-gray-400 text-sm">Favourite Count Trend</p>
+          <h2 className="text-3xl font-bold mb-2">{formatNumber(totalLikes)}</h2>
+          <p className="text-gray-400 text-sm">Total Performance (Likes)</p>
         </div>
 
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
-              <Eye className="h-6 w-6 text-white" />
+              <MessageCircle className="h-6 w-6 text-white" />
             </div>
             <div className="flex items-center gap-1 text-green-500 text-sm">
               <TrendingUp className="h-4 w-4" />
-              <span>12%</span>
+              <span>15%</span>
             </div>
           </div>
-          <h2 className="text-3xl font-bold mb-2">9,92,66,978</h2>
-          <p className="text-gray-400 text-sm">Total Views</p>
+          <h2 className="text-3xl font-bold mb-2">{formatNumber(totalComments)}</h2>
+          <p className="text-gray-400 text-sm">Total Engagement (Comments)</p>
         </div>
 
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
@@ -280,46 +254,42 @@ const Overview = () => {
             </div>
             <div className="flex items-center gap-1 text-green-500 text-sm">
               <TrendingUp className="h-4 w-4" />
-              <span>12%</span>
+              <span>5%</span>
             </div>
           </div>
-          <h2 className="text-3xl font-bold mb-2">12,450</h2>
-          <p className="text-gray-400 text-sm">Clicks over time</p>
+          <h2 className="text-3xl font-bold mb-2">{formatNumber(totalLikes * 4.2)}</h2>
+          <p className="text-gray-400 text-sm">Estimated Clicks (CTR)</p>
         </div>
       </div>
 
       {/* Content Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Top performing items (CTR) */}
+        {/* Top performing items */}
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
-          <h3 className="text-lg font-semibold mb-6">Top performing items (CTR)</h3>
+          <h3 className="text-lg font-semibold mb-6">Top performing items</h3>
           <div className="space-y-4">
-            {topItems.map((item) => (
+            {topPerforming.map((item) => (
               <div
                 key={item.id}
                 className="flex items-center gap-4 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
               >
                 <img
-                  src={item.image}
+                  src={item.image_url}
                   alt={item.title}
                   className="w-14 h-14 rounded-lg object-cover"
                 />
                 <div className="flex-1">
-                  <h4 className="font-medium text-sm">{item.title}</h4>
-                  <p className="text-xs text-gray-400">{item.subtitle}</p>
+                  <h4 className="font-medium text-sm line-clamp-1">{item.title}</h4>
+                  <p className="text-xs text-gray-400 line-clamp-1">{item.subtitle}</p>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="flex items-center gap-1 text-yellow-500">
-                    <Eye className="h-4 w-4" />
-                    <span>{item.views}</span>
+                <div className="flex items-center gap-4 text-sm font-medium">
+                  <div className="flex items-center gap-1.5 text-red-500">
+                    <Heart className="h-4 w-4 fill-red-500/10" />
+                    <span>{formatNumber(item.likes)}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-red-500">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span>{item.likes}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-blue-500">
-                    <Share2 className="h-4 w-4" />
-                    <span>{item.shares}</span>
+                  <div className="flex items-center gap-1.5 text-blue-500">
+                    <MessageCircle className="h-4 w-4 fill-blue-500/10" />
+                    <span>{formatNumber(item.comments)}</span>
                   </div>
                 </div>
               </div>
@@ -327,7 +297,7 @@ const Overview = () => {
           </div>
         </div>
 
-        {/* Feed Performance */}
+        {/* Feed Performance Chart */}
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold">Feed Performance</h3>
@@ -345,34 +315,49 @@ const Overview = () => {
 
           <div className="h-80 relative">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="month" stroke="#9CA3AF" style={{ fontSize: '12px' }} />
-                <YAxis stroke="#9CA3AF" style={{ fontSize: '12px' }} />
+              <LineChart data={monthlyData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1f2937" opacity={0.5} />
+                <XAxis
+                  dataKey="name"
+                  stroke="#9CA3AF"
+                  axisLine={false}
+                  tickLine={false}
+                  style={{ fontSize: '12px', fontWeight: '500' }}
+                  dy={10}
+                />
+                <YAxis hide={true} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1F2937',
+                    backgroundColor: '#111827',
                     border: '1px solid #374151',
                     borderRadius: '8px',
                     color: '#fff',
                   }}
+                  itemStyle={{ fontSize: '12px' }}
                 />
-                <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
+                <Legend
+                  wrapperStyle={{ paddingTop: '30px' }}
+                  iconType="square"
+                  iconSize={14}
+                  formatter={(value) => <span className="text-gray-300 ml-1">{value}</span>}
+                />
                 <Line
                   type="monotone"
                   dataKey="videos"
-                  stroke="#EF4444"
-                  strokeWidth={2}
-                  dot={{ fill: '#EF4444', r: 4 }}
                   name="Videos"
+                  stroke="#EE2B3E"
+                  strokeWidth={1.5}
+                  dot={{ r: 3, fill: '#EE2B3E', strokeWidth: 0 }}
+                  activeDot={{ r: 5, strokeWidth: 0 }}
                 />
                 <Line
                   type="monotone"
                   dataKey="photos"
-                  stroke="#3B82F6"
-                  strokeWidth={2}
-                  dot={{ fill: '#3B82F6', r: 4 }}
                   name="Photos"
+                  stroke="#0095F6"
+                  strokeWidth={1.5}
+                  dot={{ r: 3, fill: '#0095F6', strokeWidth: 0 }}
+                  activeDot={{ r: 5, strokeWidth: 0 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -481,36 +466,6 @@ const Overview = () => {
               </div>
 
               <div>
-                <Label className="text-sm mb-2 block">Device visibility:</Label>
-                <div className="flex gap-4 mt-2">
-                  <Button
-                    type="button"
-                    variant={deviceVisibility.mobile ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.mobile ? 'bg-white text-black' : 'bg-gray-900 border-gray-800'}`}
-                    onClick={() => setDeviceVisibility({ mobile: true, desktop: false, both: false })}
-                  >
-                    Mobile
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={deviceVisibility.desktop ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.desktop ? 'bg-white text-black' : 'bg-gray-900 border-gray-800'}`}
-                    onClick={() => setDeviceVisibility({ mobile: false, desktop: true, both: false })}
-                  >
-                    Desktop
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={deviceVisibility.both ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.both ? 'bg-white text-black' : 'bg-gray-900 border-gray-800'}`}
-                    onClick={() => setDeviceVisibility({ mobile: false, desktop: false, both: true })}
-                  >
-                    Both
-                  </Button>
-                </div>
-              </div>
-
-              <div>
                 <Label className="text-sm mb-2 block">Categories/tags:</Label>
                 <Textarea
                   placeholder="Type bonus points & press enter to add"
@@ -594,7 +549,7 @@ const Overview = () => {
                       <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center mb-2">
                         <Upload className="h-6 w-6 text-gray-400" />
                       </div>
-                      <p className="text-xs text-gray-500 mb-2">Choose a thumbnail for your videoshow</p>
+                      <p className="text-xs text-gray-500 mb-2">Choose a thumbnail for your video</p>
                       <input
                         type="file"
                         accept="image/*"
@@ -634,7 +589,7 @@ const Overview = () => {
         <DialogContent className="max-w-7xl bg-gray-950 text-white border-gray-800 overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Preview Post</DialogTitle>
-            <p className="text-sm text-gray-400">Your post will be like this preview.</p>
+            <p className="text-sm text-gray-400">Your post will look like this preview.</p>
           </DialogHeader>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -658,73 +613,56 @@ const Overview = () => {
             {/* Right - Details */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
-                  <span className="text-sm">🎰</span>
-                </div>
+                <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-sm">🎰</div>
                 <h3 className="font-bold text-lg">
-                  {formData.title || "Fortune's Fortune Casino."}
+                  {formData.title || "Fortune's Fortune Casino"}
                 </h3>
               </div>
 
               <p className="text-sm text-gray-300">
-                {formData.description ||
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy... See More"}
+                {formData.description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry."}
               </p>
 
               <Button className="bg-red-600 hover:bg-red-700">Claim Offer</Button>
 
-              {/* Actions */}
               <div className="flex items-center gap-6 py-4">
-                <button className="flex flex-col items-center gap-1">
-                  <Heart className="h-6 w-6" />
-                  <span className="text-xs">1.4k</span>
+                <button className="flex flex-col items-center gap-1 group">
+                  <Heart className="h-6 w-6 group-hover:text-red-500 transition-colors" />
+                  <span className="text-xs text-gray-400">0</span>
                 </button>
-                <button className="flex flex-col items-center gap-1">
-                  <MessageCircle className="h-6 w-6" />
-                  <span className="text-xs">1k</span>
+                <button className="flex flex-col items-center gap-1 group">
+                  <MessageCircle className="h-6 w-6 group-hover:text-blue-500 transition-colors" />
+                  <span className="text-xs text-gray-400">0</span>
                 </button>
-                <button className="flex flex-col items-center gap-1">
-                  <Bookmark className="h-6 w-6" />
+                <button className="flex flex-col items-center gap-1 group">
+                  <Bookmark className="h-6 w-6 group-hover:text-yellow-500 transition-colors" />
                 </button>
-                <button className="flex flex-col items-center gap-1">
-                  <Share className="h-6 w-6" />
+                <button className="flex flex-col items-center gap-1 group">
+                  <Share className="h-6 w-6 group-hover:text-green-500 transition-colors" />
                 </button>
               </div>
 
-              {/* Description */}
               <div>
                 <h4 className="font-semibold mb-2">Description:</h4>
                 <p className="text-sm text-gray-300">
-                  {formData.description ||
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy..."}
-                </p>
-                <div className="flex gap-2 mt-2">
-                  <span className="px-3 py-1 bg-gray-800 rounded-full text-xs">Lorem Ipsum has been</span>
-                  <span className="px-3 py-1 bg-gray-800 rounded-full text-xs">Lorem Ipsum</span>
-                </div>
-                <p className="text-xs text-gray-400 mt-2">
-                  It is a long established fact that a reader will be distract
+                  {formData.description || "No description provided."}
                 </p>
               </div>
 
-              {/* Terms */}
               <div>
                 <h4 className="font-semibold mb-2">Terms highlights:</h4>
                 <p className="text-sm text-gray-300">
-                  {formData.termsHighlights ||
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy."}
+                  {formData.termsHighlights || "No terms highlights provided."}
                 </p>
               </div>
 
-              {/* Disclaimers */}
               <div className="bg-yellow-900/20 border border-yellow-600/30 rounded-lg p-3">
                 <div className="flex items-start gap-2">
                   <span className="text-yellow-500">⚠</span>
                   <div>
-                    <h4 className="font-semibold text-yellow-500 mb-1">Disclaimers:</h4>
-                    <p className="text-xs text-gray-300">
-                      {formData.disclaimers ||
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy."}
+                    <h4 className="font-semibold text-yellow-500 mb-1 leading-none">Disclaimers:</h4>
+                    <p className="text-xs text-gray-300 mt-1.5">
+                      {formData.disclaimers || "No disclaimers provided."}
                     </p>
                   </div>
                 </div>
@@ -734,7 +672,7 @@ const Overview = () => {
 
           <div className="flex gap-4 mt-6">
             <Button onClick={handlePublish} className="bg-red-600 hover:bg-red-700">
-              Publish
+              Publish Now
             </Button>
             <Button
               onClick={() => {
@@ -744,7 +682,7 @@ const Overview = () => {
               variant="outline"
               className="bg-gray-900 border-gray-800"
             >
-              Cancel
+              Back to Edit
             </Button>
           </div>
         </DialogContent>
