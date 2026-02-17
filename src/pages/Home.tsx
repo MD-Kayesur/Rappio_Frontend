@@ -38,7 +38,7 @@ const Home = () => {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* Overlay for better text readability if needed */}
-      <div className="absolute inset-0 bg-black/50 bg-opacity-30"></div>
+      <div className="absolute inset-0 backdrop-blur-lg bg-opacity-30"></div>
       <div className="relative z-10 w-full flex justify-center">
         <AnimatePresence mode="wait">
           {!showWelcome ? (
@@ -88,7 +88,7 @@ const Home = () => {
                   </p>
 
                   {/* Continue Button */}
-                  <Button onClick={handleContinue} className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg">
+                  <Button onClick={handleContinue} className="w-full cursor-pointer bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg">
                     Continue
                   </Button>
                 </div>
