@@ -1,5 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import ReactPlayer from 'react-player';
+import { useLocation } from 'react-router-dom';
 import logo from "../../assets/Vector.svg";
 import {
     Heart,
@@ -9,9 +11,11 @@ import {
     X,
     ChevronUp,
     ChevronDown,
-    Search
+    Search,
+    Play
 } from 'lucide-react';
 import PageLoader from '@/Layout/PageLoader';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Comment {
     id: number;
@@ -38,8 +42,6 @@ interface Offer {
     disclaimer: string;
 }
 
-import { motion, AnimatePresence } from 'framer-motion';
-
 const Videos: React.FC = () => {
     const [offers, setOffers] = useState<Offer[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -53,6 +55,10 @@ const Videos: React.FC = () => {
         const saved = sessionStorage.getItem('favorites');
         return new Set(saved ? JSON.parse(saved) : []);
     });
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [progress, setProgress] = useState(0);
+    const [videoReady, setVideoReady] = useState(false);
+    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
     const [comments, setComments] = useState<Comment[]>([
         {
@@ -82,28 +88,53 @@ const Videos: React.FC = () => {
     ]);
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const commentsRef = useRef<HTMLDivElement>(null);
     const touchStartY = useRef<number>(0);
     const lastScrollTime = useRef<number>(0);
+
+    const location = useLocation();
+    const { feedType, initialIndex, initialCategory } = (location.state as { feedType?: string; initialIndex?: number; initialCategory?: string }) || {};
 
     useEffect(() => {
         // Fetch offers data
         fetch('/mediaData.json')
             .then(response => response.json())
             .then(data => {
-                setOffers(Array.isArray(data) ? data : [data]);
+                let allOffers: Offer[] = Array.isArray(data) ? data : [data];
+
+                if (feedType === 'favorites') {
+                    const savedFavorites = sessionStorage.getItem('favorites');
+                    const favoritesSet = new Set<number>(savedFavorites ? JSON.parse(savedFavorites) : []);
+                    allOffers = allOffers.filter(o => favoritesSet.has(o.id));
+                }
+
+                if (initialCategory && initialCategory !== 'All') {
+                    allOffers = allOffers.filter(o => o.tags.includes(initialCategory));
+                }
+
+                setOffers(allOffers);
+
+                if (typeof initialIndex === 'number' && initialIndex < allOffers.length) {
+                    setCurrentIndex(initialIndex);
+                }
             })
             .catch(error => console.error('Error fetching offers:', error));
 
-        // Check if user has set their name
         const savedUsername = localStorage.getItem('username');
         if (savedUsername) {
             setUsername(savedUsername);
         }
-    }, []);
+    }, [feedType, initialIndex, initialCategory]);
 
     useEffect(() => {
+        setIsPlaying(true);
+        setProgress(0);
+        setVideoReady(false);
         setIsDescriptionExpanded(false);
+        setShowComments(false);
     }, [currentIndex]);
+
+
 
     const handleScroll = (scrollDirection: 'up' | 'down') => {
         if (scrollDirection === 'down' && currentIndex < offers.length - 1) {
@@ -117,7 +148,7 @@ const Videos: React.FC = () => {
 
     const handleWheel = (e: React.WheelEvent) => {
         const now = Date.now();
-        if (now - lastScrollTime.current < 800) return; // 800ms cooldown
+        if (now - lastScrollTime.current < 800) return;
 
         if (e.deltaY > 50) {
             handleScroll('down');
@@ -133,15 +164,15 @@ const Videos: React.FC = () => {
     };
 
     const handleTouchEnd = (e: React.TouchEvent) => {
-        const startY = touchStartY.current;
-        const endY = e.changedTouches[0].clientY;
+        const touchEndY = e.changedTouches[0].clientY;
+        const diff = touchStartY.current - touchEndY;
 
-        if (startY - endY > 50) {
-            // Swipe Up -> Next Video
-            handleScroll('down');
-        } else if (endY - startY > 50) {
-            // Swipe Down -> Previous Video
-            handleScroll('up');
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+                handleScroll('down');
+            } else {
+                handleScroll('up');
+            }
         }
     };
 
@@ -205,8 +236,6 @@ const Videos: React.FC = () => {
         }
     };
 
-    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-
     const variants = {
         enter: (direction: string) => ({
             y: direction === 'down' ? '100%' : '-100%',
@@ -222,6 +251,12 @@ const Videos: React.FC = () => {
         }),
     };
 
+    const getYouTubeId = (url: string) => {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    };
+
     const currentOffer = offers[currentIndex];
 
     if (!currentOffer) {
@@ -233,6 +268,8 @@ const Videos: React.FC = () => {
             </div>
         );
     }
+
+    const Player = ReactPlayer as any;
 
     const handleCommentCheck = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -255,38 +292,17 @@ const Videos: React.FC = () => {
         }
     };
 
-
     return (
         <>
-            {/* Main Feed Container */}
             <div
                 ref={containerRef}
-                className="h-full  flex items-center justify-center relative overflow-hidden no-scrollbar"
+                className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onWheel={handleWheel}
             >
                 {/* Central Media Container */}
-                <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[3rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group ${isDescriptionExpanded ? 'w-full h-full sm:h-[80vh] sm:max-w-6xl flex flex-col sm:flex-row' : 'w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-[420px] sm:aspect-[9/19]'}`}>
-
-                    {/* Top Navigation - Mobile Only (Hidden when expanded) */}
-                    {!isDescriptionExpanded && (
-                        <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between p-6 sm:hidden pointer-events-none">
-                            <button className="text-white hover:opacity-80 transition-opacity pointer-events-auto">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-6 h-6 drop-shadow-lg">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                </svg>
-                            </button>
-                            <div className="px-5 py-2 bg-black/30 backdrop-blur-lg rounded-full border border-white/10 pointer-events-auto shadow-sm">
-                                <span className="text-white text-[13px] font-bold tracking-tight">Open App</span>
-                            </div>
-                            <button className="text-white hover:opacity-80 transition-opacity pointer-events-auto">
-                                <Search size={24} className="drop-shadow-lg" />
-                            </button>
-                        </div>
-                    )}
-
+                <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group ${isDescriptionExpanded ? 'w-full h-full sm:h-[85vh] sm:max-w-6xl flex flex-col sm:flex-row' : 'w-full h-full sm:h-[85vh] sm:max-w-[450px]'}`}>
                     <AnimatePresence initial={false} custom={direction} mode="popLayout">
                         <motion.div
                             key={currentOffer.id}
@@ -296,26 +312,73 @@ const Videos: React.FC = () => {
                             animate="center"
                             exit="exit"
                             transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                            className="absolute inset-0 h-full w-full flex"
+                            className="absolute inset-0 h-full w-full flex flex-col sm:flex-row"
                         >
-                            {/* Left Side: Video/Image Content */}
+                            {!isDescriptionExpanded && (
+                                <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between p-6 sm:hidden pointer-events-none">
+                                    <button className="text-white hover:opacity-80 transition-opacity pointer-events-auto">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-6 h-6 drop-shadow-lg">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </button>
+                                    <div className="px-5 py-2 bg-black/30 backdrop-blur-lg rounded-full border border-white/10 pointer-events-auto shadow-sm">
+                                        <span className="text-white text-[13px] font-bold tracking-tight">Open App</span>
+                                    </div>
+                                    <button className="text-white hover:opacity-80 transition-opacity pointer-events-auto">
+                                        <Search size={24} className="drop-shadow-lg" />
+                                    </button>
+                                </div>
+                            )}
+
                             <div className={`relative transition-all duration-500 ${isDescriptionExpanded ? 'w-full h-[40%] sm:h-full lg:w-[45%] flex-shrink-0' : 'h-full w-full'}`}>
                                 <div className="absolute inset-0">
-                                    {currentOffer.video_url && (currentOffer.video_url.includes("youtube.com") || currentOffer.video_url.includes("youtu.be")) ? (
-                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]">
-                                            <iframe
-                                                src={`https://www.youtube.com/embed/${currentOffer.video_url.includes('watch?v=')
-                                                    ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
-                                                    : currentOffer.video_url.split('/').pop()}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&playlist=${currentOffer.video_url.includes('watch?v=')
-                                                        ? currentOffer.video_url.split('watch?v=')[1].split('&')[0]
-                                                        : currentOffer.video_url.split('/').pop()}`}
-                                                className="w-full h-full"
-                                                allow="autoplay; encrypted-media"
-                                                allowFullScreen
-                                                style={{
-                                                    border: 'none',
-                                                    pointerEvents: 'none'
-                                                }}
+                                    {currentOffer.video_url ? (
+                                        <div className="absolute inset-0 overflow-hidden bg-black flex items-center justify-center">
+                                            <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
+                                                {getYouTubeId(currentOffer.video_url) ? (
+                                                    <iframe
+                                                        width="100%"
+                                                        height="100%"
+                                                        src={`https://www.youtube.com/embed/${getYouTubeId(currentOffer.video_url)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(currentOffer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`}
+                                                        title="YouTube video player"
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        onLoad={() => {
+                                                            setVideoReady(true);
+                                                            setIsPlaying(true);
+                                                        }}
+                                                        className="w-full h-full pointer-events-none"
+                                                    ></iframe>
+                                                ) : (
+                                                    <Player
+                                                        url={currentOffer.video_url}
+                                                        playing={isPlaying}
+                                                        loop
+                                                        muted={true}
+                                                        playsinline={true}
+                                                        width="100%"
+                                                        height="100%"
+                                                        onReady={() => {
+                                                            setVideoReady(true);
+                                                            setIsPlaying(true);
+                                                        }}
+                                                        onProgress={(state: any) => setProgress(state.played * 100)}
+                                                        className="pointer-events-none"
+                                                        style={{ position: 'absolute', top: 0, left: 0 }}
+                                                        config={{
+                                                            file: {
+                                                                attributes: {
+                                                                    style: { width: '100%', height: '100%', objectFit: 'cover' }
+                                                                }
+                                                            }
+                                                        }}
+                                                    />
+                                                )}
+                                            </div>
+                                            <div
+                                                className="absolute inset-0 z-20 cursor-pointer"
+                                                onClick={() => setIsPlaying(!isPlaying)}
                                             />
                                         </div>
                                     ) : (
@@ -325,21 +388,39 @@ const Videos: React.FC = () => {
                                             className="w-full h-full object-cover"
                                         />
                                     )}
-                                    {/* Gradient Overlay */}
+
+                                    {currentOffer.video_url && (
+                                        <>
+                                            {!videoReady ? (
+                                                <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none">
+                                                    <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                                                </div>
+                                            ) : !isPlaying && (
+                                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none">
+                                                    <Play size={60} className="text-white opacity-80" fill="white" />
+                                                </div>
+                                            )}
+                                            <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30">
+                                                <div
+                                                    className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                                                    style={{ width: `${progress}%` }}
+                                                />
+                                            </div>
+                                        </>
+                                    )}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
                                 </div>
                             </div>
 
-                            {/* Right Side: Details Panel (Visible ONLY when expanded) */}
                             {isDescriptionExpanded && (
-                                <div className="flex-1 flex flex-col bg-[#1a1a1a] relative animate-in slide-in-from-right-10 duration-500 overflow-hidden z-30">
+                                <div className="flex-1 flex flex-col bg-[#1a1a1a] relative animate-in slide-in-from-right-10 duration-500 overflow-hidden">
                                     {/* Close Button */}
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setIsDescriptionExpanded(false);
                                         }}
-                                        className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-50 pointer-events-auto"
+                                        className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-50"
                                     >
                                         <X size={20} className="text-white" />
                                     </button>
@@ -412,9 +493,9 @@ const Videos: React.FC = () => {
                                                 </div>
                                             )}
 
-                                            {/* Show Comments List Inline */}
+                                            {/* Show Comments List Inline, but Footer handles Input */}
                                             {showComments && (
-                                                <div className="pt-6 border-t border-white/10 animate-in fade-in duration-300">
+                                                <div ref={commentsRef} className="pt-6 border-t border-white/10 animate-in fade-in duration-300">
                                                     <h3 className="text-white font-bold mb-6 flex items-center gap-2">
                                                         <MessageCircle size={20} className="text-red-500" />
                                                         Comments ({comments.length + currentOffer.comments})
@@ -445,7 +526,7 @@ const Videos: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    {/* Bottom Fixed Comment Input Area */}
+                                    {/* Bottom Fixed Comment Input in Expanded View */}
                                     {showComments && (
                                         <div className="p-4 sm:p-6 bg-[#1a1a1a] border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-50">
                                             <div className="flex gap-3 bg-white/5 p-2 rounded-2xl border border-white/10 focus-within:border-red-500 transition-colors">
@@ -469,7 +550,6 @@ const Videos: React.FC = () => {
                                 </div>
                             )}
 
-                            {/* Content Overlay (Bottom Left) - ONLY visible when NOT expanded */}
                             {!isDescriptionExpanded && (
                                 <div className="absolute bottom-4 left-0 right-16 p-4 z-20 select-none space-y-3">
                                     <div className="pointer-events-auto">
@@ -522,7 +602,6 @@ const Videos: React.FC = () => {
                                         </button>
                                     </div>
 
-                                    {/* Music info with Marquee */}
                                     <div className="flex items-center gap-2 pt-1">
                                         <span className="text-white text-[12px] opacity-90">♫</span>
                                         <div className="overflow-hidden w-[180px]">
@@ -539,10 +618,8 @@ const Videos: React.FC = () => {
                                 </div>
                             )}
 
-                            {/* Right Action Bar (Inside Media) - ONLY visible when NOT expanded */}
                             {!isDescriptionExpanded && (
                                 <div className="absolute right-2 bottom-6 w-14 flex flex-col items-center gap-5 z-20">
-                                    {/* Profile with Plus */}
                                     <div className="relative mb-2 pointer-events-auto group cursor-pointer">
                                         <div className="w-11 h-11 rounded-full border-2 border-white overflow-hidden bg-gray-500 shadow-xl group-hover:scale-105 transition-transform">
                                             <img src={currentOffer.image_url} alt="User" className="w-full h-full object-cover" />
@@ -552,71 +629,33 @@ const Videos: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    {/* Like */}
                                     <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleLike(currentOffer.id);
-                                            }}
-                                            className="hover:scale-110 transition-transform active:scale-95"
-                                        >
-                                            <Heart
-                                                size={36}
-                                                className={`transition-colors duration-200 drop-shadow-lg ${likedOffers.has(currentOffer.id)
-                                                    ? 'fill-[#EE2B3E] text-[#EE2B3E]'
-                                                    : 'text-white'
-                                                    }`}
-                                            />
+                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(currentOffer.id); }} className="hover:scale-110 transition-transform active:scale-95">
+                                            <Heart size={36} className={`transition-colors duration-200 drop-shadow-lg ${likedOffers.has(currentOffer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
                                         </button>
                                         <span className="text-white text-[12px] font-bold drop-shadow-md">{formatNumber(currentOffer.likes)}</span>
                                     </div>
 
-                                    {/* Comment */}
                                     <div className="flex flex-col items-center gap-0.5 pointer-events-auto relative">
-                                        <button
-                                            onClick={handleExpandAndComment}
-                                            className="hover:scale-110 transition-transform active:scale-95"
-                                        >
+                                        <button onClick={handleExpandAndComment} className="hover:scale-110 transition-transform active:scale-95">
                                             <MessageCircle size={36} className="text-white drop-shadow-lg" />
                                         </button>
                                         <span className="text-white text-[12px] font-bold drop-shadow-md">{formatNumber(currentOffer.comments + comments.length)}</span>
                                     </div>
 
-                                    {/* Bookmark */}
                                     <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleSave(currentOffer.id);
-                                            }}
-                                            className="hover:scale-110 transition-transform active:scale-95"
-                                        >
-                                            <Bookmark
-                                                size={34}
-                                                className={`transition-colors duration-200 drop-shadow-lg ${savedOffers.has(currentOffer.id)
-                                                    ? 'fill-[#facd3b] text-[#facd3b]'
-                                                    : 'text-white'
-                                                    }`}
-                                            />
+                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(currentOffer.id); }} className="hover:scale-110 transition-transform active:scale-95">
+                                            <Bookmark size={34} className={`transition-colors duration-200 drop-shadow-lg ${savedOffers.has(currentOffer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
                                         </button>
                                     </div>
 
-                                    {/* Share */}
                                     <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                // logic for share
-                                            }}
-                                            className="w-10 h-10   rounded-full flex items-center justify-center shadow-lg  transition-colors"
-                                        >
-                                            <Share2 size={20} className="text-white" />
+                                        <button onClick={(e) => { e.stopPropagation(); }} className="w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                                            <Share2 size={24} className="text-white drop-shadow-lg" />
                                         </button>
                                         <span className="text-white text-[11px] font-bold drop-shadow-md">Share</span>
                                     </div>
 
-                                    {/* Music disk */}
                                     <div className="mt-3 pointer-events-none">
                                         <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1a1a1a] to-[#333] border-[5px] border-[#222] animate-spin-slow overflow-hidden flex items-center justify-center relative shadow-2xl">
                                             <div className="absolute inset-0 bg-[repeating-conic-gradient(#000_0_15deg,#222_0_30deg)] opacity-40"></div>
@@ -631,7 +670,6 @@ const Videos: React.FC = () => {
                     </AnimatePresence>
                 </div>
 
-                {/* Desktop Side Navigation Arrows - Outside the central container */}
                 <div className="hidden sm:flex absolute bottom-10 right-10 flex-col gap-3">
                     <button
                         onClick={() => handleScroll('up')}
@@ -656,7 +694,6 @@ const Videos: React.FC = () => {
                 </div>
             </div>
 
-            {/* Custom Animations for Marquee and Spin */}
             <style>{`
                 @keyframes marquee {
                     0% { transform: translateX(0); }
@@ -672,22 +709,11 @@ const Videos: React.FC = () => {
                     from { transform: rotate(0deg); }
                     to { transform: rotate(360deg); }
                 }
+                .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 20px; }
             `}</style>
 
-            {/* Disclaimer */}
-            {/* <div className="bg-yellow-900/20 border border-yellow-700/30 rounded-lg p-4">
-                <div className="flex items-start gap-2">
-                    <span className="text-yellow-500">⚠️</span>
-                    <div>
-                        <h3 className="text-yellow-400 font-semibold text-sm mb-1">Disclaimers:</h3>
-                        <p className="text-yellow-200/80 text-xs">{currentOffer.disclaimer}</p>
-                    </div>
-                </div>
-            </div> */}
-
-
-
-            {/* Name Setup Modal */}
             {showNameSetup && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
                     <div className="bg-[#1a1a1a] rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 shadow-3xl">

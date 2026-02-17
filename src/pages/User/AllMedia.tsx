@@ -88,6 +88,7 @@ const AllMedia: React.FC = () => {
     ]);
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const commentsRef = useRef<HTMLDivElement>(null);
     const touchStartY = useRef<number>(0);
     const lastScrollTime = useRef<number>(0);
 
@@ -130,7 +131,10 @@ const AllMedia: React.FC = () => {
         setProgress(0);
         setVideoReady(false);
         setIsDescriptionExpanded(false);
+        setShowComments(false);
     }, [currentIndex]);
+
+
 
     const handleScroll = (scrollDirection: 'up' | 'down') => {
         if (scrollDirection === 'down' && currentIndex < offers.length - 1) {
@@ -292,13 +296,13 @@ const AllMedia: React.FC = () => {
         <>
             <div
                 ref={containerRef}
-                className="h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar"
+                className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onWheel={handleWheel}
             >
                 {/* Central Media Container */}
-                <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group ${isDescriptionExpanded ? 'w-full h-full sm:h-[700px] sm:max-w-5xl flex flex-col sm:flex-row' : 'w-full h-full sm:h-[700px] sm:max-w-[420px]'}`}>
+                <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group ${isDescriptionExpanded ? 'w-full h-full sm:h-[85vh] sm:max-w-6xl flex flex-col sm:flex-row' : 'w-full h-full sm:h-[85vh] sm:max-w-[450px]'}`}>
                     <AnimatePresence initial={false} custom={direction} mode="popLayout">
                         <motion.div
                             key={currentOffer.id}
@@ -308,7 +312,7 @@ const AllMedia: React.FC = () => {
                             animate="center"
                             exit="exit"
                             transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                            className="absolute inset-0 h-full w-full flex"
+                            className="absolute inset-0 h-full w-full flex flex-col sm:flex-row"
                         >
                             {!isDescriptionExpanded && (
                                 <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between p-6 sm:hidden pointer-events-none">
@@ -330,8 +334,8 @@ const AllMedia: React.FC = () => {
                             <div className={`relative transition-all duration-500 ${isDescriptionExpanded ? 'w-full h-[40%] sm:h-full lg:w-[45%] flex-shrink-0' : 'h-full w-full'}`}>
                                 <div className="absolute inset-0">
                                     {currentOffer.video_url ? (
-                                        <div className="absolute inset-0 overflow-hidden">
-                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-black">
+                                        <div className="absolute inset-0 overflow-hidden bg-black flex items-center justify-center">
+                                            <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
                                                 {getYouTubeId(currentOffer.video_url) ? (
                                                     <iframe
                                                         width="100%"
@@ -361,6 +365,7 @@ const AllMedia: React.FC = () => {
                                                         }}
                                                         onProgress={(state: any) => setProgress(state.played * 100)}
                                                         className="pointer-events-none"
+                                                        style={{ position: 'absolute', top: 0, left: 0 }}
                                                         config={{
                                                             file: {
                                                                 attributes: {
@@ -490,7 +495,7 @@ const AllMedia: React.FC = () => {
 
                                             {/* Show Comments List Inline, but Footer handles Input */}
                                             {showComments && (
-                                                <div className="pt-6 border-t border-white/10 animate-in fade-in duration-300">
+                                                <div ref={commentsRef} className="pt-6 border-t border-white/10 animate-in fade-in duration-300">
                                                     <h3 className="text-white font-bold mb-6 flex items-center gap-2">
                                                         <MessageCircle size={20} className="text-red-500" />
                                                         Comments ({comments.length + currentOffer.comments})
