@@ -19,6 +19,7 @@ import {
     Search,
     Play
 } from 'lucide-react';
+import PageLoader from '@/Layout/PageLoader';
 
 interface Comment {
     id: number;
@@ -52,7 +53,10 @@ const AllMedia: React.FC = () => {
     const [showNameSetup, setShowNameSetup] = useState(false);
     const [username, setUsername] = useState('');
     const [commentText, setCommentText] = useState('');
-    const [likedOffers, setLikedOffers] = useState<Set<number>>(new Set());
+    const [likedOffers, setLikedOffers] = useState<Set<number>>(() => {
+        const saved = sessionStorage.getItem('favorites');
+        return new Set(saved ? JSON.parse(saved) : []);
+    });
     const [savedOffers, setSavedOffers] = useState<Set<number>>(new Set());
     const [isPlaying, setIsPlaying] = useState(true);
     const [progress, setProgress] = useState(0);
@@ -98,12 +102,10 @@ const AllMedia: React.FC = () => {
             .then(data => {
                 let allOffers: Offer[] = Array.isArray(data) ? data : [data];
 
-                // Load favorites for filtering if needed
-                const savedFavorites = localStorage.getItem('favorites');
-                const favoritesSet = new Set<number>(savedFavorites ? JSON.parse(savedFavorites) : []);
 
-                // Filter based on feedType
                 if (feedType === 'favorites') {
+                    const savedFavorites = sessionStorage.getItem('favorites');
+                    const favoritesSet = new Set<number>(savedFavorites ? JSON.parse(savedFavorites) : []);
                     allOffers = allOffers.filter(o => favoritesSet.has(o.id));
                 }
 
@@ -168,6 +170,7 @@ const AllMedia: React.FC = () => {
             } else {
                 newSet.add(offerId);
             }
+            sessionStorage.setItem('favorites', JSON.stringify(Array.from(newSet)));
             return newSet;
         });
     };
@@ -232,7 +235,9 @@ const AllMedia: React.FC = () => {
     if (!currentOffer) {
         return (
             <div className="h-full bg-black flex items-center justify-center">
-                <div className="text-white text-xl">Loading...</div>
+                <div className="text-white text-xl">
+                    <PageLoader />
+                </div>
             </div>
         );
     }
@@ -494,7 +499,7 @@ const AllMedia: React.FC = () => {
                                     e.stopPropagation();
                                     // logic for share
                                 }}
-                                className="w-10 h-10 bg-[#3482F6] rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition-colors"
+                                className="w-10 h-10   rounded-full flex items-center justify-center shadow-lg  transition-colors"
                             >
                                 <Share2 size={20} className="text-white" />
                             </button>

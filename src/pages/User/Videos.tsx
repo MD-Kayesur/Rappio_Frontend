@@ -11,6 +11,7 @@ import {
     ChevronDown,
     Search
 } from 'lucide-react';
+import PageLoader from '@/Layout/PageLoader';
 
 interface Comment {
     id: number;
@@ -44,7 +45,10 @@ const Videos: React.FC = () => {
     const [showNameSetup, setShowNameSetup] = useState(false);
     const [username, setUsername] = useState('');
     const [commentText, setCommentText] = useState('');
-    const [likedOffers, setLikedOffers] = useState<Set<number>>(new Set());
+    const [likedOffers, setLikedOffers] = useState<Set<number>>(() => {
+        const saved = sessionStorage.getItem('favorites');
+        return new Set(saved ? JSON.parse(saved) : []);
+    });
     const [savedOffers, setSavedOffers] = useState<Set<number>>(new Set());
 
     const [comments, setComments] = useState<Comment[]>([
@@ -126,6 +130,7 @@ const Videos: React.FC = () => {
             } else {
                 newSet.add(offerId);
             }
+            sessionStorage.setItem('favorites', JSON.stringify(Array.from(newSet)));
             return newSet;
         });
     };
@@ -184,7 +189,9 @@ const Videos: React.FC = () => {
     if (!currentOffer) {
         return (
             <div className="h-full bg-black flex items-center justify-center">
-                <div className="text-white text-xl">Loading...</div>
+                <div className="text-white text-xl">
+                    <PageLoader />
+                </div>
             </div>
         );
     }
@@ -389,7 +396,7 @@ const Videos: React.FC = () => {
                                     e.stopPropagation();
                                     // logic for share
                                 }}
-                                className="w-10 h-10 bg-[#3482F6] rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition-colors"
+                                className="w-10 h-10   rounded-full flex items-center justify-center shadow-lg  transition-colors"
                             >
                                 <Share2 size={20} className="text-white" />
                             </button>

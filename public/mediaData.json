@@ -1,5 +1,41 @@
 [
   {
+    "id": 31,
+    "title": "Fortune Ox",
+    "subtitle": "Fortune Ox Gameplay",
+    "description": "Watch the Fortune Ox slot gameplay...",
+    "cta": "Watch Now",
+    "likes": 500,
+    "comments": 100,
+    "image_url": "https://i.ibb.co.com/Cs14WsFt/Screenshot-2026-02-16-at-10-43-26-AM.png",
+    "video_url": "/src/assets/vedio/Gane%20con%20FORTUNE%20OX%20%23juegos%20%23slot%20%23casino%20%23casinoonline%20%23fortuneox.mp4",
+    "website_url": "",
+    "tags": [
+      "FortuneOx",
+      "Slot"
+    ],
+    "terms_highlights": [],
+    "disclaimer": "Entertainment purpose only."
+  },
+  {
+    "id": 32,
+    "title": "Golden Treasure Spin",
+    "subtitle": "Huge Win or Epic Fail?",
+    "description": "Golden Treasure Spin gameplay...",
+    "cta": "Watch Now",
+    "likes": 600,
+    "comments": 150,
+    "image_url": "https://i.ibb.co.com/fVWjhSh7/Screenshot-2026-02-16-at-10-43-46-AM.png",
+    "video_url": "/src/assets/vedio/%F0%9F%8E%B0%20Golden%20Treasure%20Spin%20Gameplay%20_%20HUGE%20Win%20or%20Epic%20Fail_%20%F0%9F%92%B8%F0%9F%8E%AF.mp4",
+    "website_url": "",
+    "tags": [
+      "GoldenTreasure",
+      "Spin"
+    ],
+    "terms_highlights": [],
+    "disclaimer": "Entertainment purpose only."
+  },
+  {
     "id": 1,
     "title": "Fortune's Fortune Casino",
     "subtitle": "Lorem Ipsum is simply dummy text of the printing industry.",
@@ -8,7 +44,7 @@
     "likes": 1400,
     "comments": 1000,
     "image_url": "https://i.ibb.co.com/Cs14WsFt/Screenshot-2026-02-16-at-10-43-26-AM.png",
-    "video_url": "https://www.youtube.com/shorts/QK3va5ev_Gw", 
+    "video_url": "https://www.youtube.com/shorts/QK3va5ev_Gw",
     "website_url": "https://clubfortunecasino.com/",
     "tags": [
       "Casino",
@@ -26,7 +62,7 @@
     "title": "Golden Spin Casino",
     "subtitle": "Premium casino rewards for new players.",
     "description": "Get free spins and cashback... See More",
-   "cta": "Claim Offer",
+    "cta": "Claim Offer",
     "likes": 980,
     "comments": 430,
     "image_url": "https://i.ibb.co.com/fVWjhSh7/Screenshot-2026-02-16-at-10-43-46-AM.png",
@@ -616,8 +652,3 @@
     "disclaimer": "Cyber mode temporary."
   }
 ]
-
-
-
-
- 
