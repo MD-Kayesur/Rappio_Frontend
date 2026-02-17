@@ -80,7 +80,10 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-color: #1a1a1a;
-  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
 }
 
 .no-scrollbar::-webkit-scrollbar {

@@ -93,7 +93,7 @@ const Favorites = () => {
   return (
     <div className="min-h-full text-white overflow-hidden">
       {/* Category Filter Tabs */}
-      <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-gray-800">
+      <div className="sticky top-0 z-10 backdrop-blur-sm  ">
         <div className="overflow-x-auto">
           <div className="flex gap-2 px-4 py-4 min-w-max ">
             {categories.map((category) => (
