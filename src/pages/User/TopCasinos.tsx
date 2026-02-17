@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Heart, ThumbsUp, MessageCircle, Bookmark, Play } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface Offer {
   id: number;
@@ -23,6 +23,8 @@ const TopCasinos = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('q') || '';
 
   // Helper function to extract YouTube video ID
   const extractYouTubeID = (url: string): string => {
@@ -74,11 +76,12 @@ const TopCasinos = () => {
     ...tagCategories.filter(tag => !predefinedCategories.includes(tag))
   ];
 
-  // Filter offers based on selected category
-  const filteredOffers =
-    selectedCategory === 'All'
-      ? offers
-      : offers.filter((offer) => offer.tags.includes(selectedCategory));
+  // Filter offers based on selected category and search query
+  const filteredOffers = offers.filter((offer) => {
+    const matchesCategory = selectedCategory === 'All' || offer.tags.includes(selectedCategory);
+    const matchesSearch = !searchQuery || offer.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const toggleFavorite = (id: number) => {
     setFavorites((prev) => {

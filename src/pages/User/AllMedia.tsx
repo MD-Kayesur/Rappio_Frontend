@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import ReactPlayer from 'react-player';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import logo from "../../assets/Vector.svg";
 import {
     Heart,
@@ -59,7 +59,8 @@ const AllMedia: React.FC = () => {
     const [progress, setProgress] = useState(0);
     const [videoReady, setVideoReady] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchQuery = searchParams.get('q') || '';
     const [allOffers, setAllOffers] = useState<Offer[]>([]);
 
     const [comments, setComments] = useState<Comment[]>([
@@ -324,13 +325,13 @@ const AllMedia: React.FC = () => {
                                     type="text"
                                     placeholder="Search products..."
                                     value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onChange={(e) => setSearchParams({ q: e.target.value }, { replace: true })}
                                     className="w-full py-2.5 pl-11 pr-11 bg-black/20 backdrop-blur-md text-white text-sm border border-white/10 rounded-full focus:outline-none focus:border-white/30 transition-all placeholder-white/40"
                                 />
                                 {searchQuery && (
                                     <div className="absolute inset-y-0 right-0 flex items-center pr-4">
                                         <button
-                                            onClick={(e) => { e.stopPropagation(); setSearchQuery(''); }}
+                                            onClick={(e) => { e.stopPropagation(); setSearchParams({}, { replace: true }); }}
                                             className="flex items-center justify-center w-5 h-5 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
                                         >
                                             <X size={12} className="text-white" />
