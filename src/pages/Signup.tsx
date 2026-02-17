@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CiSquarePlus } from "react-icons/ci";
+// import { CiSquarePlus } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/Slices/AuthSlice/authSlice";
@@ -21,13 +21,13 @@ const signupSchema = z.object({
 type SignupFormInputs = z.infer<typeof signupSchema>;
 
 const Signup = () => {
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview] = useState<string | null>(null);
   const dispatch = useDispatch();
 
   const {
     register,
     handleSubmit,
-    setValue,
+    // setValue,
     formState: { errors },
   } = useForm<SignupFormInputs>({
     resolver: zodResolver(signupSchema),
@@ -60,13 +60,13 @@ const Signup = () => {
     }
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setValue("image", file, { shouldValidate: true });
-    }
-  };
+  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     setPreview(URL.createObjectURL(file));
+  //     setValue("image", file, { shouldValidate: true });
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 dark:bg-gray-950">
@@ -134,12 +134,11 @@ const Signup = () => {
               <p className="text-red-500 text-sm">{errors.role.message}</p>
             )}
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Profile Picture
             </label>
-            {/* input box  */}
-            <div
+             <div
               className="relative w-full h-36 border-2 border-dashed border-gray-400 dark:border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition bg-gray-50 dark:bg-gray-800"
               onClick={() => document.getElementById("fileInput")?.click()}
             >
@@ -169,7 +168,7 @@ const Signup = () => {
                   {errors.image.message}
                 </p>
               )}
-          </div>
+          </div> */}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"

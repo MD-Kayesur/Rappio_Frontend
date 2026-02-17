@@ -10,10 +10,9 @@ import {
   LayoutDashboard,
   Video,
   Image,
-  Heart,
   Trophy,
   Settings,
-  LifeBuoy
+  Bookmark
 } from "lucide-react";
 
 import {
@@ -80,10 +79,10 @@ export const UserSidebar: React.FC<SidebarProps> = ({
     { path: "/user/all", label: "All", icon: LayoutDashboard },
     { path: "/user/videos", label: "Videos", icon: Video },
     { path: "/user/photos", label: "Photos", icon: Image },
-    { path: "/user/favorites", label: "Favorites", icon: Heart },
+    { path: "/user/favorites", label: "Favorites", icon: Bookmark },
     { path: "/user/top-casinos", label: "Top Casinos", icon: Trophy },
     { path: "/user/settings", label: "Settings", icon: Settings },
-    { path: "/user/support", label: "Support", icon: LifeBuoy },
+    // { path: "/user/support", label: "Support", icon: LifeBuoy },
   ];
 
   return (

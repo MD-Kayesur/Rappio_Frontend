@@ -401,8 +401,8 @@ const FeedOrdering = () => {
                     size="sm"
                     variant={currentPage === page ? 'default' : 'outline'}
                     className={`h-8 w-8 p-0 text-xs ${currentPage === page
-                        ? 'bg-red-600 hover:bg-red-700 border-red-600'
-                        : 'bg-gray-800 border-gray-700 hover:bg-gray-700'
+                      ? 'bg-red-600 hover:bg-red-700 border-red-600'
+                      : 'bg-gray-800 border-gray-700 hover:bg-gray-700'
                       }`}
                     onClick={() => setCurrentPage(page)}
                   >
@@ -434,7 +434,7 @@ const FeedOrdering = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             {/* Left Column - Form Fields */}
-            <div className="space-y-4">
+            <div className="space-y-8">
               <div>
                 <Label className="text-sm mb-2 block">Title / Casino name:</Label>
                 <Input
