@@ -45,11 +45,11 @@ const Videos: React.FC = () => {
     const [showNameSetup, setShowNameSetup] = useState(false);
     const [username, setUsername] = useState('');
     const [commentText, setCommentText] = useState('');
-    const [likedOffers, setLikedOffers] = useState<Set<number>>(() => {
+    const [likedOffers, setLikedOffers] = useState<Set<number>>(new Set());
+    const [savedOffers, setSavedOffers] = useState<Set<number>>(() => {
         const saved = sessionStorage.getItem('favorites');
         return new Set(saved ? JSON.parse(saved) : []);
     });
-    const [savedOffers, setSavedOffers] = useState<Set<number>>(new Set());
 
     const [comments, setComments] = useState<Comment[]>([
         {
@@ -130,7 +130,6 @@ const Videos: React.FC = () => {
             } else {
                 newSet.add(offerId);
             }
-            sessionStorage.setItem('favorites', JSON.stringify(Array.from(newSet)));
             return newSet;
         });
     };
@@ -143,6 +142,7 @@ const Videos: React.FC = () => {
             } else {
                 newSet.add(offerId);
             }
+            sessionStorage.setItem('favorites', JSON.stringify(Array.from(newSet)));
             return newSet;
         });
     };
