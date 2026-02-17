@@ -44,7 +44,7 @@ export const LayoutNavber: React.FC = () => {
   // const userImageToShow = user?.avatar || "";
 
   return (
-    <div className="md:px-10 pl-5 pr-15 z-9999     py-5 flex items-center justify-between  ">
+    <div className="md:px-10 pl-5 pr-15 relative z-[9999] py-5 flex items-center justify-between  ">
       {/* <Link to={settingsRoute} className="flex items-center gap-3 cursor-pointer">
         {userImageToShow ? (
           <img

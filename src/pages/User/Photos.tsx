@@ -9,7 +9,8 @@ import {
     Share2,
     X,
     ChevronUp,
-    ChevronDown
+    ChevronDown,
+    Search
 } from 'lucide-react';
 import PageLoader from '@/Layout/PageLoader';
 
@@ -52,6 +53,8 @@ const Photos: React.FC = () => {
         return new Set(saved ? JSON.parse(saved) : []);
     });
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [allOffers, setAllOffers] = useState<Offer[]>([]);
 
     const [comments, setComments] = useState<Comment[]>([
         {
@@ -94,6 +97,7 @@ const Photos: React.FC = () => {
                 // Filter only items with images and no video for Photos page if needed, 
                 // but let's keep it consistent with what was there before
                 setOffers(allOffers);
+                setAllOffers(allOffers);
             })
             .catch(error => console.error('Error fetching offers:', error));
 
@@ -109,6 +113,14 @@ const Photos: React.FC = () => {
     }, [currentIndex]);
 
 
+
+    useEffect(() => {
+        const filtered = allOffers.filter(offer =>
+            offer.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setOffers(filtered);
+        setCurrentIndex(0);
+    }, [searchQuery, allOffers]);
 
     const handleScroll = (scrollDirection: 'up' | 'down') => {
         if (scrollDirection === 'down' && currentIndex < offers.length - 1) {
@@ -268,6 +280,32 @@ const Photos: React.FC = () => {
                 onWheel={handleWheel}
             >
                 <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group ${isDescriptionExpanded ? 'w-full h-full sm:h-[85vh] sm:max-w-6xl flex flex-col sm:flex-row' : 'w-full h-full sm:h-[85vh] sm:max-w-[450px]'}`}>
+                    {!isDescriptionExpanded && (
+                        <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
+                            <div className="flex-1 relative group pointer-events-auto">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                    <Search size={18} className="text-white/60" />
+                                </div>
+                                <input
+                                    type="text"
+                                    placeholder="Search photos..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full py-2.5 pl-11 pr-11 bg-black/20 backdrop-blur-md text-white text-sm border border-white/10 rounded-full focus:outline-none focus:border-white/30 transition-all placeholder-white/40"
+                                />
+                                {searchQuery && (
+                                    <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setSearchQuery(''); }}
+                                            className="flex items-center justify-center w-5 h-5 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+                                        >
+                                            <X size={12} className="text-white" />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     <AnimatePresence initial={false} custom={direction} mode="popLayout">
                         <motion.div
                             key={currentOffer.id}
@@ -279,7 +317,7 @@ const Photos: React.FC = () => {
                             transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
                             className="absolute inset-0 h-full w-full flex flex-col sm:flex-row"
                         >
-                            <div className={`relative transition-all duration-500 ${isDescriptionExpanded ? 'w-full h-[40%] sm:h-full lg:w-[45%] flex-shrink-0' : 'h-full w-full'}`}>
+                            <div className={`relative transition-all duration-500 ${isDescriptionExpanded ? 'hidden sm:block sm:w-full sm:h-full lg:w-[45%] flex-shrink-0' : 'h-full w-full'}`}>
                                 <div className="absolute inset-0">
                                     <img src={currentOffer.image_url} alt={currentOffer.title} className="w-full h-full object-cover" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />

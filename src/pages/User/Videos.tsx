@@ -59,6 +59,8 @@ const Videos: React.FC = () => {
     const [progress, setProgress] = useState(0);
     const [videoReady, setVideoReady] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [allOffers, setAllOffers] = useState<Offer[]>([]);
 
     const [comments, setComments] = useState<Comment[]>([
         {
@@ -113,6 +115,7 @@ const Videos: React.FC = () => {
                 }
 
                 setOffers(allOffers);
+                setAllOffers(allOffers);
 
                 if (typeof initialIndex === 'number' && initialIndex < allOffers.length) {
                     setCurrentIndex(initialIndex);
@@ -135,6 +138,14 @@ const Videos: React.FC = () => {
     }, [currentIndex]);
 
 
+
+    useEffect(() => {
+        const filtered = allOffers.filter(offer =>
+            offer.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setOffers(filtered);
+        setCurrentIndex(0);
+    }, [searchQuery, allOffers]);
 
     const handleScroll = (scrollDirection: 'up' | 'down') => {
         if (scrollDirection === 'down' && currentIndex < offers.length - 1) {
@@ -303,6 +314,32 @@ const Videos: React.FC = () => {
             >
                 {/* Central Media Container */}
                 <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group ${isDescriptionExpanded ? 'w-full h-full sm:h-[85vh] sm:max-w-6xl flex flex-col sm:flex-row' : 'w-full h-full sm:h-[85vh] sm:max-w-[450px]'}`}>
+                    {!isDescriptionExpanded && (
+                        <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
+                            <div className="flex-1 relative group pointer-events-auto">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                    <Search size={18} className="text-white/60" />
+                                </div>
+                                <input
+                                    type="text"
+                                    placeholder="Search products..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full py-2.5 pl-11 pr-11 bg-black/20 backdrop-blur-md text-white text-sm border border-white/10 rounded-full focus:outline-none focus:border-white/30 transition-all placeholder-white/40"
+                                />
+                                {searchQuery && (
+                                    <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setSearchQuery(''); }}
+                                            className="flex items-center justify-center w-5 h-5 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+                                        >
+                                            <X size={12} className="text-white" />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     <AnimatePresence initial={false} custom={direction} mode="popLayout">
                         <motion.div
                             key={currentOffer.id}
@@ -314,24 +351,7 @@ const Videos: React.FC = () => {
                             transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
                             className="absolute inset-0 h-full w-full flex flex-col sm:flex-row"
                         >
-                            {!isDescriptionExpanded && (
-                                <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between p-6 sm:hidden pointer-events-none">
-                                    <button className="text-white hover:opacity-80 transition-opacity pointer-events-auto">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-6 h-6 drop-shadow-lg">
-                                            <circle cx="11" cy="11" r="8"></circle>
-                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                        </svg>
-                                    </button>
-                                    <div className="px-5 py-2 bg-black/30 backdrop-blur-lg rounded-full border border-white/10 pointer-events-auto shadow-sm">
-                                        <span className="text-white text-[13px] font-bold tracking-tight">Open App</span>
-                                    </div>
-                                    <button className="text-white hover:opacity-80 transition-opacity pointer-events-auto">
-                                        <Search size={24} className="drop-shadow-lg" />
-                                    </button>
-                                </div>
-                            )}
-
-                            <div className={`relative transition-all duration-500 ${isDescriptionExpanded ? 'w-full h-[40%] sm:h-full lg:w-[45%] flex-shrink-0' : 'h-full w-full'}`}>
+                            <div className={`relative transition-all duration-500 ${isDescriptionExpanded ? 'hidden sm:block sm:w-full sm:h-full lg:w-[45%] flex-shrink-0' : 'h-full w-full'}`}>
                                 <div className="absolute inset-0">
                                     {currentOffer.video_url ? (
                                         <div className="absolute inset-0 overflow-hidden bg-black flex items-center justify-center">
