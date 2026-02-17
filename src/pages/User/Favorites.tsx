@@ -92,7 +92,7 @@ const Favorites = () => {
       {/* Category Filter Tabs */}
       <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-gray-800">
         <div className="overflow-x-auto">
-          <div className="flex gap-2 px-4 py-4 min-w-max">
+          <div className="flex gap-2 px-4 py-4 min-w-max ">
             {categories.map((category) => (
               <button
                 key={category}
