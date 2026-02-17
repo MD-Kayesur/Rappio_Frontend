@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import {
   Select,
   SelectContent,
@@ -11,12 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { useRef } from 'react';
 import { MoreVertical, Edit, Trash2, Eye, Pin, Upload, X, Heart, MessageCircle, Bookmark, Share, ChevronLeft, ChevronRight } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 
@@ -105,6 +101,9 @@ const FeedOrdering = () => {
     thumbnailPreview: '',
   });
 
+  const mediaInputRef = useRef<HTMLInputElement>(null);
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
+
   // Handle Edit
   const handleEdit = (feed: Feed) => {
     setSelectedFeed(feed);
@@ -134,9 +133,8 @@ const FeedOrdering = () => {
 
   // Handle Delete
   const handleDelete = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this feed?')) {
-      setFeeds(feeds.filter(feed => feed.id !== id));
-    }
+    setFeeds(feeds.filter(feed => feed.id !== id));
+    toast.success('Feed deleted successfully');
   };
 
   // Handle Pin/Unpin
@@ -425,332 +423,357 @@ const FeedOrdering = () => {
       </div>
 
       {/* Edit Modal */}
-      <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
-        <DialogContent className="max-w-7xl bg-gray-950 text-white border-gray-800 max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold">Create New post</DialogTitle>
-            <p className="text-sm text-gray-400">Fill out this form to publish a new post.</p>
-          </DialogHeader>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            {/* Left Column - Form Fields */}
-            <div className="space-y-8">
-              <div>
-                <Label className="text-sm mb-2 block">Title / Casino name:</Label>
-                <Input
-                  placeholder="Title or casino name here..."
-                  className="bg-[#1A1C1D] border-gray-800 text-white"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                />
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Type:</Label>
-                <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
-                  <SelectTrigger className="bg-[#1A1C1D] border-gray-800 text-white">
-                    <SelectValue placeholder="Choose One..." />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
-                    <SelectItem value="casino">Casino</SelectItem>
-                    <SelectItem value="poker">Poker</SelectItem>
-                    <SelectItem value="sports">Sports Betting</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Bonuses:</Label>
-                <Textarea
-                  placeholder="Type bonus points & press enter to add"
-                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
-                  value={formData.bonuses}
-                  onChange={(e) => setFormData({ ...formData, bonuses: e.target.value })}
-                />
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Short description:</Label>
-                <Textarea
-                  placeholder="Type bonus points & press enter to add"
-                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                />
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Terms highlights:</Label>
-                <Textarea
-                  placeholder="Provide your highlighted terms"
-                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
-                  value={formData.termsHighlights}
-                  onChange={(e) => setFormData({ ...formData, termsHighlights: e.target.value })}
-                />
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Affiliate link:</Label>
-                <Input
-                  placeholder="Type bonus points & press enter to add"
-                  className="bg-[#1A1C1D] border-gray-800 text-white"
-                  value={formData.affiliateLink}
-                  onChange={(e) => setFormData({ ...formData, affiliateLink: e.target.value })}
-                />
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Languages:</Label>
-                <Select value={formData.languages} onValueChange={(value) => setFormData({ ...formData, languages: value })}>
-                  <SelectTrigger className="bg-[#1A1C1D] border-gray-800 text-white">
-                    <SelectValue placeholder="Choose One..." />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
-                    <SelectItem value="english">English</SelectItem>
-                    <SelectItem value="spanish">Spanish</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Device visibility:</Label>
-                <div className="flex gap-4 mt-2">
-                  <Button
-                    type="button"
-                    variant={deviceVisibility.mobile ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.mobile ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
-                    onClick={() => setDeviceVisibility({ mobile: true, desktop: false, both: false })}
-                  >
-                    Mobile
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={deviceVisibility.desktop ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.desktop ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
-                    onClick={() => setDeviceVisibility({ mobile: false, desktop: true, both: false })}
-                  >
-                    Desktop
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={deviceVisibility.both ? 'default' : 'outline'}
-                    className={`flex-1 ${deviceVisibility.both ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
-                    onClick={() => setDeviceVisibility({ mobile: false, desktop: false, both: true })}
-                  >
-                    Both
-                  </Button>
-                </div>
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Categories/tags:</Label>
-                <Textarea
-                  placeholder="Type bonus points & press enter to add"
-                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
-                  value={formData.categories}
-                  onChange={(e) => setFormData({ ...formData, categories: e.target.value })}
-                />
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Disclaimers:</Label>
-                <Textarea
-                  placeholder="Type bonus points & press enter to add"
-                  className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
-                  value={formData.disclaimers}
-                  onChange={(e) => setFormData({ ...formData, disclaimers: e.target.value })}
-                />
-              </div>
-
-              <div className="flex items-center justify-between py-2">
-                <Label className="text-sm">This media contains 18+ content</Label>
-                <Switch checked={contains18Plus} onCheckedChange={setContains18Plus} />
-              </div>
-            </div>
-
-            {/* Right Column - Upload Media */}
-            <div className="space-y-4">
-              <div>
-                <Label className="text-sm mb-2 block">Upload Media:</Label>
-                <div className="border-2 border-dashed border-gray-800 rounded-lg p-8 bg-[#1A1C1D]/50 flex flex-col items-center justify-center min-h-[300px] relative">
-                  {formData.mediaPreview ? (
-                    <div className="relative w-full h-full">
-                      <img src={formData.mediaPreview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
-                      <button
-                        onClick={() => setFormData({ ...formData, mediaFile: null, mediaPreview: '' })}
-                        className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                        <Upload className="h-8 w-8 text-gray-400" />
-                      </div>
-                      <p className="text-sm text-gray-400 mb-2">Tap to upload</p>
-                      <p className="text-xs text-gray-500">File supported: Mp4, jpeg, png</p>
-                      <input
-                        type="file"
-                        accept="image/*,video/*"
-                        onChange={handleMediaUpload}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      />
-                      <Button className="mt-4 bg-red-600 hover:bg-red-700">Upload</Button>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <Label className="text-sm mb-2 block">Upload Thumbnail:</Label>
-                <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 bg-[#1A1C1D]/50 flex flex-col items-center justify-center relative">
-                  {formData.thumbnailPreview ? (
-                    <div className="relative w-full">
-                      <img src={formData.thumbnailPreview} alt="Thumbnail" className="w-full h-32 object-cover rounded-lg" />
-                      <button
-                        onClick={() => setFormData({ ...formData, thumbnailFile: null, thumbnailPreview: '' })}
-                        className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center mb-2">
-                        <Upload className="h-6 w-6 text-gray-400" />
-                      </div>
-                      <p className="text-xs text-gray-500 mb-2">Choose a thumbnail for your videoshow</p>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleThumbnailUpload}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      />
-                      <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700">
-                        Select
-                      </Button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex gap-4 mt-6">
-            <Button onClick={handleSaveEdit} className="bg-red-600 hover:bg-red-700">
-              Save Changes
-            </Button>
-            <Button
-              onClick={() => setShowEditModal(false)}
-              variant="outline"
-              className="bg-[#1A1C1D] border-gray-800"
-            >
-              Cancel
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* View/Preview Modal */}
-      <Dialog open={showViewModal} onOpenChange={setShowViewModal}>
-        <DialogContent className="max-w-7xl bg-gray-950 text-white border-gray-800">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold">Preview Post</DialogTitle>
-            <p className="text-sm text-gray-400">Your post will be like this preview.</p>
-          </DialogHeader>
-
-          {selectedFeed && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              {/* Left - Image */}
-              <div className="relative">
-                <img
-                  src={selectedFeed.image}
-                  alt={selectedFeed.name}
-                  className="w-full rounded-lg object-cover"
-                />
-              </div>
-
-              {/* Right - Details */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
-                    <span className="text-sm">🎰</span>
-                  </div>
-                  <h3 className="font-bold text-lg">
-                    {selectedFeed.title || selectedFeed.name}
-                  </h3>
+      {showEditModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm">
+          <div className="flex min-h-screen items-center justify-center p-4">
+            <div className="w-full max-w-7xl bg-gray-950 text-white border border-gray-800 rounded-lg shadow-xl relative">
+              <div className="p-6">
+                <div className="flex flex-col space-y-1.5 text-center sm:text-left">
+                  <h2 className="text-xl font-bold">Create New post</h2>
+                  <p className="text-sm text-gray-400">Fill out this form to publish a new post.</p>
                 </div>
 
-                <p className="text-sm text-gray-300">
-                  {selectedFeed.description ||
-                    'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'}
-                </p>
-
-                <Button className="bg-red-600 hover:bg-red-700">Claim Offer</Button>
-
-                {/* Actions */}
-                <div className="flex items-center gap-6 py-4">
-                  <button className="flex flex-col items-center gap-1">
-                    <Heart className="h-6 w-6" />
-                    <span className="text-xs">1.4k</span>
-                  </button>
-                  <button className="flex flex-col items-center gap-1">
-                    <MessageCircle className="h-6 w-6" />
-                    <span className="text-xs">1k</span>
-                  </button>
-                  <button className="flex flex-col items-center gap-1">
-                    <Bookmark className="h-6 w-6" />
-                  </button>
-                  <button className="flex flex-col items-center gap-1">
-                    <Share className="h-6 w-6" />
-                  </button>
-                </div>
-
-                {/* Description */}
-                <div>
-                  <h4 className="font-semibold mb-2">Description:</h4>
-                  <p className="text-sm text-gray-300">
-                    {selectedFeed.description ||
-                      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'}
-                  </p>
-                </div>
-
-                {/* Terms */}
-                <div>
-                  <h4 className="font-semibold mb-2">Terms highlights:</h4>
-                  <p className="text-sm text-gray-300">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                  </p>
-                </div>
-
-                {/* Disclaimers */}
-                <div className="bg-yellow-900/20 border border-yellow-600/30 rounded-lg p-3">
-                  <div className="flex items-start gap-2">
-                    <span className="text-yellow-500">⚠</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                  {/* Left Column - Form Fields */}
+                  <div className="space-y-8">
                     <div>
-                      <h4 className="font-semibold text-yellow-500 mb-1">Disclaimers:</h4>
-                      <p className="text-xs text-gray-300">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                      </p>
+                      <Label className="text-sm mb-2 block">Title / Casino name:</Label>
+                      <Input
+                        placeholder="Title or casino name here..."
+                        className="bg-[#1A1C1D] border-gray-800 text-white"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Type:</Label>
+                      <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
+                        <SelectTrigger className="bg-[#1A1C1D] border-gray-800 text-white">
+                          <SelectValue placeholder="Choose One..." />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
+                          <SelectItem value="casino">Casino</SelectItem>
+                          <SelectItem value="poker">Poker</SelectItem>
+                          <SelectItem value="sports">Sports Betting</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Bonuses:</Label>
+                      <Textarea
+                        placeholder="Type bonus points & press enter to add"
+                        className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
+                        value={formData.bonuses}
+                        onChange={(e) => setFormData({ ...formData, bonuses: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Short description:</Label>
+                      <Textarea
+                        placeholder="Type bonus points & press enter to add"
+                        className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
+                        value={formData.description}
+                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Terms highlights:</Label>
+                      <Textarea
+                        placeholder="Provide your highlighted terms"
+                        className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
+                        value={formData.termsHighlights}
+                        onChange={(e) => setFormData({ ...formData, termsHighlights: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Affiliate link:</Label>
+                      <Input
+                        placeholder="Type bonus points & press enter to add"
+                        className="bg-[#1A1C1D] border-gray-800 text-white"
+                        value={formData.affiliateLink}
+                        onChange={(e) => setFormData({ ...formData, affiliateLink: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Languages:</Label>
+                      <Select value={formData.languages} onValueChange={(value) => setFormData({ ...formData, languages: value })}>
+                        <SelectTrigger className="bg-[#1A1C1D] border-gray-800 text-white">
+                          <SelectValue placeholder="Choose One..." />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#1A1C1D] border-gray-800 text-white">
+                          <SelectItem value="english">English</SelectItem>
+                          <SelectItem value="spanish">Spanish</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Device visibility:</Label>
+                      <div className="flex gap-4 mt-2">
+                        <Button
+                          type="button"
+                          variant={deviceVisibility.mobile ? 'default' : 'outline'}
+                          className={`flex-1 ${deviceVisibility.mobile ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
+                          onClick={() => setDeviceVisibility({ mobile: true, desktop: false, both: false })}
+                        >
+                          Mobile
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={deviceVisibility.desktop ? 'default' : 'outline'}
+                          className={`flex-1 ${deviceVisibility.desktop ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
+                          onClick={() => setDeviceVisibility({ mobile: false, desktop: true, both: false })}
+                        >
+                          Desktop
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={deviceVisibility.both ? 'default' : 'outline'}
+                          className={`flex-1 ${deviceVisibility.both ? 'bg-white text-black' : 'bg-[#1A1C1D] border-gray-800'}`}
+                          onClick={() => setDeviceVisibility({ mobile: false, desktop: false, both: true })}
+                        >
+                          Both
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Categories/tags:</Label>
+                      <Textarea
+                        placeholder="Type bonus points & press enter to add"
+                        className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
+                        value={formData.categories}
+                        onChange={(e) => setFormData({ ...formData, categories: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Disclaimers:</Label>
+                      <Textarea
+                        placeholder="Type bonus points & press enter to add"
+                        className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
+                        value={formData.disclaimers}
+                        onChange={(e) => setFormData({ ...formData, disclaimers: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between py-2">
+                      <Label className="text-sm">This media contains 18+ content</Label>
+                      <Switch checked={contains18Plus} onCheckedChange={setContains18Plus} />
+                    </div>
+                  </div>
+
+                  {/* Right Column - Upload Media */}
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="text-sm mb-2 block">Upload Media:</Label>
+                      <div className="border-2 border-dashed border-gray-800 rounded-lg p-8 bg-[#1A1C1D]/50 flex flex-col items-center justify-center min-h-[300px] relative">
+                        {formData.mediaPreview ? (
+                          <div className="relative w-full h-full">
+                            <img src={formData.mediaPreview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
+                            <button
+                              onClick={() => setFormData({ ...formData, mediaFile: null, mediaPreview: '' })}
+                              className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                              <Upload className="h-8 w-8 text-gray-400" />
+                            </div>
+                            <p className="text-sm text-gray-400 mb-2">Tap to upload</p>
+                            <p className="text-xs text-gray-500">File supported: Mp4, jpeg, png</p>
+                            <input
+                              type="file"
+                              accept="image/*,video/*"
+                              ref={mediaInputRef}
+                              onChange={handleMediaUpload}
+                              className="hidden"
+                            />
+                            <Button
+                              type="button"
+                              onClick={() => mediaInputRef.current?.click()}
+                              className="mt-4 bg-red-600 hover:bg-red-700"
+                            >
+                              Upload
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="text-sm mb-2 block">Upload Thumbnail:</Label>
+                      <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 bg-[#1A1C1D]/50 flex flex-col items-center justify-center relative">
+                        {formData.thumbnailPreview ? (
+                          <div className="relative w-full">
+                            <img src={formData.thumbnailPreview} alt="Thumbnail" className="w-full h-32 object-cover rounded-lg" />
+                            <button
+                              onClick={() => setFormData({ ...formData, thumbnailFile: null, thumbnailPreview: '' })}
+                              className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center mb-2">
+                              <Upload className="h-6 w-6 text-gray-400" />
+                            </div>
+                            <p className="text-xs text-gray-500 mb-2">Choose a thumbnail for your videoshow</p>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              ref={thumbnailInputRef}
+                              onChange={handleThumbnailUpload}
+                              className="hidden"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => thumbnailInputRef.current?.click()}
+                              className="bg-gray-800 border-gray-700"
+                            >
+                              Select
+                            </Button>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                <div className="flex gap-4 mt-6">
+                  <Button onClick={handleSaveEdit} className="bg-red-600 hover:bg-red-700">
+                    Save Changes
+                  </Button>
+                  <Button
+                    onClick={() => setShowEditModal(false)}
+                    variant="outline"
+                    className="bg-[#1A1C1D] border-gray-800"
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </div>
             </div>
-          )}
-
-          <div className="flex gap-4 mt-6">
-            <Button
-              onClick={() => setShowViewModal(false)}
-              variant="outline"
-              className="bg-[#1A1C1D] border-gray-800"
-            >
-              Close
-            </Button>
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
+
+      {showViewModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm">
+          <div className="flex min-h-screen items-center justify-center p-4">
+            <div className="w-full max-w-7xl bg-gray-950 text-white border border-gray-800 rounded-lg shadow-xl relative">
+              <div className="p-6">
+                <div className="flex flex-col space-y-1.5 text-center sm:text-left">
+                  <h2 className="text-xl font-bold">Preview Post</h2>
+                  <p className="text-sm text-gray-400">Your post will be like this preview.</p>
+                </div>
+
+                {selectedFeed && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    {/* Left - Image */}
+                    <div className="relative">
+                      <img
+                        src={selectedFeed.image}
+                        alt={selectedFeed.name}
+                        className="w-full rounded-lg object-cover"
+                      />
+                    </div>
+
+                    {/* Right - Details */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+                          <span className="text-sm">🎰</span>
+                        </div>
+                        <h3 className="font-bold text-lg">
+                          {selectedFeed.title || selectedFeed.name}
+                        </h3>
+                      </div>
+
+                      <p className="text-sm text-gray-300">
+                        {selectedFeed.description ||
+                          'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'}
+                      </p>
+
+                      <Button className="bg-red-600 hover:bg-red-700">Claim Offer</Button>
+
+                      {/* Actions */}
+                      <div className="flex items-center gap-6 py-4">
+                        <button className="flex flex-col items-center gap-1">
+                          <Heart className="h-6 w-6" />
+                          <span className="text-xs">1.4k</span>
+                        </button>
+                        <button className="flex flex-col items-center gap-1">
+                          <MessageCircle className="h-6 w-6" />
+                          <span className="text-xs">1k</span>
+                        </button>
+                        <button className="flex flex-col items-center gap-1">
+                          <Bookmark className="h-6 w-6" />
+                        </button>
+                        <button className="flex flex-col items-center gap-1">
+                          <Share className="h-6 w-6" />
+                        </button>
+                      </div>
+
+                      {/* Description */}
+                      <div>
+                        <h4 className="font-semibold mb-2">Description:</h4>
+                        <p className="text-sm text-gray-300">
+                          {selectedFeed.description ||
+                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'}
+                        </p>
+                      </div>
+
+                      {/* Terms */}
+                      <div>
+                        <h4 className="font-semibold mb-2">Terms highlights:</h4>
+                        <p className="text-sm text-gray-300">
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                        </p>
+                      </div>
+
+                      {/* Disclaimers */}
+                      <div className="bg-yellow-900/20 border border-yellow-600/30 rounded-lg p-3">
+                        <div className="flex items-start gap-2">
+                          <span className="text-yellow-500">⚠</span>
+                          <div>
+                            <h4 className="font-semibold text-yellow-500 mb-1">Disclaimers:</h4>
+                            <p className="text-xs text-gray-300">
+                              Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-4 mt-6">
+                  <Button
+                    onClick={() => setShowViewModal(false)}
+                    variant="outline"
+                    className="bg-[#1A1C1D] border-gray-800"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
