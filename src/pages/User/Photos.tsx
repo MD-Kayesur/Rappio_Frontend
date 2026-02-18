@@ -222,8 +222,11 @@ const Photos: React.FC = () => {
     const handleExpandAndComment = (e: React.MouseEvent) => {
         e.stopPropagation();
         const savedUsername = localStorage.getItem('username');
-        if (!savedUsername && !username) setShowNameSetup(true);
-        else setShowComments(true);
+        if (!savedUsername && !username) {
+            setShowNameSetup(true);
+        } else {
+            setShowComments(!showComments);
+        }
     };
 
     const variants = {
@@ -239,7 +242,7 @@ const Photos: React.FC = () => {
     return (
         <>
             <div ref={containerRef} className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onWheel={handleWheel}>
-                <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[250px]' : 'sm:translate-x-0'} z-10`}>
+                <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
                     <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
                         <div className="flex-1 relative group pointer-events-auto">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-white/60"><Search size={18} /></div>
@@ -298,7 +301,7 @@ const Photos: React.FC = () => {
                             </div>
 
                             {/* Sidebar Icons (Still separate from card) */}
-                            <div className="w-14 flex flex-col items-center gap-6 mb-8 flex-shrink-0 z-40">
+                            <div className="w-14 flex flex-col items-center gap-6 mb-8 flex-shrink-0 z-[120]">
                                 <div className="flex flex-col items-center gap-1.5">
                                     <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                         <Search size={22} />
@@ -344,7 +347,7 @@ const Photos: React.FC = () => {
             <AnimatePresence>
                 {showComments && (
                     <>
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowComments(false)} onWheel={handleWheel} className="fixed inset-0 bg-black/60 sm:bg-transparent z-[100]" />
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onWheel={handleWheel} className="fixed inset-0 bg-black/60 sm:bg-transparent z-[100]" />
                         <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] bg-black z-[110] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
                             <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-black sticky top-0 z-20">
                                 <h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3>
