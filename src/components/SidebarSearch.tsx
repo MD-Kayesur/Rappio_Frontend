@@ -89,10 +89,13 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, setIs
                         setIsCollapsed(true);
                         setIsOpen(true);
                     }}
-                    className={`flex items-center gap-3 bg-[#1A1C1D] border border-white/5 hover:border-white/10 transition-all text-gray-400 hover:text-white rounded-full ${isCollapsed ? 'w-10 h-10 justify-center' : 'w-full px-4 py-2.5'}`}
+                    className={`flex items-center transition-all bg-[#1A1C1D] border border-white/5 hover:border-white/10 text-gray-400 hover:text-white rounded-full ${isCollapsed
+                            ? 'w-10 h-10 justify-center p-0 flex-shrink-0'
+                            : 'w-full px-4 py-2.5 gap-3'
+                        }`}
                 >
-                    <Search size={isCollapsed ? 20 : 18} />
-                    {!isCollapsed && <span className="text-[15px]">Search</span>}
+                    <Search size={isCollapsed ? 20 : 18} className="flex-shrink-0" />
+                    {!isCollapsed && <span className="text-[15px] whitespace-nowrap">Search</span>}
                 </button>
             </div>
 

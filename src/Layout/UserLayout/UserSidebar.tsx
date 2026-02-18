@@ -11,7 +11,7 @@ import {
   Video,
   Image,
   Trophy,
-  Settings,
+  // Settings,
   Bookmark
 } from "lucide-react";
 import { SidebarSearch } from "@/components/SidebarSearch";
@@ -82,7 +82,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
     { path: "/user/photos", label: "Photos", icon: Image },
     { path: "/user/favorites", label: "Favorites", icon: Bookmark },
     { path: "/user/top-casinos", label: "Top Casinos", icon: Trophy },
-    { path: "/user/settings", label: "Settings", icon: Settings },
+    // { path: "/user/settings", label: "Settings", icon: Settings },
     // { path: "/user/support", label: "Support", icon: LifeBuoy },
   ];
 
@@ -124,7 +124,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                 />
               )}
               {!isCollapsed && (
-                <h1 className="font-bold text-xl sm:text-2xl text-[#111827] dark:text-gray-200 truncate">
+                <h1 className="font-bold text-[22px] text-[#111827] dark:text-gray-200 truncate">
                   ProntoCorso
                 </h1>
               )}
@@ -172,7 +172,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                 />
 
                 {!isCollapsed && (
-                  <span className="flex items-center gap-2 text-sm sm:text-base truncate">
+                  <span className="flex items-center gap-2 text-[16px] truncate">
                     {item.label}
                     {isDisabled && (
                       <span className="text-xs  text-black px-2 py-0.5 rounded whitespace-nowrap">
