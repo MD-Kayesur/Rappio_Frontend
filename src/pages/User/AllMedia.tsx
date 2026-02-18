@@ -272,7 +272,7 @@ const AllMedia: React.FC = () => {
                     <AnimatePresence initial={false} custom={direction} mode="popLayout">
                         <motion.div key={currentOffer.id} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }} className="absolute inset-0 h-full w-full flex flex-row items-end gap-5">
                             {/* Main Card - Full Height Video */}
-                            <div className="flex-1 h-full bg-[#121212] sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 relative group">
+                            <div className="flex-1 h-full bg-[#121212] sm:rounded-[1rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 relative group">
                                 <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
                                     {currentOffer.video_url ? (
                                         <div className="absolute inset-0 flex items-center justify-center">
@@ -301,11 +301,7 @@ const AllMedia: React.FC = () => {
                                 {/* Overlaid Info Area */}
                                 <div className="absolute bottom-0 left-0 right-0 p-6 space-y-3 z-30 pointer-events-none">
                                     {/* Claim Offer Button inside overlay */}
-                                    <div className="pointer-events-auto mb-2">
-                                        <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2 px-5 rounded-lg text-[13px] shadow-lg transition-all">
-                                            {currentOffer.cta || 'Claim Offer'}
-                                        </button>
-                                    </div>
+                                   
 
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
@@ -324,8 +320,16 @@ const AllMedia: React.FC = () => {
                                         </button>
                                     </div>
 
+
+ <div className="pointer-events-auto mb-2">
+                                        <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2 px-5 rounded-lg text-[13px] shadow-lg transition-all">
+                                            {currentOffer.cta || 'Claim Offer'}
+                                        </button>
+                                    </div>
+
+
                                     {/* Tags */}
-                                    {currentOffer.tags && currentOffer.tags.length > 0 && (
+                                    {/* {currentOffer.tags && currentOffer.tags.length > 0 && (
                                         <div className="flex flex-wrap gap-2 pt-1">
                                             {currentOffer.tags.map((tag, idx) => (
                                                 <span key={idx} className="px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-white/80 text-[11px] font-medium border border-white/10 whitespace-nowrap">
@@ -333,7 +337,7 @@ const AllMedia: React.FC = () => {
                                                 </span>
                                             ))}
                                         </div>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
 
@@ -383,9 +387,9 @@ const AllMedia: React.FC = () => {
             <AnimatePresence>
                 {showComments && (
                     <>
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onWheel={handleWheel} className="fixed inset-0 bg-black/60 sm:bg-transparent z-[100]" />
-                        <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] bg-black z-[110] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
-                            <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-black sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onWheel={handleWheel} className="fixed inset-0   sm:bg-transparent z-[100]" />
+                        <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] backdrop-blur-md  z-[110] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
+                            <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-black  sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
                             <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar space-y-6">
                                 {comments.map((comment) => (
                                     <div key={comment.id} className="flex flex-col gap-1">
