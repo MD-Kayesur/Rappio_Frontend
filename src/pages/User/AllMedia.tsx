@@ -28,7 +28,10 @@ interface Comment {
     avatar: string;
     text: string;
     likes: number;
+    isLiked?: boolean;
     timestamp: string;
+    replies?: Comment[];
+    showReplies?: boolean;
 }
 
 interface Offer {
@@ -65,6 +68,8 @@ const AllMedia: React.FC = () => {
     const [videoReady, setVideoReady] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+    const [replyTo, setReplyTo] = useState<{ id: number; user: string } | null>(null);
+    const commentInputRef = useRef<HTMLInputElement>(null);
     const shareScrollRef = useRef<HTMLDivElement>(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const searchQuery = searchParams.get('q') || '';
@@ -242,16 +247,81 @@ const AllMedia: React.FC = () => {
 
         if (commentText.trim()) {
             const newComment: Comment = {
-                id: comments.length + 1,
+                id: Date.now(),
                 user: username || savedUsername || 'Anonymous',
                 avatar: '👤',
-                text: commentText,
+                text: replyTo ? `${commentText}` : commentText,
                 likes: 0,
-                timestamp: 'Just now'
+                timestamp: 'Just now',
+                replies: []
             };
-            setComments([newComment, ...comments]);
+
+            if (replyTo) {
+                setComments(prev => prev.map(c => {
+                    if (c.id === replyTo.id) {
+                        return {
+                            ...c,
+                            replies: [...(c.replies || []), newComment],
+                            showReplies: true
+                        };
+                    }
+                    return c;
+                }));
+                setReplyTo(null);
+            } else {
+                setComments([newComment, ...comments]);
+            }
             setCommentText('');
         }
+    };
+
+    const toggleCommentLike = (commentId: number, isReply: boolean = false, parentId?: number) => {
+        if (isReply && parentId) {
+            setComments(prev => prev.map(c => {
+                if (c.id === parentId) {
+                    return {
+                        ...c,
+                        replies: c.replies?.map(r => {
+                            if (r.id === commentId) {
+                                return {
+                                    ...r,
+                                    likes: r.isLiked ? r.likes - 1 : r.likes + 1,
+                                    isLiked: !r.isLiked
+                                };
+                            }
+                            return r;
+                        })
+                    };
+                }
+                return c;
+            }));
+        } else {
+            setComments(prev => prev.map(c => {
+                if (c.id === commentId) {
+                    return {
+                        ...c,
+                        likes: c.isLiked ? c.likes - 1 : c.likes + 1,
+                        isLiked: !c.isLiked
+                    };
+                }
+                return c;
+            }));
+        }
+    };
+
+    const handleReplyClick = (commentId: number, user: string) => {
+        setReplyTo({ id: commentId, user });
+        setCommentText(``);
+        commentInputRef.current?.focus();
+    };
+
+    const toggleReplies = (commentId: number) => {
+        setComments(prev => prev.map(c => {
+            if (c.id === commentId) {
+                return { ...c, showReplies: !c.showReplies };
+            }
+            return c;
+        }));
     };
 
     const handleNameSetup = () => {
@@ -320,13 +390,13 @@ const AllMedia: React.FC = () => {
         <>
             <div
                 ref={containerRef}
-                className={`h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar transition-all duration-500 ${showComments ? 'sm:pr-[500px]' : ''}`}
+                className={`h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar transition-all duration-500`}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onWheel={handleWheel}
             >
                 {/* Central Media Container */}
-                <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group z-10 ${isDescriptionExpanded ? 'w-full h-full sm:h-[85vh] sm:max-w-6xl flex flex-col sm:flex-row' : showComments ? 'w-full h-full sm:h-[85vh] sm:max-w-[550px]' : 'w-full h-full sm:h-[85vh] sm:max-w-[450px]'}`}>
+                <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group z-10 ${isDescriptionExpanded ? 'w-full h-full sm:h-[85vh] sm:max-w-6xl flex flex-col sm:flex-row' : 'w-full h-full sm:h-[85vh] sm:max-w-[450px]'}`}>
                     {!isDescriptionExpanded && (
                         <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
                             <div className="flex-1 relative group pointer-events-auto">
@@ -715,35 +785,90 @@ const AllMedia: React.FC = () => {
                             {/* Comments list */}
                             <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar space-y-6">
                                 {comments.map((comment) => (
-                                    <div key={comment.id} className="flex gap-3 group">
-                                        <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-base flex-shrink-0 overflow-hidden">
-                                            {typeof comment.avatar === 'string' && comment.avatar.length > 2 ? (
-                                                <img src={comment.avatar} alt={comment.user} className="w-full h-full object-cover" />
-                                            ) : (
-                                                <span className="text-lg">{comment.avatar}</span>
-                                            )}
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex flex-col mb-1">
-                                                <span className="text-white/50 font-bold text-[13px] hover:text-white cursor-pointer transition-colors leading-none mb-1">{comment.user}</span>
-                                                <p className="text-white text-[14px] sm:text-[15px] leading-relaxed font-normal">{comment.text}</p>
+                                    <div key={comment.id} className="flex flex-col gap-1">
+                                        <div className="flex gap-3 group">
+                                            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-base flex-shrink-0 overflow-hidden">
+                                                {typeof comment.avatar === 'string' && comment.avatar.length > 2 ? (
+                                                    <img src={comment.avatar} alt={comment.user} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <span className="text-lg">{comment.avatar}</span>
+                                                )}
                                             </div>
-                                            <div className="flex items-center gap-4 mt-2">
-                                                <span className="text-white/40 text-[12px]">{comment.timestamp}</span>
-                                                <button className="text-white/40 text-[12px] font-bold hover:text-white/60 transition-colors">Reply</button>
-                                                <div className="flex-1" />
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <button className="text-white/40 hover:text-red-500 transition-colors">
-                                                        <Heart size={16} />
-                                                    </button>
-                                                    <span className="text-white/40 text-[11px] font-bold">{comment.likes}</span>
+                                            <div className="flex-1">
+                                                <div className="flex flex-col mb-1">
+                                                    <span className="text-white/50 font-bold text-[13px] hover:text-white cursor-pointer transition-colors leading-none mb-1">{comment.user}</span>
+                                                    <p className="text-white text-[14px] sm:text-[15px] leading-relaxed font-normal">{comment.text}</p>
                                                 </div>
+                                                <div className="flex items-center gap-4 mt-2">
+                                                    <span className="text-white/40 text-[12px]">{comment.timestamp}</span>
+                                                    <button
+                                                        onClick={() => handleReplyClick(comment.id, comment.user)}
+                                                        className="text-white/40 text-[12px] font-bold hover:text-white/60 transition-colors"
+                                                    >
+                                                        Reply
+                                                    </button>
+                                                    <div className="flex-1" />
+                                                    <div className="flex flex-col items-center gap-1">
+                                                        <button
+                                                            onClick={() => toggleCommentLike(comment.id)}
+                                                            className={`transition-colors ${comment.isLiked ? 'text-red-500' : 'text-white/40 hover:text-red-500'}`}
+                                                        >
+                                                            <Heart size={16} fill={comment.isLiked ? 'currentColor' : 'none'} />
+                                                        </button>
+                                                        <span className="text-white/40 text-[11px] font-bold">{comment.likes}</span>
+                                                    </div>
+                                                </div>
+
+                                                {(comment.replies && comment.replies.length > 0) && (
+                                                    <button
+                                                        onClick={() => toggleReplies(comment.id)}
+                                                        className="flex items-center gap-1.5 text-white/40 text-[12px] font-bold mt-3 hover:text-white/60 transition-colors"
+                                                    >
+                                                        <div className="w-6 h-[1px] bg-white/20" />
+                                                        {comment.showReplies ? 'Hide replies' : `View ${comment.replies.length} replies`}
+                                                        <ChevronDown size={14} className={`transition-transform duration-300 ${comment.showReplies ? 'rotate-180' : ''}`} />
+                                                    </button>
+                                                )}
+
+                                                <AnimatePresence>
+                                                    {comment.showReplies && comment.replies?.map((reply) => (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, height: 0 }}
+                                                            animate={{ opacity: 1, height: 'auto' }}
+                                                            exit={{ opacity: 0, height: 0 }}
+                                                            key={reply.id}
+                                                            className="flex gap-3 mt-4 ml-2"
+                                                        >
+                                                            <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs flex-shrink-0 overflow-hidden">
+                                                                {typeof reply.avatar === 'string' && reply.avatar.length > 2 ? (
+                                                                    <img src={reply.avatar} alt={reply.user} className="w-full h-full object-cover" />
+                                                                ) : (
+                                                                    <span className="text-sm">{reply.avatar}</span>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <div className="flex flex-col mb-1">
+                                                                    <span className="text-white/50 font-bold text-[12px] leading-none mb-1">{reply.user}</span>
+                                                                    <p className="text-white text-[13px] sm:text-[14px] leading-relaxed font-normal">{reply.text}</p>
+                                                                </div>
+                                                                <div className="flex items-center gap-4 mt-2">
+                                                                    <span className="text-white/40 text-[11px]">{reply.timestamp}</span>
+                                                                    <div className="flex-1" />
+                                                                    <div className="flex flex-col items-center gap-1">
+                                                                        <button
+                                                                            onClick={() => toggleCommentLike(reply.id, true, comment.id)}
+                                                                            className={`transition-colors ${reply.isLiked ? 'text-red-500' : 'text-white/40 hover:text-red-500'}`}
+                                                                        >
+                                                                            <Heart size={14} fill={reply.isLiked ? 'currentColor' : 'none'} />
+                                                                        </button>
+                                                                        <span className="text-white/40 text-[10px] font-bold">{reply.likes}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </motion.div>
+                                                    ))}
+                                                </AnimatePresence>
                                             </div>
-                                            <button className="flex items-center gap-1.5 text-white/40 text-[12px] font-bold mt-3 hover:text-white/60 transition-colors">
-                                                <div className="w-6 h-[1px] bg-white/20" />
-                                                View 3 replies
-                                                <ChevronDown size={14} />
-                                            </button>
                                         </div>
                                     </div>
                                 ))}
@@ -767,22 +892,31 @@ const AllMedia: React.FC = () => {
                                         Log in to comment
                                     </button>
                                 ) : (
-                                    <div className="flex gap-3 items-center bg-white/5 p-2 rounded-full border border-white/10 focus-within:border-white/20 transition-all duration-300">
-                                        <input
-                                            type="text"
-                                            value={commentText}
-                                            onChange={(e) => setCommentText(e.target.value)}
-                                            placeholder="Add a comment..."
-                                            className="flex-1 bg-transparent text-white px-4 py-2 outline-none text-[15px]"
-                                            onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
-                                        />
-                                        <button
-                                            onClick={() => handleCommentSubmit()}
-                                            disabled={!commentText.trim()}
-                                            className={`px-6 py-2 rounded-full font-bold transition-all ${commentText.trim() ? 'text-[#FE2C55]' : 'text-white/20 cursor-not-allowed'}`}
-                                        >
-                                            Post
-                                        </button>
+                                    <div className="flex flex-col gap-2">
+                                        {replyTo && (
+                                            <div className="flex items-center justify-between px-4 py-1 bg-white/5 rounded-t-lg">
+                                                <span className="text-[12px] text-white/60">Replying to <span className="font-bold text-white">@{replyTo.user}</span></span>
+                                                <button onClick={() => setReplyTo(null)} className="text-white/40 hover:text-white"><X size={14} /></button>
+                                            </div>
+                                        )}
+                                        <div className={`flex gap-3 items-center bg-white/5 p-2 ${replyTo ? 'rounded-b-full rounded-tr-full' : 'rounded-full'} border border-white/10 focus-within:border-white/20 transition-all duration-300`}>
+                                            <input
+                                                ref={commentInputRef}
+                                                type="text"
+                                                value={commentText}
+                                                onChange={(e) => setCommentText(e.target.value)}
+                                                placeholder={replyTo ? `Reply to @${replyTo.user}...` : "Add a comment..."}
+                                                className="flex-1 bg-transparent text-white px-4 py-2 outline-none text-[15px]"
+                                                onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
+                                            />
+                                            <button
+                                                onClick={() => handleCommentSubmit()}
+                                                disabled={!commentText.trim()}
+                                                className={`px-6 py-2 rounded-full font-bold transition-all ${commentText.trim() ? 'text-[#FE2C55]' : 'text-white/20 cursor-not-allowed'}`}
+                                            >
+                                                Post
+                                            </button>
+                                        </div>
                                     </div>
                                 )}
                             </div>

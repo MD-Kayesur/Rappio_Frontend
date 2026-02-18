@@ -35,9 +35,9 @@ export default function UserLayout() {
   return (
     <div className="flex h-screen relative overflow-hidden">
       {/* Sidebar - Overlay on mobile, fixed on desktop */}
+      {/* On desktop, this container maintains a fixed width (w-70) */}
       <div
-        className={`fixed lg:static inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 ${sidebarOpen ? "block" : "hidden lg:block"
-          }`}
+        className={`fixed lg:relative inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 flex-shrink-0 ${isMobile && sidebarOpen ? "w-70" : isMobile && !sidebarOpen ? "w-0" : "lg:w-70"}`}
       >
         {/* Mobile overlay backdrop */}
         {isMobile && sidebarOpen && (
@@ -47,7 +47,8 @@ export default function UserLayout() {
           />
         )}
 
-        <div className="relative h-full">
+        {/* The actual sidebar content, its visibility is controlled by sidebarOpen */}
+        <div className={`relative h-full ${isMobile && !sidebarOpen ? "hidden" : ""}`}>
           <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         </div>
       </div>

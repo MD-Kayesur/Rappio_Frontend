@@ -12,6 +12,7 @@ import {
   Settings,
   LogOut
 } from "lucide-react";
+import { SidebarSearch } from "@/components/SidebarSearch";
 import {
   MdKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
@@ -86,6 +87,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
               )}
             </div>
           </Link>
+          <SidebarSearch isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         </div>
       )}
 

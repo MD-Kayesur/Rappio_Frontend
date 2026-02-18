@@ -14,6 +14,7 @@ import {
   Settings,
   Bookmark
 } from "lucide-react";
+import { SidebarSearch } from "@/components/SidebarSearch";
 
 import {
   MdKeyboardDoubleArrowLeft,
@@ -129,6 +130,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
               )}
             </div>
           </Link>
+          <SidebarSearch isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         </div>
       )}
 

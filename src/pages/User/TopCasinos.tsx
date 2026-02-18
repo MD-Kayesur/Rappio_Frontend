@@ -97,10 +97,10 @@ const TopCasinos = () => {
   };
 
   return (
-    <div className="min-h-full text-white overflow-hidden">
+    <div className="min-h-full text-white">
       {/* Category Filter Tabs */}
-      <div className="sticky top-0 z-10 backdrop-blur-sm ">
-        <div className="overflow-x-auto">
+      <div className="sticky top-0 z-20 bg-[#0A0A0A]/90 backdrop-blur-md border-b border-white/5">
+        <div className="overflow-x-auto no-scrollbar">
           <div className="flex gap-2 px-4 py-4 min-w-max">
             {categories.map((category) => (
               <button
@@ -119,7 +119,7 @@ const TopCasinos = () => {
       </div>
 
       {/* Grid Layout */}
-      <div className="p-4 overflow-y-auto h-[calc(100vh-70px)] no-scrollbar">
+      <div className="p-4">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {filteredOffers.map((offer, index) => {
             const youtubeID = extractYouTubeID(offer.video_url);

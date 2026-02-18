@@ -27,8 +27,7 @@ export default function AdminLayout() {
   return (
     <div className="flex h-screen relative overflow-hidden text-gray-900 dark:text-gray-100">
       <div
-        className={`fixed lg:static inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 ${sidebarOpen ? "block" : "hidden lg:block"
-          }`}
+        className={`fixed lg:relative inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 flex-shrink-0 ${isMobile && sidebarOpen ? "w-70" : isMobile && !sidebarOpen ? "w-0" : "lg:w-70"}`}
       >
         {isMobile && sidebarOpen && (
           <div
@@ -37,7 +36,7 @@ export default function AdminLayout() {
           />
         )}
 
-        <div className="relative h-full">
+        <div className={`relative h-full ${isMobile && !sidebarOpen ? "hidden" : ""}`}>
           <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         </div>
       </div>
