@@ -98,7 +98,6 @@ const AllMedia: React.FC = () => {
     ]);
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const commentsRef = useRef<HTMLDivElement>(null);
     const touchStartY = useRef<number>(0);
     const lastScrollTime = useRef<number>(0);
 
@@ -296,7 +295,7 @@ const AllMedia: React.FC = () => {
         if (!savedUsername && !username) {
             setShowNameSetup(true);
         } else {
-            setShowComments(!showComments);
+            setShowComments(true);
         }
     };
 
@@ -306,7 +305,6 @@ const AllMedia: React.FC = () => {
         if (!savedUsername && !username) {
             setShowNameSetup(true);
         } else {
-            setIsDescriptionExpanded(true);
             setShowComments(true);
         }
     };
@@ -521,60 +519,8 @@ const AllMedia: React.FC = () => {
                                                 </div>
                                             )}
 
-                                            {/* Show Comments List Inline, but Footer handles Input */}
-                                            {showComments && (
-                                                <div ref={commentsRef} className="pt-6 border-t border-white/10 animate-in fade-in duration-300">
-                                                    <h3 className="text-white font-bold mb-6 flex items-center gap-2">
-                                                        <MessageCircle size={20} className="text-red-500" />
-                                                        Comments ({comments.length + currentOffer.comments})
-                                                    </h3>
-                                                    <div className="space-y-6 mb-24">
-                                                        {comments.map((comment) => (
-                                                            <div key={comment.id} className="flex gap-4 group">
-                                                                <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-lg flex-shrink-0 border border-red-500/20">
-                                                                    {comment.avatar}
-                                                                </div>
-                                                                <div className="flex-1">
-                                                                    <div className="flex items-center gap-2 mb-1">
-                                                                        <span className="text-white font-bold text-sm">{comment.user}</span>
-                                                                        <span className="text-white/40 text-[10px] sm:text-xs">{comment.timestamp}</span>
-                                                                    </div>
-                                                                    <p className="text-white/80 text-sm sm:text-base leading-relaxed">{comment.text}</p>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                        {comments.length === 0 && (
-                                                            <div className="text-center py-10">
-                                                                <p className="text-white/30 text-sm italic">Be the first to share your thoughts!</p>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
-
-                                    {/* Bottom Fixed Comment Input in Expanded View */}
-                                    {showComments && (
-                                        <div className="p-4 sm:p-6 bg-[#1a1a1a] border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-50">
-                                            <div className="flex gap-3 bg-white/5 p-2 rounded-2xl border border-white/10 focus-within:border-red-500 transition-colors">
-                                                <input
-                                                    type="text"
-                                                    value={commentText}
-                                                    onChange={(e) => setCommentText(e.target.value)}
-                                                    placeholder="Add a comment..."
-                                                    className="flex-1 bg-transparent text-white px-4 py-2 outline-none text-sm sm:text-base"
-                                                    onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
-                                                />
-                                                <button
-                                                    onClick={() => handleCommentSubmit()}
-                                                    className={`px-6 py-2 rounded-xl font-bold transition-all ${commentText.trim() ? 'bg-red-500 text-white' : 'bg-white/10 text-white/30 cursor-not-allowed'}`}
-                                                >
-                                                    Post
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
                                 </div>
                             )}
 
@@ -727,6 +673,114 @@ const AllMedia: React.FC = () => {
                     </button>
                 </div>
             </div>
+
+            <AnimatePresence>
+                {showComments && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowComments(false)}
+                            className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[100]"
+                        />
+                        <motion.div
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                            className="fixed inset-y-0 right-0 w-full sm:w-[500px] bg-black z-[110] flex flex-col border-l border-white/5"
+                        >
+                            {/* Header */}
+                            <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-black sticky top-0 z-20">
+                                <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                                    Comments
+                                    <span className="text-white/40 text-[15px] font-normal">
+                                        {formatNumber(comments.length + currentOffer.comments)}
+                                    </span>
+                                </h3>
+                                <button
+                                    onClick={() => setShowComments(false)}
+                                    className="p-1.5 hover:bg-white/10 rounded-full text-white/80 hover:text-white transition-all"
+                                >
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            {/* Comments list */}
+                            <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar space-y-6">
+                                {comments.map((comment) => (
+                                    <div key={comment.id} className="flex gap-3 group">
+                                        <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-base flex-shrink-0">
+                                            {comment.avatar}
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex flex-col mb-1">
+                                                <span className="text-white/60 font-bold text-[14px] hover:text-white cursor-pointer transition-colors leading-none mb-1">{comment.user}</span>
+                                                <p className="text-white text-[15px] leading-relaxed font-normal">{comment.text}</p>
+                                            </div>
+                                            <div className="flex items-center gap-4 mt-2">
+                                                <span className="text-white/40 text-[13px]">{comment.timestamp}</span>
+                                                <button className="text-white/40 text-[13px] font-bold hover:text-white/60 transition-colors">Reply</button>
+                                                <div className="flex-1" />
+                                                <div className="flex flex-col items-center gap-1">
+                                                    <button className="text-white/40 hover:text-red-500 transition-colors">
+                                                        <Heart size={18} />
+                                                    </button>
+                                                    <span className="text-white/40 text-[11px]">{comment.likes}</span>
+                                                </div>
+                                            </div>
+                                            <button className="flex items-center gap-1.5 text-white/40 text-[13px] font-bold mt-3 hover:text-white/60 transition-colors">
+                                                <div className="w-6 h-[1px] bg-white/20" />
+                                                View 3 replies
+                                                <ChevronDown size={14} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                                {comments.length === 0 && (
+                                    <div className="h-full flex flex-col items-center justify-center opacity-30 py-20 grayscale">
+                                        <MessageCircle size={64} className="mb-6 stroke-1 text-white" />
+                                        <p className="text-white text-lg font-medium tracking-wide">No comments yet</p>
+                                        <p className="text-white/60 text-sm">Be the first to share your thoughts!</p>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Input Area */}
+                            <div className="p-4 bg-black border-t border-white/5">
+                                {!username ? (
+                                    <button
+                                        onClick={() => setShowNameSetup(true)}
+                                        className="w-full bg-[#FE2C55] hover:bg-[#E6244C] text-white font-bold py-3.5 rounded-full transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-[16px]"
+                                    >
+                                        <MessageCircle size={20} fill="white" />
+                                        Log in to comment
+                                    </button>
+                                ) : (
+                                    <div className="flex gap-3 items-center bg-white/5 p-2 rounded-full border border-white/10 focus-within:border-white/20 transition-all duration-300">
+                                        <input
+                                            type="text"
+                                            value={commentText}
+                                            onChange={(e) => setCommentText(e.target.value)}
+                                            placeholder="Add a comment..."
+                                            className="flex-1 bg-transparent text-white px-4 py-2 outline-none text-[15px]"
+                                            onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
+                                        />
+                                        <button
+                                            onClick={() => handleCommentSubmit()}
+                                            disabled={!commentText.trim()}
+                                            className={`px-6 py-2 rounded-full font-bold transition-all ${commentText.trim() ? 'text-[#FE2C55]' : 'text-white/20 cursor-not-allowed'}`}
+                                        >
+                                            Post
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
 
             <style>{`
                 @keyframes marquee {
