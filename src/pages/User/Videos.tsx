@@ -22,10 +22,6 @@ import {
     ChevronLeft,
     ChevronRight,
     Repeat2,
-    MoreHorizontal,
-    Music,
-    Volume2,
-    VolumeX,
 } from 'lucide-react';
 import PageLoader from '@/Layout/PageLoader';
 import { toast } from 'sonner';
@@ -69,7 +65,6 @@ const Videos: React.FC = () => {
     const [username, setUsername] = useState('');
     const [commentText, setCommentText] = useState('');
     const [likedOffers, setLikedOffers] = useState<Set<number>>(new Set());
-    const [isMuted, setIsMuted] = useState(true);
     const [savedOffers, setSavedOffers] = useState<Set<number>>(() => {
         const saved = sessionStorage.getItem('favorites');
         return new Set(saved ? JSON.parse(saved) : []);
@@ -103,21 +98,18 @@ const Videos: React.FC = () => {
         fetch('/mediaData.json')
             .then(response => response.json())
             .then(data => {
-                let offersData: Offer[] = Array.isArray(data) ? data : [data];
-                // Filter to only videos
-                offersData = offersData.filter(o => o.video_url && o.video_url !== '');
-
+                let allOffers: Offer[] = Array.isArray(data) ? data : [data];
                 if (feedType === 'favorites') {
                     const savedFavorites = sessionStorage.getItem('favorites');
                     const favoritesSet = new Set<number>(savedFavorites ? JSON.parse(savedFavorites) : []);
-                    offersData = offersData.filter(o => favoritesSet.has(o.id));
+                    allOffers = allOffers.filter(o => favoritesSet.has(o.id));
                 }
                 if (initialCategory && initialCategory !== 'All') {
-                    offersData = offersData.filter(o => o.tags.includes(initialCategory));
+                    allOffers = allOffers.filter(o => o.tags.includes(initialCategory));
                 }
-                setOffers(offersData);
-                setAllOffers(offersData);
-                if (typeof initialIndex === 'number' && initialIndex < offersData.length) setCurrentIndex(initialIndex);
+                setOffers(allOffers);
+                setAllOffers(allOffers);
+                if (typeof initialIndex === 'number' && initialIndex < allOffers.length) setCurrentIndex(initialIndex);
             })
             .catch(error => console.error('Error fetching offers:', error));
 
@@ -131,11 +123,11 @@ const Videos: React.FC = () => {
         setVideoReady(false);
         setIsDescriptionExpanded(false);
         setComments([
-            { id: 1, user: 'User_' + currentIndex, avatar: '👤', text: `Great content for ${offers[currentIndex]?.title || 'video'}!`, likes: Math.floor(Math.random() * 50), timestamp: '2h ago' },
+            { id: 1, user: 'User_' + currentIndex, avatar: '👤', text: `Great content for ${offers[currentIndex]?.title}!`, likes: Math.floor(Math.random() * 50), timestamp: '2h ago' },
             { id: 2, user: 'Fan_' + (currentIndex + 1), avatar: '👤', text: 'Love this vibe!', likes: Math.floor(Math.random() * 30), timestamp: '1h ago' }
         ]);
         setCommentText('');
-    }, [currentIndex, offers]);
+    }, [currentIndex]);
 
     useEffect(() => {
         const filtered = allOffers.filter(offer => offer.title.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -257,158 +249,127 @@ const Videos: React.FC = () => {
     };
 
     return (
-        <>
-            <div ref={containerRef} className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar py-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onWheel={handleWheel}>
-                <div className={`flex items-end relative h-full sm:max-h-[85vh] transition-all duration-500 ease-in-out ${showComments ? 'sm:-translate-x-[250px]' : 'sm:translate-x-0'}`}>
-                    {/* Main Media Container */}
-                    <div className={`relative bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group z-10 w-full sm:w-[420px] h-full`}>
 
-                        {/* Mobile Top Search Overlay */}
-                        <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
-                            <div className="flex-1 relative group pointer-events-auto">
-                                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-white/60"><Search size={18} /></div>
-                                <input type="text" placeholder="Search videos..." value={searchQuery} onChange={(e) => setSearchParams({ q: e.target.value }, { replace: true })} className="w-full py-2.5 pl-11 pr-11 bg-black/20 backdrop-blur-md text-white text-sm border border-white/10 rounded-full focus:outline-none focus:border-white/30 transition-all placeholder-white/40" />
-                                {searchQuery && <button onClick={(e) => { e.stopPropagation(); setSearchParams({}, { replace: true }); }} className="absolute inset-y-0 right-0 flex items-center pr-4 text-white"><X size={12} /></button>}
-                            </div>
-                        </div>
+        <div ref={containerRef} className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onWheel={handleWheel}>
+            <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[250px]' : 'sm:translate-x-0'} z-10`}>
+                <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
+                    <div className="flex-1 relative group pointer-events-auto">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-white/60"><Search size={18} /></div>
+                        <input type="text" placeholder="Search videos..." value={searchQuery} onChange={(e) => setSearchParams({ q: e.target.value }, { replace: true })} className="w-full py-2.5 pl-11 pr-11 bg-black/20 backdrop-blur-md text-white text-sm border border-white/10 rounded-full focus:outline-none focus:border-white/30 transition-all placeholder-white/40" />
+                        {searchQuery && <button onClick={(e) => { e.stopPropagation(); setSearchParams({}, { replace: true }); }} className="absolute inset-y-0 right-0 flex items-center pr-4 text-white"><X size={12} /></button>}
+                    </div>
+                </div>
 
-                        {/* Top Controls Overlay (Volume, etc) */}
-                        <div className="absolute top-0 left-0 right-0 z-40 hidden sm:flex items-center justify-between p-5 pointer-events-none">
-                            <div className="flex gap-4 pointer-events-auto">
-                                <button className="text-white drop-shadow-lg opacity-80 hover:opacity-100 transition-opacity"><MoreHorizontal size={26} /></button>
-                                <button onClick={() => setIsMuted(!isMuted)} className="text-white drop-shadow-lg opacity-80 hover:opacity-100 transition-opacity">
-                                    {isMuted ? <VolumeX size={26} /> : <Volume2 size={26} />}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Media Content */}
-                        <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                            <motion.div key={currentOffer.id} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }} className="absolute inset-0 h-full w-full">
-                                <div className="relative h-full w-full">
-                                    <div className="absolute inset-0 overflow-hidden bg-black flex items-center justify-center">
+                <AnimatePresence initial={false} custom={direction} mode="popLayout">
+                    <motion.div key={currentOffer.id} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }} className="absolute inset-0 h-full w-full flex flex-row items-end gap-5">
+                        {/* Main Card - Full Height Video */}
+                        <div className="flex-1 h-full bg-[#121212] sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 relative group">
+                            <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
+                                {currentOffer.video_url ? (
+                                    <div className="absolute inset-0 flex items-center justify-center">
                                         <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
                                             {getYouTubeId(currentOffer.video_url) ? (
-                                                <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(currentOffer.video_url)}?autoplay=1&mute=${isMuted ? 1 : 0}&controls=0&loop=1&playlist=${getYouTubeId(currentOffer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" onLoad={() => { setVideoReady(true); setIsPlaying(true); }} className="w-full h-full pointer-events-none"></iframe>
+                                                <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(currentOffer.video_url)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(currentOffer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" onLoad={() => { setVideoReady(true); setIsPlaying(true); }} className="w-full h-full pointer-events-none"></iframe>
                                             ) : (
-                                                <Player url={currentOffer.video_url} playing={isPlaying} loop muted={isMuted} playsinline={true} width="100%" height="100%" onReady={() => { setVideoReady(true); setIsPlaying(true); }} onProgress={(state: { played: number }) => setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
+                                                <Player url={currentOffer.video_url} playing={isPlaying} loop muted={true} playsinline={true} width="100%" height="100%" onReady={() => { setVideoReady(true); setIsPlaying(true); }} onProgress={(state: any) => setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
                                             )}
                                         </div>
                                         <div className="absolute inset-0 z-20 cursor-pointer" onClick={() => setIsPlaying(!isPlaying)} />
                                     </div>
-                                    {currentOffer.video_url && (
-                                        <>
-                                            {!videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-[#FE2C55] border-t-transparent rounded-full animate-spin"></div></div> : !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
-                                            <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>
-                                        </>
-                                    )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
+                                ) : (
+                                    <img src={currentOffer.image_url} alt={currentOffer.title} className="w-full h-full object-cover" />
+                                )}
+                                {currentOffer.video_url && (
+                                    <>
+                                        {!videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div></div> : !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
+                                        <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>
+                                    </>
+                                )}
+                                {/* Gradient for text readability */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-20" />
+                            </div>
+
+                            {/* Overlaid Info Area */}
+                            <div className="absolute bottom-0 left-0 right-0 p-6 space-y-3 z-30 pointer-events-none">
+                                {/* Claim Offer Button inside overlay */}
+                                <div className="pointer-events-auto mb-2">
+                                    <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2 px-5 rounded-lg text-[13px] shadow-lg transition-all">
+                                        {currentOffer.cta || 'Claim Offer'}
+                                    </button>
                                 </div>
 
-                                {/* Info Section - TIKTOK STYLE */}
-                                <div className="absolute bottom-4 left-0 right-16 p-4 z-20 select-none space-y-3">
-                                    <div className="flex items-center gap-1.5 pt-1">
-                                        <h2 className="text-white font-bold text-[22px] tracking-wide pointer-events-auto cursor-pointer" onClick={() => currentOffer.website_url && window.open(currentOffer.website_url, '_blank')}>
-                                            {currentOffer.title}
-                                        </h2>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
+                                        <img src={logo} alt="Logo" className="w-5" />
                                     </div>
-
-                                    <div className="space-y-0.5">
-                                        <div className={`text-white text-sm leading-[1.4] drop-shadow-md ${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
-                                            <span className="font-medium block mb-0.5">{currentOffer.subtitle}</span>
-                                            {isDescriptionExpanded && (
-                                                <div className="mt-2 text-white/90 text-[15px] leading-relaxed">
-                                                    {currentOffer.description}
-                                                    <div className="flex flex-wrap gap-2 mt-3 font-bold">
-                                                        {currentOffer.tags?.map(tag => (
-                                                            <span key={tag} className="text-white hover:underline cursor-pointer">#{tag}</span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="flex justify-end">
-                                            <button onClick={(e) => { e.stopPropagation(); setIsDescriptionExpanded(!isDescriptionExpanded); }} className="text-white font-bold text-[14px] hover:opacity-80 transition-opacity">
-                                                {isDescriptionExpanded ? 'less' : 'more'}
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div className="pointer-events-auto">
-                                        <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2.5 px-6 rounded-lg text-[15px] shadow-lg transition-all flex items-center gap-2">
-                                            {currentOffer.cta || 'Claim Offer'}
-                                        </button>
-                                    </div>
-
-                                    <div className="flex items-center gap-2 overflow-hidden w-full pt-1 opacity-90">
-                                        <Music size={14} className="text-white flex-shrink-0" />
-                                        <div className="overflow-hidden whitespace-nowrap">
-                                            <div className="animate-marquee inline-block">
-                                                <span className="text-white text-[13px] mr-8 font-medium">original sound - {currentOffer.title} - original sound</span>
-                                                <span className="text-white text-[13px] mr-8 font-medium">original sound - {currentOffer.title} - original sound</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <h2 className="text-white font-bold text-[20px] tracking-tight cursor-pointer hover:underline pointer-events-auto" onClick={() => currentOffer.website_url && window.open(currentOffer.website_url, '_blank')}>{currentOffer.title}</h2>
                                 </div>
-                            </motion.div>
-                        </AnimatePresence>
-                    </div>
 
-                    {/* Action Sidebar - RESPONSIVE POSITIONING */}
-                    <div className="absolute right-2 sm:right-auto sm:left-[calc(100%+20px)] bottom-6 sm:bottom-0 flex flex-col items-center gap-4 sm:gap-5 z-[120] mb-0 sm:mb-10 w-14 lg:left-[calc(100%+40px)]">
-                        {/* Profile with + */}
-                        <div className="relative mb-2 sm:mb-2 pointer-events-auto group cursor-pointer">
-                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden bg-gray-500 shadow-xl group-hover:scale-105 transition-transform flex-shrink-0">
-                                <img src={currentOffer.image_url} alt="User" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4.5 h-4.5 sm:w-5 sm:h-5 bg-[#EE2B3E] rounded-full flex items-center justify-center text-white border-2 border-black z-10 hover:scale-110 transition-transform">
-                                <span className="text-[14px] sm:text-[16px] font-bold leading-none">+</span>
-                            </div>
-                        </div>
+                                <div className="space-y-1">
+                                    <div className={`text-white/90 text-[14px] leading-relaxed drop-shadow-lg ${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
+                                        <span className="font-semibold block mb-0.5 text-white">{currentOffer.subtitle}</span>
+                                        {currentOffer.description}
+                                    </div>
+                                    <button onClick={(e) => { e.stopPropagation(); setIsDescriptionExpanded(!isDescriptionExpanded); }} className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto">
+                                        {isDescriptionExpanded ? 'See Less' : 'See More'}
+                                    </button>
+                                </div>
 
-                        {/* Engagement Icons */}
-                        <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
-                            <button onClick={(e) => { e.stopPropagation(); toggleLike(currentOffer.id); }} className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center hover:scale-110 transition-transform active:scale-90">
-                                <Heart size={36} className={`drop-shadow-lg ${likedOffers.has(currentOffer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
-                            </button>
-                            <span className="text-white text-[12px] sm:text-[13px] font-bold drop-shadow-md">{formatNumber(currentOffer.likes)}</span>
-                        </div>
-
-                        <div className="flex flex-col items-center gap-0.5 pointer-events-auto relative">
-                            <button onClick={handleExpandAndComment} className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center hover:scale-110 transition-transform active:scale-90">
-                                <MessageCircle size={36} className="text-white drop-shadow-lg" />
-                            </button>
-                            <span className="text-white text-[12px] sm:text-[13px] font-bold drop-shadow-md">{formatNumber(currentOffer.comments + comments.length)}</span>
-                        </div>
-
-                        <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
-                            <button onClick={(e) => { e.stopPropagation(); toggleSave(currentOffer.id); }} className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center hover:scale-110 transition-transform active:scale-90">
-                                <Bookmark size={34} className={`drop-shadow-lg ${savedOffers.has(currentOffer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
-                            </button>
-                            <span className="text-white text-[12px] sm:text-[13px] font-bold drop-shadow-md">{formatNumber(Math.floor(currentOffer.likes / 3))}</span>
-                        </div>
-
-                        <div className="flex flex-col items-center gap-0.5 pointer-events-auto">
-                            <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:scale-110 transition-transform active:scale-90">
-                                <Share2 size={24} className="text-white drop-shadow-lg sm:size-[26px]" />
-                            </button>
-                            <span className="text-white text-[11px] sm:text-[12px] font-bold drop-shadow-md">Share</span>
-                        </div>
-
-                        {/* Spinning Record */}
-                        <div className="mt-3 pointer-events-none cursor-pointer animate-spin-slow">
-                            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-white/20 overflow-hidden shadow-lg bg-black flex items-center justify-center relative">
-                                <img src={currentOffer.image_url} alt="disk" className="w-full h-full object-cover" />
+                                {/* Tags */}
+                                {currentOffer.tags && currentOffer.tags.length > 0 && (
+                                    <div className="flex flex-wrap gap-2 pt-1">
+                                        {currentOffer.tags.map((tag, idx) => (
+                                            <span key={idx} className="px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-white/80 text-[11px] font-medium border border-white/10 whitespace-nowrap">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div className="hidden sm:flex absolute bottom-10 right-10 flex-col gap-3">
-                    <button onClick={() => handleScroll('up')} disabled={currentIndex === 0} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronUp size={28} /></button>
-                    <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronDown size={28} /></button>
-                </div>
+                        {/* Sidebar Icons (Still separate from card) */}
+                        <div className="w-14 flex flex-col items-center gap-6 mb-8 flex-shrink-0 z-40">
+                            <div className="flex flex-col items-center gap-1.5">
+                                <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                    <Search size={22} />
+                                </button>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-1.5">
+                                <button onClick={(e) => { e.stopPropagation(); toggleLike(currentOffer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                    <Heart size={22} className={`${likedOffers.has(currentOffer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
+                                </button>
+                                <span className="text-white/80 text-[12px] font-bold">{formatNumber(currentOffer.likes)}</span>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-1.5">
+                                <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                    <MessageCircle size={22} />
+                                </button>
+                                <span className="text-white/80 text-[12px] font-bold">{formatNumber(currentOffer.comments + comments.length)}</span>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-1.5">
+                                <button onClick={(e) => { e.stopPropagation(); toggleSave(currentOffer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                    <Bookmark size={22} className={`${savedOffers.has(currentOffer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
+                                </button>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-1.5">
+                                <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                    <Share2 size={22} />
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
             </div>
+            <div className="hidden sm:flex absolute bottom-10 right-10 flex-col gap-3">
+                <button onClick={() => handleScroll('up')} disabled={currentIndex === 0} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronUp size={28} /></button>
+                <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronDown size={28} /></button>
+            </div>
+
 
             <AnimatePresence>
                 {showComments && (
@@ -493,7 +454,7 @@ const Videos: React.FC = () => {
                 @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
                 .animate-spin-slow { animation: spin-slow 4s linear infinite; }
             `}</style>
-        </>
+        </div>
     );
 };
 
