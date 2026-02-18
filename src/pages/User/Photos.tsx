@@ -117,7 +117,14 @@ const Photos: React.FC = () => {
 
     useEffect(() => {
         setIsDescriptionExpanded(false);
-        setShowComments(false);
+        // setShowComments(false); // Removed so modal stays open on scroll
+
+        // Refresh mock comments for the new media
+        setComments([
+            { id: 1, user: 'User_' + currentIndex, avatar: '👤', text: `Great content for ${offers[currentIndex]?.title}!`, likes: Math.floor(Math.random() * 50), timestamp: '2h ago' },
+            { id: 2, user: 'Fan_' + (currentIndex + 1), avatar: '👤', text: 'Love this vibe!', likes: Math.floor(Math.random() * 30), timestamp: '1h ago' }
+        ]);
+        setCommentText('');
     }, [currentIndex]);
 
 
@@ -281,12 +288,12 @@ const Photos: React.FC = () => {
         <>
             <div
                 ref={containerRef}
-                className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar"
+                className={`h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar transition-all duration-500 ${showComments ? 'sm:pr-[500px]' : ''}`}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onWheel={handleWheel}
             >
-                <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group ${isDescriptionExpanded ? 'w-full h-full sm:h-[85vh] sm:max-w-6xl flex flex-col sm:flex-row' : 'w-full h-full sm:h-[85vh] sm:max-w-[450px]'}`}>
+                <div className={`relative transition-all duration-500 ease-in-out bg-black sm:rounded-[2rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 group z-10 ${isDescriptionExpanded ? 'w-full h-full sm:h-[85vh] sm:max-w-6xl flex flex-col sm:flex-row' : showComments ? 'w-full h-full sm:h-[85vh] sm:max-w-[550px]' : 'w-full h-full sm:h-[85vh] sm:max-w-[450px]'}`}>
                     {!isDescriptionExpanded && (
                         <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
                             <div className="flex-1 relative group pointer-events-auto">
@@ -496,7 +503,8 @@ const Photos: React.FC = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setShowComments(false)}
-                            className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[100]"
+                            onWheel={handleWheel}
+                            className="fixed inset-0 z-[100]"
                         />
                         <motion.div
                             initial={{ x: '100%' }}
