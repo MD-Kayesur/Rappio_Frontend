@@ -300,7 +300,7 @@ const AllMedia: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="pointer-events-auto"><button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2.5 px-6 rounded-lg text-[15px] shadow-lg transition-all flex items-center gap-2">{currentOffer.cta || 'Claim Offer'}</button></div>
+                                <div className="pointer-events-auto"><button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2.5 px-6 rounded-lg text-[12px] shadow-lg transition-all flex items-center gap-2">{currentOffer.cta || 'Claim Offer'}</button></div>
                             </div>
 
                             <div className="absolute right-2 bottom-6 w-14 flex flex-col items-center gap-5 z-20">
@@ -312,7 +312,12 @@ const AllMedia: React.FC = () => {
                                 <div className="flex flex-col items-center gap-0.5 pointer-events-auto relative"><button onClick={handleExpandAndComment} className="hover:scale-110 transition-transform"><MessageCircle size={36} className="text-white drop-shadow-lg" /></button><span className="text-white text-[12px] font-bold drop-shadow-md">{formatNumber(currentOffer.comments + comments.length)}</span></div>
                                 <div className="flex flex-col items-center gap-0.5 pointer-events-auto"><button onClick={(e) => { e.stopPropagation(); toggleSave(currentOffer.id); }} className="hover:scale-110 transition-transform"><Bookmark size={34} className={`drop-shadow-lg ${savedOffers.has(currentOffer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} /></button></div>
                                 <div className="flex flex-col items-center gap-0.5 pointer-events-auto"><button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-10 h-10 rounded-full flex items-center justify-center"><Share2 size={24} className="text-white drop-shadow-lg" /></button><span className="text-white text-[11px] font-bold drop-shadow-md">Share</span></div>
-                                <div className="mt-3 pointer-events-none"><div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1a1a1a] to-[#333] border-[5px] border-[#222] animate-spin-slow overflow-hidden flex items-center justify-center relative shadow-2xl"><div className="absolute inset-0 bg-[repeating-conic-gradient(#000_0_15deg,#222_0_30deg)] opacity-40"></div><div className="w-5 h-5 rounded-full overflow-hidden bg-gray-400 z-10"><img src={currentOffer.image_url} alt="disk" className="w-full h-full object-cover" /></div></div></div>
+                                {/* <div className="mt-3 pointer-events-none"><div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1a1a1a] to-[#333] border-[5px] border-[#222] animate-spin-slow overflow-hidden flex items-center justify-center relative shadow-2xl"><div className="absolute inset-0 bg-[repeating-conic-gradient(#000_0_15deg,#222_0_30deg)] opacity-40"></div><div className="w-5 h-5 rounded-full overflow-hidden bg-gray-400 z-10"><img src={currentOffer.image_url} alt="disk" className="w-full h-full object-cover" /></div></div></div> */}
+                                <div className="mt-3 pointer-events-none">
+                                    <div className="w-10 h-10 rounded-full border-2 border-white/20 overflow-hidden shadow-lg">
+                                        <img src={currentOffer.image_url} alt="disk" className="w-full h-full object-cover" />
+                                    </div>
+                                </div>
                             </div>
                         </motion.div>
                     </AnimatePresence>
