@@ -690,22 +690,19 @@ const AllMedia: React.FC = () => {
                             exit={{ opacity: 0 }}
                             onClick={() => setShowComments(false)}
                             onWheel={handleWheel}
-                            className="fixed inset-0 z-[100]"
+                            className="fixed inset-0 bg-black/60 sm:bg-transparent z-[100]"
                         />
                         <motion.div
-                            initial={{ x: '100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '100%' }}
+                            initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }}
+                            animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }}
+                            exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }}
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed inset-y-0 right-0 w-full sm:w-[500px] bg-black z-[110] flex flex-col border-l border-white/5"
+                            className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] bg-black sm:bg-black z-[110] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] sm:rounded-t-0 overflow-hidden"
                         >
                             {/* Header */}
                             <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-black sticky top-0 z-20">
-                                <h3 className="text-white font-bold text-lg flex items-center gap-2">
-                                    Comments
-                                    <span className="text-white/40 text-[15px] font-normal">
-                                        {formatNumber(comments.length + currentOffer.comments)}
-                                    </span>
+                                <h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">
+                                    {formatNumber(comments.length + currentOffer.comments)} Comments
                                 </h3>
                                 <button
                                     onClick={() => setShowComments(false)}
@@ -719,26 +716,30 @@ const AllMedia: React.FC = () => {
                             <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar space-y-6">
                                 {comments.map((comment) => (
                                     <div key={comment.id} className="flex gap-3 group">
-                                        <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-base flex-shrink-0">
-                                            {comment.avatar}
+                                        <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-base flex-shrink-0 overflow-hidden">
+                                            {typeof comment.avatar === 'string' && comment.avatar.length > 2 ? (
+                                                <img src={comment.avatar} alt={comment.user} className="w-full h-full object-cover" />
+                                            ) : (
+                                                <span className="text-lg">{comment.avatar}</span>
+                                            )}
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex flex-col mb-1">
-                                                <span className="text-white/60 font-bold text-[14px] hover:text-white cursor-pointer transition-colors leading-none mb-1">{comment.user}</span>
-                                                <p className="text-white text-[15px] leading-relaxed font-normal">{comment.text}</p>
+                                                <span className="text-white/50 font-bold text-[13px] hover:text-white cursor-pointer transition-colors leading-none mb-1">{comment.user}</span>
+                                                <p className="text-white text-[14px] sm:text-[15px] leading-relaxed font-normal">{comment.text}</p>
                                             </div>
                                             <div className="flex items-center gap-4 mt-2">
-                                                <span className="text-white/40 text-[13px]">{comment.timestamp}</span>
-                                                <button className="text-white/40 text-[13px] font-bold hover:text-white/60 transition-colors">Reply</button>
+                                                <span className="text-white/40 text-[12px]">{comment.timestamp}</span>
+                                                <button className="text-white/40 text-[12px] font-bold hover:text-white/60 transition-colors">Reply</button>
                                                 <div className="flex-1" />
                                                 <div className="flex flex-col items-center gap-1">
                                                     <button className="text-white/40 hover:text-red-500 transition-colors">
-                                                        <Heart size={18} />
+                                                        <Heart size={16} />
                                                     </button>
-                                                    <span className="text-white/40 text-[11px]">{comment.likes}</span>
+                                                    <span className="text-white/40 text-[11px] font-bold">{comment.likes}</span>
                                                 </div>
                                             </div>
-                                            <button className="flex items-center gap-1.5 text-white/40 text-[13px] font-bold mt-3 hover:text-white/60 transition-colors">
+                                            <button className="flex items-center gap-1.5 text-white/40 text-[12px] font-bold mt-3 hover:text-white/60 transition-colors">
                                                 <div className="w-6 h-[1px] bg-white/20" />
                                                 View 3 replies
                                                 <ChevronDown size={14} />
