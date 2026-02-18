@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Key, CheckCircle, ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 
 import { useNavigate } from "react-router-dom";
 
@@ -53,7 +54,7 @@ const ForgotPasswordForm: React.FC = () => {
       setSentEmail(data.email);
       setStep("code");
     } catch (error: any) {
-      alert(error?.data?.message || "Failed to send reset code");
+      toast.error(error?.data?.message || "Failed to send reset code");
     }
   };
 
@@ -69,7 +70,7 @@ const ForgotPasswordForm: React.FC = () => {
       // Navigate to reset password page with email and  
 
     } catch (error: any) {
-      alert(error?.data?.message || "Invalid or expired code");
+      toast.error(error?.data?.message || "Invalid or expired code");
     }
   };
 

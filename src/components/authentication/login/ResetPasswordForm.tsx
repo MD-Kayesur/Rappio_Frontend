@@ -7,9 +7,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, ArrowLeft, Check } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
- 
- 
-  
+import { toast } from "sonner";
+
+
+
 // Validation Schema
 const resetPasswordSchema = z
   .object({
@@ -45,55 +46,55 @@ const ResetPasswordForm = () => {
   // const token = searchParams.get("token") || searchParams.get("code") || "";
   const navigate = useNavigate();
 
- 
+
 
   const resetForm = useForm<ResetPasswordInputs>({
     resolver: zodResolver(resetPasswordSchema),
   });
 
- 
 
-const onSubmit = async () => {
-  if (!email) {
-    alert("Missing email. Please request a new password reset.");
-    navigate("/forgot-password");
-    return;
-  }
 
-  try {
-     
+  const onSubmit = async () => {
+    if (!email) {
+      toast.error("Missing email. Please request a new password reset.");
+      navigate("/forgot-password");
+      return;
+    }
 
-    setIsSuccess(true);
+    try {
 
-    setTimeout(() => {
-      navigate("/login");
-    }, 3000);
 
-  } catch (error: any) {
-    alert(error?.data?.message || "Failed to reset password");
-  }
-};
+      setIsSuccess(true);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to reset password");
+    }
+  };
 
 
 
   if (isSuccess) {
     return (
       <>
-      
+
         <div className="min-h-screen text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
           <AnimatedBackground />
           <div className="relative z-10 w-full flex items-center justify-center">
             <div className="w-full max-w-md bg-white/10 dark:bg-[#1A1C1D]/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50 text-center">
-          <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Check className="text-green-500 dark:text-green-400" size={40} />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-            Password Reset Successful!
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 text-sm mb-6">
-            Your password has been reset successfully. Redirecting to login...
-          </p>
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#10B981] mx-auto"></div>
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check className="text-green-500 dark:text-green-400" size={40} />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                Password Reset Successful!
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 text-sm mb-6">
+                Your password has been reset successfully. Redirecting to login...
+              </p>
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#10B981] mx-auto"></div>
             </div>
           </div>
         </div>
@@ -102,102 +103,102 @@ const onSubmit = async () => {
   }
 
   return (
-   <>
-     
-    <div className="min-h-screen text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
-      <AnimatedBackground />
-      <div className="relative z-10 w-full flex items-center justify-center">
-        <div className="w-full max-w-md bg-white/10 dark:bg-[#1A1C1D]/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50">
-        <button
-          onClick={() => navigate("/forgot-password")}
-          className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white mb-6 cursor-pointer"
-        >
-          <ArrowLeft size={16} />
-          Back
-        </button>
-        
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Reset Password</h2>
-        
-        <div className="mb-6 p-3 bg-white/10 dark:bg-blue-900/20 rounded-lg border border-white/10">
-          <p className="text-sm text-gray-800 dark:text-blue-300">
-            Reset password for: <strong className="text-gray-800 dark:text-white">{email}</strong>
-          </p>
-        </div>
-        
-        <p className="text-gray-700 dark:text-gray-300 text-sm mb-6">
-          Enter your new password below
-        </p>
+    <>
 
-        <form onSubmit={resetForm.handleSubmit(onSubmit)} className="space-y-4">
-          {/* Password Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-800 dark:text-white mb-1.5">
-              New Password *
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                {...resetForm.register("password")}
-                placeholder="Enter new password"
-                className="w-full pr-10 pl-4 py-2.5 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] transition-colors hover:border-[#10B981]"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute cursor-pointer right-3 top-3 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-            {resetForm.formState.errors.password && (
-              <p className="text-red-500 text-xs mt-1">
-                {resetForm.formState.errors.password.message}
+      <div className="min-h-screen text-white flex items-center justify-center p-1 xs:p-2 md:p-4 relative overflow-hidden">
+        <AnimatedBackground />
+        <div className="relative z-10 w-full flex items-center justify-center">
+          <div className="w-full max-w-md bg-white/10 dark:bg-[#1A1C1D]/80 backdrop-blur-xl p-8 rounded-2xl shadow-lg border border-white/10 dark:border-gray-700/50">
+            <button
+              onClick={() => navigate("/forgot-password")}
+              className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white mb-6 cursor-pointer"
+            >
+              <ArrowLeft size={16} />
+              Back
+            </button>
+
+            <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Reset Password</h2>
+
+            <div className="mb-6 p-3 bg-white/10 dark:bg-blue-900/20 rounded-lg border border-white/10">
+              <p className="text-sm text-gray-800 dark:text-blue-300">
+                Reset password for: <strong className="text-gray-800 dark:text-white">{email}</strong>
               </p>
-            )}
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              Must be 8+ characters with uppercase, lowercase, and number
+            </div>
+
+            <p className="text-gray-700 dark:text-gray-300 text-sm mb-6">
+              Enter your new password below
             </p>
-          </div>
 
-          {/* Confirm Password Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-800 dark:text-white mb-1.5">
-              Confirm Password *
-            </label>
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                {...resetForm.register("confirmPassword")}
-                placeholder="Confirm new password"
-                className="w-full pr-10 pl-4 py-2.5 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] transition-colors hover:border-[#10B981]"
-              />
+            <form onSubmit={resetForm.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Password Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-800 dark:text-white mb-1.5">
+                  New Password *
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    {...resetForm.register("password")}
+                    placeholder="Enter new password"
+                    className="w-full pr-10 pl-4 py-2.5 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] transition-colors hover:border-[#10B981]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute cursor-pointer right-3 top-3 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {resetForm.formState.errors.password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {resetForm.formState.errors.password.message}
+                  </p>
+                )}
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                  Must be 8+ characters with uppercase, lowercase, and number
+                </p>
+              </div>
+
+              {/* Confirm Password Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-800 dark:text-white mb-1.5">
+                  Confirm Password *
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    {...resetForm.register("confirmPassword")}
+                    placeholder="Confirm new password"
+                    className="w-full pr-10 pl-4 py-2.5 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] transition-colors hover:border-[#10B981]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute cursor-pointer right-3 top-3 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                  >
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {resetForm.formState.errors.confirmPassword && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {resetForm.formState.errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Submit Button */}
               <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute cursor-pointer right-3 top-3 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-              >
-                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-            {resetForm.formState.errors.confirmPassword && (
-              <p className="text-red-500 text-xs mt-1">
-                {resetForm.formState.errors.confirmPassword.message}
-              </p>
-            )}
-          </div>
+                type="submit"
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-        
-            className="w-full cursor-pointer bg-[#10B981] hover:bg-[#0ea571] text-white py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-          
-          </button>
-        </form>
+                className="w-full cursor-pointer bg-[#10B981] hover:bg-[#0ea571] text-white py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    </div></>
+      </div></>
   );
 };
 

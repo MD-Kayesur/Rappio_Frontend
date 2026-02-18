@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
-import {  useNavigate } from "react-router-dom";
- 
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
 // Validation Schema
 const resetPasswordSchema = z
   .object({
@@ -27,18 +28,18 @@ const ResetPasswordForm = () => {
 
   const navigate = useNavigate();
 
- 
+
   const resetForm = useForm<ResetPasswordInputs>({
     resolver: zodResolver(resetPasswordSchema),
   });
 
   const onSubmit = async () => {
     try {
-      
-      alert("Password reset successful!");
+
+      toast.success("Password reset successful!");
       navigate("/login");
     } catch (error: any) {
-      alert(error?.data?.message || "Failed to reset password");
+      toast.error(error?.data?.message || "Failed to reset password");
     }
   };
 
