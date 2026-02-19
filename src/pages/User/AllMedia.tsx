@@ -322,11 +322,16 @@ const AllMedia: React.FC = () => {
                                     </div>
 
 
-                                    <div className="pointer-events-auto mb-2">
-                                        <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2 px-5 rounded-lg text-[13px] shadow-lg transition-all">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }}
+                                        className="relative group overflow-hidden bg-gradient-to-r from-[#FF3B5C] to-[#EE2B3E] hover:from-[#EE2B3E] hover:to-[#d41f32] text-white font-bold py-3 px-8 rounded-full text-[14px] shadow-[0_4px_15px_rgba(238,43,62,0.4)] hover:shadow-[0_6px_20px_rgba(238,43,62,0.6)] transition-all transform hover:-translate-y-0.5 active:scale-95 border border-white/10"
+                                    >
+                                        <span className="relative z-10 flex items-center gap-2">
                                             {currentOffer.cta || 'Claim Offer'}
-                                        </button>
-                                    </div>
+                                            <span className="bg-white/20 rounded-full p-0.5"><ChevronRight size={14} /></span>
+                                        </span>
+                                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                                    </button>
 
 
                                     {/* Tags */}
@@ -345,9 +350,13 @@ const AllMedia: React.FC = () => {
                             {/* Sidebar Icons (Still separate from card) */}
                             <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
                                 <div className="hidden sm:flex flex-col items-center gap-1.5">
-                                    <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                    {/* <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                         <Search size={22} />
-                                    </button>
+                                    </button> */}
+                                    <div className="hidden sm:flex flex-col items-center gap-1.5">
+                                        <img className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5" src={currentOffer.image_url} alt="" />
+
+                                    </div>
                                 </div>
 
                                 <div className="flex flex-col items-center gap-1.5">
