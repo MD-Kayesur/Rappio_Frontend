@@ -285,7 +285,7 @@ const Photos: React.FC = () => {
 
 
                                     <div className="pointer-events-auto mb-2">
-                                        <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2 px-5 rounded-lg text-[13px] shadow-lg transition-all">
+                                        <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="glow-on-hover" type="button">
                                             {currentOffer.cta || 'Claim Offer'}
                                         </button>
                                     </div>
@@ -425,7 +425,57 @@ const Photos: React.FC = () => {
                     </div>
                 </div>
             )}
-            <style>{`.custom-scrollbar::-webkit-scrollbar { width: 4px; } .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 20px; }`}</style>
+            <style>{`.custom-scrollbar::-webkit-scrollbar { width: 4px; } .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 20px; }
+                .glow-on-hover {
+                    position: relative;
+                    background: transparent;
+                    z-index: 0;
+                    overflow: hidden;
+                    padding: 14px 40px;
+                    border-radius: 9999px;
+                    border: none;
+                    color: white;
+                    font-weight: 800;
+                    font-size: 15px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                }
+                .glow-on-hover::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 500%;
+                    height: 500%;
+                    background: conic-gradient(
+                        #ff0000, #ff7300, #fffb00, #48ff00, 
+                        #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000
+                    );
+                    transform: translate(-50%, -50%);
+                    animation: spin-border 4s linear infinite;
+                    z-index: -2;
+                }
+                .glow-on-hover::after {
+                    content: '';
+                    position: absolute;
+                    inset: 3px;
+                    background: #000;
+                    border-radius: 9999px;
+                    z-index: -1;
+                    transition: background 0.3s;
+                }
+                .glow-on-hover:hover::after {
+                    background: #111;
+                }
+                @keyframes spin-border {
+                    from { transform: translate(-50%, -50%) rotate(0deg); }
+                    to { transform: translate(-50%, -50%) rotate(360deg); }
+                }
+            `}</style>
         </>
     );
 };
