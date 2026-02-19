@@ -215,7 +215,7 @@ const Overview = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D]/60 backdrop-blur-md rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <FileText className="h-6 w-6 text-white" />
@@ -229,7 +229,7 @@ const Overview = () => {
           <p className="text-gray-400 text-sm">Total Published Items</p>
         </div>
 
-        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D]/60 backdrop-blur-md rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <Heart className="h-6 w-6 text-white" />
@@ -243,7 +243,7 @@ const Overview = () => {
           <p className="text-gray-400 text-sm">Total Performance (Likes)</p>
         </div>
 
-        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D]/60 backdrop-blur-md rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <MessageCircle className="h-6 w-6 text-white" />
@@ -257,7 +257,7 @@ const Overview = () => {
           <p className="text-gray-400 text-sm">Total Engagement (Comments)</p>
         </div>
 
-        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D]/60 backdrop-blur-md rounded-lg p-6 border border-gray-800">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 bg-gray-800 rounded-lg">
               <CreditCard className="h-6 w-6 text-white" />
@@ -275,7 +275,7 @@ const Overview = () => {
       {/* Content Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top performing items */}
-        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D]/60 backdrop-blur-md rounded-lg p-6 border border-gray-800">
           <h3 className="text-lg font-semibold mb-6">Top performing items</h3>
           <div className="space-y-4">
             {currentItems.map((item) => (
@@ -337,7 +337,7 @@ const Overview = () => {
         </div>
 
         {/* Feed Performance Chart */}
-        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D]/60 backdrop-blur-md rounded-lg p-6 border border-gray-800">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold">Feed Performance</h3>
             <Select value={feedView} onValueChange={setFeedView}>

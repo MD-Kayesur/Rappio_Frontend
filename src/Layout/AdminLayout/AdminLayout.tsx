@@ -27,7 +27,7 @@ export default function AdminLayout() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <div className="flex h-screen relative overflow-hidden text-gray-900 dark:text-gray-100">
+    <div className="flex h-screen relative overflow-hidden">
       <div
         className={`fixed lg:relative inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 flex-shrink-0 ${isMobile && sidebarOpen ? "w-70" : isMobile && !sidebarOpen ? "w-0" : "lg:w-70"}`}
       >
