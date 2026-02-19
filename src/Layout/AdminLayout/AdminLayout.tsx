@@ -24,6 +24,8 @@ export default function AdminLayout() {
     };
   }, []);
 
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   return (
     <div className="flex h-screen relative overflow-hidden text-gray-900 dark:text-gray-100">
       <div
@@ -37,11 +39,18 @@ export default function AdminLayout() {
         )}
 
         <div className={`relative h-full ${isMobile && !sidebarOpen ? "hidden" : ""}`}>
-          <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <AdminSidebar
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            onSearchVisibilityChange={setIsSearchOpen}
+          />
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col overflow-hidden relative w-full lg:w-auto">
+      <div
+        className={`flex-1 flex flex-col overflow-hidden relative w-full lg:w-auto transition-all duration-300 ${isSearchOpen && !isMobile ? 'lg:ml-[350px]' : ''
+          }`}
+      >
         {isMobile && (
           <button
             onClick={() => setSidebarOpen(true)}

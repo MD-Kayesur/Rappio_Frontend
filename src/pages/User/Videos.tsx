@@ -80,6 +80,7 @@ const Videos: React.FC = () => {
     const [allOffers, setAllOffers] = useState<Offer[]>([]);
     const [showShareModal, setShowShareModal] = useState(false);
     const shareScrollRef = useRef<HTMLDivElement>(null);
+    const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
     const [comments, setComments] = useState<Comment[]>([
         { id: 1, user: 'Robert Fox', avatar: '👤', text: 'That\'s Amazing', likes: 0, timestamp: '2m' },
@@ -248,7 +249,7 @@ const Videos: React.FC = () => {
         if (!savedUsername && !username) {
             setShowNameSetup(true);
         } else {
-            setShowComments(!showComments);
+            setShowComments((prev) => !prev);
         }
     };
 
@@ -257,10 +258,33 @@ const Videos: React.FC = () => {
         <div ref={containerRef} className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onWheel={handleWheel}>
             <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
                 <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
-                    <div className="flex-1 relative group pointer-events-auto">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-white/60"><Search size={18} /></div>
-                        <input type="text" placeholder="Search videos..." value={searchQuery} onChange={(e) => setSearchParams({ q: e.target.value }, { replace: true })} className="w-full py-2.5 pl-11 pr-11 bg-black/20 backdrop-blur-md text-white text-sm border border-white/10 rounded-full focus:outline-none focus:border-white/30 transition-all placeholder-white/40" />
-                        {searchQuery && <button onClick={(e) => { e.stopPropagation(); setSearchParams({}, { replace: true }); }} className="absolute inset-y-0 right-0 flex items-center pr-4 text-white"><X size={12} /></button>}
+                    <div className={`pointer-events-auto transition-all duration-300 ${isSearchExpanded || searchQuery ? 'flex-1 relative group' : 'w-10'}`}>
+                        {!isSearchExpanded && !searchQuery ? (
+                            <button
+                                onClick={() => setIsSearchExpanded(true)}
+                                className="w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
+                            >
+                                <Search size={20} />
+                            </button>
+                        ) : (
+                            <div className="relative w-full">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-white/60"><Search size={18} /></div>
+                                <input
+                                    type="text"
+                                    placeholder="Search videos..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchParams({ q: e.target.value }, { replace: true })}
+                                    className="w-full py-2.5 pl-11 pr-11 bg-black/20 backdrop-blur-md text-white text-sm border border-white/10 rounded-full focus:outline-none focus:border-white/30 transition-all placeholder-white/40"
+                                    autoFocus
+                                    onBlur={() => !searchQuery && setIsSearchExpanded(false)}
+                                />
+                                {searchQuery ? (
+                                    <button onClick={(e) => { e.stopPropagation(); setSearchParams({}, { replace: true }); }} className="absolute inset-y-0 right-0 flex items-center pr-4 text-white"><X size={12} /></button>
+                                ) : (
+                                    <button onClick={(e) => { e.stopPropagation(); setIsSearchExpanded(false); }} className="absolute inset-y-0 right-0 flex items-center pr-4 text-white"><X size={12} /></button>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -316,7 +340,7 @@ const Videos: React.FC = () => {
                                 </div>
 
                                 <div className="pointer-events-auto mb-2">
-                                    <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="glow-on-hover" type="button">
+                                    <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="glow-on-hover w-full sm:w-auto" type="button">
                                         {currentOffer.cta || 'Claim Offer'}
                                     </button>
                                 </div>
@@ -380,8 +404,8 @@ const Videos: React.FC = () => {
             <AnimatePresence>
                 {showComments && (
                     <>
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onWheel={handleWheel} className="fixed inset-0 bg-black/60 sm:bg-transparent z-[100]" />
-                        <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] bg-black z-[110] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onWheel={handleWheel} className="fixed inset-0 bg-black/60 sm:bg-transparent z-[9998] pointer-events-none" />
+                        <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] bg-black z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
                             <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-black sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
                             <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar space-y-6">
                                 {comments.map((comment) => (
@@ -408,7 +432,7 @@ const Videos: React.FC = () => {
 
             <AnimatePresence>
                 {showShareModal && (
-                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
                         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#1a1a1a] rounded-3xl p-6 w-full max-w-[450px] relative border border-white/10" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center justify-center mb-8"><h3 className="text-white text-lg font-semibold">Share to</h3><button onClick={() => setShowShareModal(false)} className="absolute top-5 right-5 text-white/60"><X size={24} /></button></div>
                             <div className="relative group/share">
@@ -442,7 +466,7 @@ const Videos: React.FC = () => {
             </AnimatePresence>
 
             {showNameSetup && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
                     <div className="bg-[#1a1a1a] rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10">
                         <div className="w-20 h-20 bg-red-600 rounded-2xl mx-auto mb-8 flex items-center justify-center rotate-12"><img src={logo} alt="Logo" className="w-12 -rotate-12" /></div>
                         <h3 className="text-white text-2xl font-bold mb-3">Set your name</h3>
@@ -455,8 +479,6 @@ const Videos: React.FC = () => {
             <style>{`
                 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
                 .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 20px; }
-                @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-                .animate-marquee { display: flex; animation: marquee 10s linear infinite; }
                 @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
                 .animate-spin-slow { animation: spin-slow 4s linear infinite; }
                 

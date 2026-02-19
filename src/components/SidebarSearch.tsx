@@ -6,9 +6,10 @@ import { Search, X } from 'lucide-react'
 interface SidebarSearchProps {
     isCollapsed: boolean;
     setIsCollapsed: (open: boolean) => void;
+    onSearchVisibilityChange?: (isVisible: boolean) => void;
 }
 
-export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, setIsCollapsed }) => {
+export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed,  onSearchVisibilityChange }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -32,7 +33,8 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, setIs
         if (isOpen) {
             setTimeout(() => inputRef.current?.focus(), 100);
         }
-    }, [isOpen]);
+        onSearchVisibilityChange?.(isOpen);
+    }, [isOpen, onSearchVisibilityChange]);
 
     const handleSearchChange = (val: string) => {
         const mediaPages = ['/user/all', '/user/videos', '/user/photos', '/user/favorites', '/user/top-casinos'];
@@ -60,7 +62,6 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, setIs
 
     const closeSearch = () => {
         setIsOpen(false);
-        setIsCollapsed(false);
     };
 
     const handleSuggestionClick = (title: string) => {
@@ -86,12 +87,11 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, setIs
             <div className={`px-4 py-2 ${isCollapsed ? 'flex justify-center' : ''}`}>
                 <button
                     onClick={() => {
-                        setIsCollapsed(true);
                         setIsOpen(true);
                     }}
                     className={`flex items-center transition-all bg-[#1A1C1D] border border-white/5 hover:border-white/10 text-gray-400 hover:text-white rounded-full ${isCollapsed
-                            ? 'w-10 h-10 justify-center p-0 flex-shrink-0'
-                            : 'w-full px-4 py-2.5 gap-3'
+                        ? 'w-10 h-10 justify-center p-0 flex-shrink-0'
+                        : 'w-full px-4 py-2.5 gap-3'
                         }`}
                 >
                     <Search size={isCollapsed ? 20 : 18} className="flex-shrink-0" />
@@ -108,7 +108,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, setIs
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.95, opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className={`fixed top-0 bottom-0 z-[101] border-r border-white/10 shadow-2xl flex flex-col backdrop-blur-md`}
+                            className={`fixed top-0 bottom-0 z-[9999] border-r border-white/10 shadow-2xl flex flex-col backdrop-blur-md`}
                             style={{
                                 left: isCollapsed ? '80px' : '280px',
                                 width: '350px'

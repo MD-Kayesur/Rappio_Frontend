@@ -21,11 +21,13 @@ import {
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
+  onSearchVisibilityChange?: (isVisible: boolean) => void;
 }
 
 export const AdminSidebar: React.FC<SidebarProps> = ({
   sidebarOpen,
   setSidebarOpen,
+  onSearchVisibilityChange,
 }) => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -87,7 +89,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
               )}
             </div>
           </Link>
-          <SidebarSearch isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+          <SidebarSearch isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} onSearchVisibilityChange={onSearchVisibilityChange} />
         </div>
       )}
 
