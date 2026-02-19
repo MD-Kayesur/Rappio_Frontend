@@ -271,9 +271,9 @@ const AllMedia: React.FC = () => {
                     </div>
 
                     <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                        <motion.div key={currentOffer.id} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }} className="absolute inset-0 h-full w-full flex flex-row items-end gap-5">
+                        <motion.div key={currentOffer.id} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }} className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5">
                             {/* Main Card - Full Height Video */}
-                            <div className="flex-1 h-full bg-[#121212] sm:rounded-[1rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 relative group">
+                            <div className="w-full h-full sm:flex-1 bg-[#121212] sm:rounded-[1rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 relative group">
                                 <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
                                     {currentOffer.video_url ? (
                                         <div className="absolute inset-0 flex items-center justify-center">
@@ -300,9 +300,9 @@ const AllMedia: React.FC = () => {
                                 </div>
 
                                 {/* Overlaid Info Area */}
-                                <div className="absolute bottom-0 left-0 right-0 p-6 space-y-3 z-30 pointer-events-none">
+                                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
                                     {/* Claim Offer Button inside overlay */}
-                                   
+
 
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
@@ -322,7 +322,7 @@ const AllMedia: React.FC = () => {
                                     </div>
 
 
- <div className="pointer-events-auto mb-2">
+                                    <div className="pointer-events-auto mb-2">
                                         <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="bg-[#EE2B3E] hover:bg-[#d41f32] text-white font-bold py-2 px-5 rounded-lg text-[13px] shadow-lg transition-all">
                                             {currentOffer.cta || 'Claim Offer'}
                                         </button>
@@ -343,8 +343,8 @@ const AllMedia: React.FC = () => {
                             </div>
 
                             {/* Sidebar Icons (Still separate from card) */}
-                            <div className="w-14 flex flex-col items-center gap-6 mb-8 flex-shrink-0 z-[120]">
-                                <div className="flex flex-col items-center gap-1.5">
+                            <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
+                                <div className="hidden sm:flex flex-col items-center gap-1.5">
                                     <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                         <Search size={22} />
                                     </button>
