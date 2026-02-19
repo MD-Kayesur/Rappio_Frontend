@@ -371,7 +371,7 @@ const Videos: React.FC = () => {
                     </motion.div>
                 </AnimatePresence>
             </div>
-            <div className="hidden sm:flex absolute bottom-10 right-10 flex-col gap-3">
+            <div className={`hidden sm:flex absolute bottom-10 flex-col gap-3 transition-all duration-300 z-[120] ${showComments ? 'right-[520px]' : 'right-10'}`}>
                 <button onClick={() => handleScroll('up')} disabled={currentIndex === 0} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronUp size={28} /></button>
                 <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronDown size={28} /></button>
             </div>
