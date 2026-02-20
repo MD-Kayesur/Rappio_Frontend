@@ -119,7 +119,7 @@ const TopCasinos = () => {
       </div>
 
       {/* Grid Layout */}
-      <div className="p-4 overflow-y-auto h-[calc(100vh-70px)] no-scrollbar">
+      <div className="p-4 overflow-y-auto h-[calc(100vh-70px)] no-scrollbar scroll-smooth">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {filteredOffers.map((offer, index) => {
             const youtubeID = extractYouTubeID(offer.video_url);

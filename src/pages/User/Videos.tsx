@@ -149,7 +149,7 @@ const Videos: React.FC = () => {
 
     const handleWheel = (e: React.WheelEvent) => {
         const now = Date.now();
-        if (now - lastScrollTime.current < 800) return;
+        if (now - lastScrollTime.current < 500) return;
         if (e.deltaY > 50) { handleScroll('down'); lastScrollTime.current = now; }
         else if (e.deltaY < -50) { handleScroll('up'); lastScrollTime.current = now; }
     };
@@ -251,7 +251,7 @@ const Videos: React.FC = () => {
 
     return (
 
-        <div ref={containerRef} className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onWheel={handleWheel}>
+        <div ref={containerRef} className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar scroll-smooth" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onWheel={handleWheel}>
             <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
                 <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
                     <div className="pointer-events-auto">
