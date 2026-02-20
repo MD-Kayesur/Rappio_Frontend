@@ -245,12 +245,7 @@ const Videos: React.FC = () => {
 
     const handleExpandAndComment = (e: React.MouseEvent) => {
         e.stopPropagation();
-        const savedUsername = localStorage.getItem('username');
-        if (!savedUsername && !username) {
-            setShowNameSetup(true);
-        } else {
-            setShowComments((prev) => !prev);
-        }
+        setShowComments((prev) => !prev);
     };
 
     return (
