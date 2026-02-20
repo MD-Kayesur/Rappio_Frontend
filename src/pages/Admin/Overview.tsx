@@ -177,7 +177,7 @@ const Overview = () => {
     <div className="min-h-full text-white p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
           <h1 className="text-2xl font-bold">Overview</h1>
 
           <Select value={timeFilter} onValueChange={setTimeFilter}>

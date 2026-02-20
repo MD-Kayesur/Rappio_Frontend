@@ -189,11 +189,11 @@ const FeedOrdering = () => {
   };
 
   return (
-    <div className="min-h-full  text-white p-6">
+    <div className="min-h-full text-white p-4 sm:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold">All Feeds</h1>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          <h1 className="text-xl sm:text-2xl font-bold">All Feeds</h1>
 
           {/* Dropdowns */}
           <Select value={timeFilter} onValueChange={setTimeFilter}>
@@ -230,25 +230,25 @@ const FeedOrdering = () => {
           <table className="w-full">
             <thead className="bg-gray-800/50 border-b border-gray-800">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   Name
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   Link
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="hidden md:table-cell px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   Views
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="hidden lg:table-cell px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   Clicks
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="hidden xl:table-cell px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   Device
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="hidden sm:table-cell px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -260,27 +260,27 @@ const FeedOrdering = () => {
                   className="hover:bg-gray-800/30 transition-colors"
                 >
                   {/* Name with Image */}
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
+                  <td className="px-4 sm:px-6 py-4">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       {feed.isPinned && (
-                        <Pin className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                        <Pin className="h-4 w-4 text-yellow-500 fill-yellow-500 flex-shrink-0" />
                       )}
                       <img
                         src={feed.image}
                         alt={feed.name}
-                        className="w-10 h-10 rounded-lg object-cover"
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover flex-shrink-0"
                       />
-                      <span className="text-sm font-medium text-white">
+                      <span className="text-sm font-medium text-white truncate max-w-[100px] sm:max-w-none">
                         {feed.name}
                       </span>
                     </div>
                   </td>
 
                   {/* Link */}
-                  <td className="px-6 py-4">
+                  <td className="px-4 sm:px-6 py-4">
                     <a
                       href={feed.link}
-                      className="text-sm text-blue-400 hover:text-blue-300 truncate block max-w-xs"
+                      className="text-sm text-blue-400 hover:text-blue-300 truncate block max-w-[120px] sm:max-w-xs"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -289,7 +289,7 @@ const FeedOrdering = () => {
                   </td>
 
                   {/* Views */}
-                  <td className="px-6 py-4">
+                  <td className="hidden md:table-cell px-6 py-4">
                     <span
                       className={`text-sm font-medium ${feed.views.includes('M')
                         ? 'text-purple-400'
@@ -307,17 +307,17 @@ const FeedOrdering = () => {
                   </td>
 
                   {/* Clicks */}
-                  <td className="px-6 py-4">
+                  <td className="hidden lg:table-cell px-6 py-4">
                     <span className="text-sm text-gray-300">{feed.clicks}</span>
                   </td>
 
                   {/* Device */}
-                  <td className="px-6 py-4">
+                  <td className="hidden xl:table-cell px-6 py-4">
                     <span className="text-sm text-gray-300">{feed.device}</span>
                   </td>
 
                   {/* Status */}
-                  <td className="px-6 py-4">
+                  <td className="hidden sm:table-cell px-6 py-4">
                     <span
                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded ${feed.status === 'Active'
                         ? 'text-green-400 bg-green-900/30'
@@ -329,7 +329,7 @@ const FeedOrdering = () => {
                   </td>
 
                   {/* Actions Dropdown */}
-                  <td className="px-6 py-4 text-right">
+                  <td className="px-4 sm:px-6 py-4 text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="text-gray-400 hover:text-white transition-colors">
@@ -376,13 +376,13 @@ const FeedOrdering = () => {
 
         {/* Pagination Controls */}
         {feeds.length > itemsPerPage && (
-          <div className="flex items-center justify-between px-6 py-4 bg-[#1A1C1D]/50 border-t border-gray-800">
-            <div className="text-sm text-gray-400">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 sm:px-6 py-4 bg-[#1A1C1D]/50 border-t border-gray-800">
+            <div className="text-sm text-gray-400 text-center sm:text-left">
               Showing <span className="text-white font-medium">{indexOfFirstItem + 1}</span> to{' '}
               <span className="text-white font-medium">{Math.min(indexOfLastItem, feeds.length)}</span> of{' '}
               <span className="text-white font-medium">{feeds.length}</span> results
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -425,9 +425,9 @@ const FeedOrdering = () => {
       {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm">
-          <div className="flex min-h-screen items-center justify-center p-4">
+          <div className="flex min-h-screen items-center justify-center p-2 sm:p-4">
             <div className="w-full max-w-7xl bg-gray-950 text-white border border-gray-800 rounded-lg shadow-xl relative">
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <div className="flex flex-col space-y-1.5 text-center sm:text-left">
                   <h2 className="text-xl font-bold">Create New post</h2>
                   <p className="text-sm text-gray-400">Fill out this form to publish a new post.</p>
@@ -672,9 +672,9 @@ const FeedOrdering = () => {
 
       {showViewModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm">
-          <div className="flex min-h-screen items-center justify-center p-4">
+          <div className="flex min-h-screen items-center justify-center p-2 sm:p-4">
             <div className="w-full max-w-7xl bg-gray-950 text-white border border-gray-800 rounded-lg shadow-xl relative">
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <div className="flex flex-col space-y-1.5 text-center sm:text-left">
                   <h2 className="text-xl font-bold">Preview Post</h2>
                   <p className="text-sm text-gray-400">Your post will be like this preview.</p>
