@@ -93,9 +93,9 @@ export const UserSidebar: React.FC<SidebarProps> = ({
         : "w-0 overflow-hidden"
         }`}
     >
-      {/* Close Button */}
+      {/* Close Button - Mobile Only */}
       {sidebarOpen && (
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-3 right-3 z-10 lg:hidden">
           <button
             onClick={() => setSidebarOpen(false)}
             className="w-8 h-8 bg-[#1A1C1D] dark:bg-gray-800 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer shadow-lg"
