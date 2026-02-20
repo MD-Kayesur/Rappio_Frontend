@@ -1,21 +1,17 @@
 import { useState, useEffect } from "react";
 import { UserSidebar } from "./UserSidebar";
 import { Outlet } from "react-router-dom";
-import { AiOutlineMenuFold } from "react-icons/ai";
+import { AiOutlineMenu } from "react-icons/ai";
 import { LayoutNavber } from "@/Layout/LayoutNavber";
 
 export default function UserLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [_isMobile, setIsMobile] = useState(false);
 
   // Function to check if the screen is mobile or desktop
   const checkIfMobile = () => {
     const mobile = window.innerWidth < 1024; // lg breakpoint
     setIsMobile(mobile);
-    // On desktop, sidebar should be open by default
-    if (!mobile) {
-      setSidebarOpen(true);
-    }
   };
 
   useEffect(() => {
@@ -33,41 +29,42 @@ export default function UserLayout() {
 
 
   return (
-    <div className="flex h-screen relative overflow-hidden">
-      {/* Sidebar - Overlay on mobile, fixed on desktop */}
-      {/* On desktop, this container maintains a fixed width (w-70) */}
+    <div className="flex h-screen relative overflow-hidden bg-black">
+      {/* Sidebar - Overlay logic */}
       <div
-        className={`fixed lg:relative inset-0 lg:inset-auto z-50 lg:z-auto transition-all duration-300 flex-shrink-0 ${isMobile && sidebarOpen ? "w-70" : isMobile && !sidebarOpen ? "w-0" : "lg:w-70"}`}
+        className={`fixed inset-0 z-[10000] transition-all duration-300 flex-shrink-0 ${sidebarOpen ? "w-70" : "w-0 overflow-hidden pointer-events-none"}`}
       >
-        {/* Mobile overlay backdrop */}
-        {isMobile && sidebarOpen && (
+        {/* Overlay backdrop */}
+        {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-lg lg:hidden"
+            className="fixed inset-0 bg-black/60 backdrop-blur-md pointer-events-auto"
             onClick={() => setSidebarOpen(false)}
           />
         )}
 
-        {/* The actual sidebar content, its visibility is controlled by sidebarOpen */}
-        <div className={`relative h-full ${isMobile && !sidebarOpen ? "hidden" : ""}`}>
-          <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        {/* The actual sidebar content */}
+        <div className={`relative h-full transition-all duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+          <div className="w-70 h-full bg-[#0A0A0A] border-r border-white/5 shadow-2xl pointer-events-auto">
+            <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          </div>
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden relative w-full lg:w-auto">
-        {/* Mobile Menu Toggle Button */}
-        {isMobile && (
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="fixed top-6 right-4 z-40 w-9 h-9 dark:bg-[#0A0A0A] text-white rounded-lg flex items-center justify-center  border border-gray-300 dark:border-gray-700 hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer lg:hidden"
-            aria-label="Open menu"
-          >
-            <AiOutlineMenuFold className="w-5 h-5 text-black dark:text-white" />
-          </button>
-        )}
+      {/* Menu Toggle Button - High Z-Index to remain visible */}
+      {!sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="fixed top-6 right-6 z-[9999] w-12 h-12 bg-neutral-800/80 backdrop-blur-md text-white rounded-full flex items-center justify-center border border-white/10 hover:bg-neutral-700/80 transition-all cursor-pointer shadow-lg active:scale-95"
+          aria-label="Open menu"
+        >
+          <AiOutlineMenu className="w-6 h-6" />
+        </button>
+      )}
 
-        {/* Layout Navbar */}
-        <div className="sticky top-0 z-30 hidden lg:block">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden relative w-full">
+        {/* Layout Navbar - only semi-visible or hidden if needed */}
+        <div className="sticky top-0 z-30 hidden lg:block opacity-50 hover:opacity-100 transition-opacity">
           <LayoutNavber />
         </div>
 

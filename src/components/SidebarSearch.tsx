@@ -9,7 +9,7 @@ interface SidebarSearchProps {
     onSearchVisibilityChange?: (isVisible: boolean) => void;
 }
 
-export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed,  onSearchVisibilityChange }) => {
+export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSearchVisibilityChange }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()

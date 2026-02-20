@@ -326,7 +326,13 @@ const AllMedia: React.FC = () => {
                                 {/* Overlaid Info Area */}
                                 <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
                                     {/* Claim Offer Button inside overlay */}
-
+ <button
+                                        onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }}
+                                        className="glow-on-hover w-full sm:w-auto"
+                                        type="button"
+                                    >
+                                        {currentOffer.cta || 'CLAIM OFFER'}
+                                    </button>
 
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
@@ -346,13 +352,7 @@ const AllMedia: React.FC = () => {
                                     </div>
 
 
-                                    <button
-                                        onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }}
-                                        className="glow-on-hover w-full sm:w-auto"
-                                        type="button"
-                                    >
-                                        {currentOffer.cta || 'CLAIM OFFER'}
-                                    </button>
+                                   
 
 
                                     {/* Tags */}
