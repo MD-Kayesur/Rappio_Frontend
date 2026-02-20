@@ -32,15 +32,18 @@ import { FaLock } from "react-icons/fa";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
+  isCollapsed: boolean;
+  setIsCollapsed: (collapsed: boolean) => void;
 }
 
 export const UserSidebar: React.FC<SidebarProps> = ({
   sidebarOpen,
   setSidebarOpen,
+  isCollapsed,
+  setIsCollapsed,
 }) => {
   const location = useLocation();
   // const dispatch = useDispatch();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDarkMode] = useState(false);
 
   //  const { data: subscriptionData } = useGetMySubscriptionQuery();

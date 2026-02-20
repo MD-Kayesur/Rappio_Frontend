@@ -21,17 +21,18 @@ import {
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
-  onSearchVisibilityChange?: (isVisible: boolean) => void;
+  isCollapsed: boolean;
+  setIsCollapsed: (collapsed: boolean) => void;
 }
 
 export const AdminSidebar: React.FC<SidebarProps> = ({
   sidebarOpen,
   setSidebarOpen,
-  onSearchVisibilityChange,
+  isCollapsed,
+  setIsCollapsed,
 }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDarkMode] = useState(false);
 
   const handleLogout = () => {
@@ -48,7 +49,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
 
   return (
     <div
-      className={`relative z-50 flex flex-col       transition-all duration-300 ease-in-out h-full ${sidebarOpen
+      className={`relative z-50 flex flex-col transition-all duration-300 ease-in-out h-full ${sidebarOpen
         ? (isCollapsed ? "w-20" : "w-64 sm:w-70")
         : "w-0 overflow-hidden"
         }`}
@@ -83,13 +84,13 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
                 />
               )}
               {!isCollapsed && (
-                <h1 className="font-bold text-xl sm:text-2xl text-[#111827] dark:text-gray-200 truncate">
+                <h1 className="font-bold text-[22px] text-[#111827] dark:text-gray-200 truncate">
                   ProntoCorso
                 </h1>
               )}
             </div>
           </Link>
-          <SidebarSearch isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} onSearchVisibilityChange={onSearchVisibilityChange} />
+          {/* <SidebarSearch isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} /> */}
         </div>
       )}
 
@@ -122,7 +123,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
                 />
 
                 {!isCollapsed && (
-                  <span className="flex items-center gap-2 text-sm sm:text-base truncate">
+                  <span className="flex items-center gap-2 text-[16px] truncate">
                     {item.label}
                   </span>
                 )}
@@ -148,10 +149,11 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
 
       {/* Collapse Button */}
       {sidebarOpen && (
-        <div className="hidden lg:block   p-3">
+        <div className="hidden lg:block p-3">
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="flex items-center justify-center w-full gap-2 px-3 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {isCollapsed ? (
               <MdOutlineKeyboardDoubleArrowRight className="text-2xl sm:text-3xl" />

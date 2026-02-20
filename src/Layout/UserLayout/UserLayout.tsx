@@ -7,6 +7,7 @@ import { LayoutNavber } from "@/Layout/LayoutNavber";
 export default function UserLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Function to check if the screen is mobile or desktop
   const checkIfMobile = () => {
@@ -39,7 +40,7 @@ export default function UserLayout() {
       {/* Sidebar Container */}
       <div
         className={`fixed lg:relative inset-0 lg:inset-auto z-[10000] lg:z-auto transition-all duration-300 flex-shrink-0 
-          ${isMobile ? (sidebarOpen ? "w-70" : "w-0 overflow-hidden pointer-events-none") : "lg:w-70"}
+          ${isMobile ? (sidebarOpen ? "w-70" : "w-0 overflow-hidden pointer-events-none") : (isCollapsed ? "lg:w-20" : "lg:w-70")}
         `}
       >
         {/* Mobile Overlay backdrop */}
@@ -54,8 +55,13 @@ export default function UserLayout() {
         <div className={`relative h-full transition-all duration-300 
           ${isMobile ? (sidebarOpen ? "translate-x-0" : "-translate-x-full") : "translate-x-0"}
         `}>
-          <div className="w-70 h-full bg-black/10 backdrop-blur-lg border-r border-white/5 shadow-2xl pointer-events-auto">
-            <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <div className={`h-full bg-black/10 backdrop-blur-lg border-r border-white/5 shadow-2xl pointer-events-auto transition-all duration-300 ${isCollapsed ? "w-20" : "w-70"}`}>
+            <UserSidebar
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+              isCollapsed={isCollapsed}
+              setIsCollapsed={setIsCollapsed}
+            />
           </div>
         </div>
       </div>

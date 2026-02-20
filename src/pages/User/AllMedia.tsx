@@ -251,12 +251,7 @@ const AllMedia: React.FC = () => {
 
     const handleExpandAndComment = (e: React.MouseEvent) => {
         e.stopPropagation();
-        const savedUsername = localStorage.getItem('username');
-        if (!savedUsername && !username) {
-            setShowNameSetup(true);
-        } else {
-            setShowComments((prev) => !prev);
-        }
+        setShowComments((prev) => !prev);
     };
 
     return (
@@ -437,7 +432,33 @@ const AllMedia: React.FC = () => {
                                 ))}
                             </div>
                             <div className="p-4 bg-transparent border-t border-white/5">
-                                {!username ? <button onClick={() => setShowNameSetup(true)} className="w-full bg-[#FE2C55] text-white font-bold py-3.5 rounded-full">Log in to comment</button> : <div className="flex flex-col gap-2">{replyTo && <div className="flex items-center justify-between px-4 py-1 bg-white/5 rounded-t-lg"><span className="text-[12px] text-white/60">Replying to {replyTo.user}</span><button onClick={() => setReplyTo(null)} className="text-white/40"><X size={14} /></button></div>}<div className="flex gap-3 items-center bg-white/5 p-2 rounded-full border border-white/10"><input ref={commentInputRef} type="text" value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Add a comment..." className="flex-1 bg-transparent text-white px-4 outline-none" onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()} /><button onClick={handleCommentSubmit} className={commentText.trim() ? 'text-[#FE2C55]' : 'text-white/20'}>Post</button></div></div>}
+                                <div className="flex flex-col gap-2">
+                                    {replyTo && (
+                                        <div className="flex items-center justify-between px-4 py-1 bg-white/5 rounded-t-lg">
+                                            <span className="text-[12px] text-white/60">Replying to {replyTo.user}</span>
+                                            <button onClick={() => setReplyTo(null)} className="text-white/40"><X size={14} /></button>
+                                        </div>
+                                    )}
+                                    <div className="flex gap-3 items-center bg-white/5 p-2 rounded-full border border-white/10">
+                                        <input
+                                            ref={commentInputRef}
+                                            type="text"
+                                            value={commentText}
+                                            onChange={(e) => setCommentText(e.target.value)}
+                                            onFocus={() => { if (!username) setShowNameSetup(true); }}
+                                            onClick={() => { if (!username) setShowNameSetup(true); }}
+                                            placeholder="Add a comment..."
+                                            className="flex-1 bg-transparent text-white px-4 outline-none"
+                                            onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
+                                        />
+                                        <button
+                                            onClick={handleCommentSubmit}
+                                            className={commentText.trim() ? 'text-[#FE2C55]' : 'text-white/20'}
+                                        >
+                                            Post
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </motion.div>
                     </>
@@ -481,7 +502,10 @@ const AllMedia: React.FC = () => {
 
             {showNameSetup && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
-                    <div className="bg-black/20 backdrop-blur-lg rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10">
+                    <div className="bg-black/20 backdrop-blur-lg rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 relative">
+                        <button onClick={() => setShowNameSetup(false)} className="absolute top-5 right-5 text-white/60 hover:text-white transition-colors">
+                            <X size={24} />
+                        </button>
                         <div className="w-20 h-20 bg-red-600 rounded-2xl mx-auto mb-8 flex items-center justify-center rotate-12"><img src={logo} alt="Logo" className="w-12 -rotate-12" /></div>
                         <h3 className="text-white text-2xl font-bold mb-3">Set your name</h3>
                         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your name" className="w-full bg-white/5 text-white px-6 py-4 rounded-2xl outline-none border border-white/10 mb-5 text-center" />
