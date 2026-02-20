@@ -320,7 +320,11 @@ const Videos: React.FC = () => {
                             {/* Overlaid Info Area */}
                             <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
                                 {/* Claim Offer Button inside overlay */}
-
+                                <div className="pointer-events-auto mb-2">
+                                    <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="glow-on-hover w-full sm:w-auto" type="button">
+                                        {currentOffer.cta || 'Claim Offer'}
+                                    </button>
+                                </div>
 
                                 <div className="flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
@@ -339,11 +343,7 @@ const Videos: React.FC = () => {
                                     </button>
                                 </div>
 
-                                <div className="pointer-events-auto mb-2">
-                                    <button onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }} className="glow-on-hover w-full sm:w-auto" type="button">
-                                        {currentOffer.cta || 'Claim Offer'}
-                                    </button>
-                                </div>
+
 
 
                                 {/* Tags */}
@@ -361,10 +361,10 @@ const Videos: React.FC = () => {
 
                         {/* Sidebar Icons (Still separate from card) */}
                         <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
-                            <div className="hidden sm:flex flex-col items-center gap-1.5">
+                            {/* <div className="hidden sm:flex flex-col items-center gap-1.5">
                                 <img className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5" src={currentOffer.image_url} alt="" />
 
-                            </div>
+                            </div> */}
 
                             <div className="flex flex-col items-center gap-1.5">
                                 <button onClick={(e) => { e.stopPropagation(); toggleLike(currentOffer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
@@ -406,7 +406,7 @@ const Videos: React.FC = () => {
                     <>
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onWheel={handleWheel} className="fixed inset-0 bg-black/60 sm:bg-transparent z-[9998] pointer-events-none" />
                         <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] backdrop-blur-lg bg-black/10 z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
-                            <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-transparent sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
+                            <div className="px-5 py-4 bg-black flex items-center justify-between border-b border-white/5 sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
                             <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar space-y-6">
                                 {comments.map((comment) => (
                                     <div key={comment.id} className="flex flex-col gap-1">
@@ -423,7 +423,7 @@ const Videos: React.FC = () => {
                                 ))}
                             </div>
                             <div className="p-4 bg-transparent border-t border-white/5">
-                                <div className="flex flex-col gap-2">{replyTo && <div className="flex items-center justify-between px-4 py-1 bg-white/5 rounded-t-lg"><span className="text-[12px] text-white/60">Replying to {replyTo.user}</span><button onClick={() => setReplyTo(null)} className="text-white/40"><X size={14} /></button></div>}<div className="flex gap-3 items-center bg-white/5 p-2 rounded-full border border-white/10"><input ref={commentInputRef} type="text" value={commentText} onChange={(e) => setCommentText(e.target.value)} onFocus={() => { if (!username) setShowNameSetup(true); }} onClick={() => { if (!username) setShowNameSetup(true); }} placeholder="Add a comment..." className="flex-1 bg-transparent text-white px-4 outline-none" onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()} /><button onClick={handleCommentSubmit} className={commentText.trim() ? 'text-[#FE2C55]' : 'text-white/20'}>Post</button></div></div>
+                                <div className="flex flex-col gap-2">{replyTo && <div className="flex items-center justify-between px-4 py-1 bg-white/5 rounded-t-lg"><span className="text-[12px] text-white/60">Replying to {replyTo.user}</span><button onClick={() => setReplyTo(null)} className="text-white/40"><X size={14} /></button></div>}<div className="flex gap-3 items-center bg-black p-2 rounded-full border border-white/10"><input ref={commentInputRef} type="text" value={commentText} onChange={(e) => setCommentText(e.target.value)} onFocus={() => { if (!username) setShowNameSetup(true); }} onClick={() => { if (!username) setShowNameSetup(true); }} placeholder="Add a comment..." className="flex-1 bg-transparent text-white px-4 outline-none" onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()} /><button onClick={handleCommentSubmit} className={commentText.trim() ? 'text-[#FE2C55]' : 'text-white/20'}>Post</button></div></div>
                             </div>
                         </motion.div>
                     </>

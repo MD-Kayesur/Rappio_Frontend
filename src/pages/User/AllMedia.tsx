@@ -369,10 +369,10 @@ const AllMedia: React.FC = () => {
                                     {/* <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                         <Search size={22} />
                                     </button> */}
-                                    <div className="hidden sm:flex flex-col items-center gap-1.5">
+                                    {/* <div className="hidden sm:flex flex-col items-center gap-1.5">
                                         <img className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5" src={currentOffer.image_url} alt="" />
 
-                                    </div>
+                                    </div> */}
                                 </div>
 
                                 <div className="flex flex-col items-center gap-1.5">
@@ -414,8 +414,8 @@ const AllMedia: React.FC = () => {
                 {showComments && (
                     <>
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onWheel={handleWheel} className="fixed inset-0   sm:bg-transparent z-[9998] pointer-events-none" />
-                        <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] backdrop-blur-lg bg-black/10 z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
-                            <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-transparent sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
+                        <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] backdrop-blur-lg  z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
+                            <div className="px-5 bg-black py-4 flex items-center justify-between border-b border-white/5 sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
                             <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar space-y-6">
                                 {comments.map((comment) => (
                                     <div key={comment.id} className="flex flex-col gap-1">
@@ -439,7 +439,7 @@ const AllMedia: React.FC = () => {
                                             <button onClick={() => setReplyTo(null)} className="text-white/40"><X size={14} /></button>
                                         </div>
                                     )}
-                                    <div className="flex gap-3 items-center bg-white/5 p-2 rounded-full border border-white/10">
+                                    <div className="flex gap-3 items-center bg-black p-2 rounded-full border border-white/10">
                                         <input
                                             ref={commentInputRef}
                                             type="text"

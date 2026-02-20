@@ -112,7 +112,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
       {/* Logo */}
       {sidebarOpen && (
         <div className="md:px-3 pt-4 sm:pt-6">
-          <Link to="/" className="block">
+          <a href="/user/all" className="block">
             <div
               className={`flex items-center gap-3 transition-all duration-300 pb-4 ${isCollapsed ? "justify-center px-2" : "px-4 sm:px-6"
                 }`}
@@ -132,7 +132,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                 </h1>
               )}
             </div>
-          </Link>
+          </a>
           <SidebarSearch isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         </div>
       )}
