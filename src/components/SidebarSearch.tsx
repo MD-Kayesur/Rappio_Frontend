@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom"
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, X, ChevronLeft, Clock, RefreshCcw } from 'lucide-react'
+import { Search, X, ChevronLeft } from 'lucide-react'
 
 interface SidebarSearchProps {
     isCollapsed: boolean;
@@ -33,21 +33,6 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
     const [allTitles, setAllTitles] = useState<string[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // Mock data to match user's image
-    const [recentSearches] = useState([
-        { id: 1, text: 'kyttäinffo', hasNewPost: true },
-        { id: 2, text: 'selaa työpaikkoja kuin TikTok', hasNewPost: false },
-        { id: 3, text: 'vibes.jovely', hasNewPost: false }
-    ]);
-
-    const [youMayLike] = useState([
-        { text: 'vammalansanomat', isRecent: true },
-        { text: 'broidicom', isRecent: false },
-        { text: 'karvalakkinainen', isRecent: false },
-        { text: 'tuvalu', isRecent: true },
-        { text: 'karvalakkimies', isRecent: false },
-        { text: 'juhani sigmaball', isRecent: false }
-    ]);
 
     useEffect(() => {
         fetch('/mediaData.json')
