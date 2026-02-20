@@ -12,8 +12,7 @@ import {
   Settings,
   LogOut
 } from "lucide-react";
-import { SidebarSearch } from "@/components/SidebarSearch";
-import {
+ import {
   MdKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
 } from "react-icons/md";
