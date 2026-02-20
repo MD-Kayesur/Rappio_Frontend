@@ -106,11 +106,11 @@ const Analytics = () => {
   };
 
   return (
-    <div className="min-h-full  text-white p-6">
+    <div className="min-h-full text-white p-4 sm:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold">Analytics</h1>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          <h1 className="text-xl sm:text-2xl font-bold">Analytics</h1>
 
           {/* Dropdowns */}
           <Select value={timeFilter} onValueChange={setTimeFilter}>
@@ -208,35 +208,37 @@ const Analytics = () => {
       {/* Bottom Section - Two Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Left Column - Top performing items */}
-        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-4 sm:p-6 border border-gray-800">
           <h3 className="text-lg font-semibold mb-6">Top performing items (CTR)</h3>
           <div className="space-y-4">
             {currentItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center gap-4 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
+                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
               >
-                <img
-                  src={item.image_url}
-                  alt={item.title}
-                  className="w-14 h-14 rounded-lg object-cover"
-                />
-                <div className="flex-1">
-                  <h4 className="font-medium text-sm">{item.title}</h4>
-                  <p className="text-xs text-gray-400">{item.subtitle}</p>
+                <div className="flex items-center gap-4 flex-1 w-full">
+                  <img
+                    src={item.image_url}
+                    alt={item.title}
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg object-cover flex-shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-sm truncate">{item.title}</h4>
+                    <p className="text-xs text-gray-400 truncate">{item.subtitle}</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="flex items-center gap-1 text-yellow-500">
+                <div className="flex items-center gap-4 sm:gap-3 text-sm w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-700/50 sm:justify-end">
+                  <div className="flex items-center gap-1.5 text-yellow-500">
                     <Eye className="h-4 w-4" />
-                    <span>{(item.likes || 0) * 15}</span>
+                    <span>{formatNumber((item.likes || 0) * 15)}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-red-500">
+                  <div className="flex items-center gap-1.5 text-red-500">
                     <Heart className="h-4 w-4" />
-                    <span>{item.likes}</span>
+                    <span>{formatNumber(item.likes)}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-blue-500">
+                  <div className="flex items-center gap-1.5 text-blue-500">
                     <Share2 className="h-4 w-4" />
-                    <span>{item.comments}</span>
+                    <span>{formatNumber(item.comments)}</span>
                   </div>
                 </div>
               </div>
@@ -245,9 +247,9 @@ const Analytics = () => {
 
           {/* Pagination Controls */}
           {offers.length > itemsPerPage && (
-            <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-800">
-              <div className="text-xs text-gray-400">
-                Page {currentPage} of {totalPages}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-4 border-t border-gray-800">
+              <div className="text-xs text-gray-400 text-center sm:text-left">
+                Page <span className="text-white font-medium">{currentPage}</span> of <span className="text-white font-medium">{totalPages}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Button
@@ -274,7 +276,7 @@ const Analytics = () => {
         </div>
 
         {/* Right Column - Feed Performance Chart */}
-        <div className="bg-[#1A1C1D] rounded-lg p-6 border border-gray-800">
+        <div className="bg-[#1A1C1D] rounded-lg p-4 sm:p-6 border border-gray-800">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold">Feed Performance</h3>
             <Select value={feedView} onValueChange={setFeedView}>
