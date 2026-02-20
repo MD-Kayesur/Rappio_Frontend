@@ -63,7 +63,6 @@ interface Offer {
 const AllMedia: React.FC = () => {
     const [offers, setOffers] = useState<Offer[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [direction, setDirection] = useState<'up' | 'down'>('down');
     const [showComments, setShowComments] = useState(false);
     const [showNameSetup, setShowNameSetup] = useState(false);
     const [username, setUsername] = useState('');
@@ -94,8 +93,6 @@ const AllMedia: React.FC = () => {
     ]);
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const touchStartY = useRef<number>(0);
-    const lastScrollTime = useRef<number>(0);
 
     const location = useLocation();
     const { feedType, initialIndex, initialCategory } = (location.state as { feedType?: string; initialIndex?: number; initialCategory?: string }) || {};
@@ -144,27 +141,23 @@ const AllMedia: React.FC = () => {
     }, [searchQuery, allOffers]);
 
     const handleScroll = (scrollDirection: 'up' | 'down') => {
+        if (!containerRef.current) return;
+        const itemHeight = containerRef.current.clientHeight;
         if (scrollDirection === 'down' && currentIndex < offers.length - 1) {
-            setDirection('down');
-            setCurrentIndex(currentIndex + 1);
+            containerRef.current.scrollTo({ top: (currentIndex + 1) * itemHeight, behavior: 'smooth' });
         } else if (scrollDirection === 'up' && currentIndex > 0) {
-            setDirection('up');
-            setCurrentIndex(currentIndex - 1);
+            containerRef.current.scrollTo({ top: (currentIndex - 1) * itemHeight, behavior: 'smooth' });
         }
     };
 
-    const handleWheel = (e: React.WheelEvent) => {
-        const now = Date.now();
-        if (now - lastScrollTime.current < 500) return;
-        if (e.deltaY > 50) { handleScroll('down'); lastScrollTime.current = now; }
-        else if (e.deltaY < -50) { handleScroll('up'); lastScrollTime.current = now; }
-    };
-
-    const handleTouchStart = (e: React.TouchEvent) => { touchStartY.current = e.touches[0].clientY; };
-    const handleTouchEnd = (e: React.TouchEvent) => {
-        const touchEndY = e.changedTouches[0].clientY;
-        const diff = touchStartY.current - touchEndY;
-        if (Math.abs(diff) > 50) { if (diff > 0) handleScroll('down'); else handleScroll('up'); }
+    const handleOnScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const scrollPos = e.currentTarget.scrollTop;
+        const itemHeight = e.currentTarget.clientHeight;
+        if (itemHeight === 0) return;
+        const newIndex = Math.round(scrollPos / itemHeight);
+        if (newIndex !== currentIndex && newIndex >= 0 && newIndex < offers.length) {
+            setCurrentIndex(newIndex);
+        }
     };
 
     const toggleLike = (offerId: number) => {
@@ -233,12 +226,6 @@ const AllMedia: React.FC = () => {
 
     const handleNameSetup = () => { if (username.trim()) { localStorage.setItem('username', username); setShowNameSetup(false); } };
 
-    const variants = {
-        enter: (direction: string) => ({ y: direction === 'down' ? '100%' : '-100%', opacity: 1 }),
-        center: { y: 0, opacity: 1 },
-        exit: (direction: string) => ({ y: direction === 'down' ? '-100%' : '100%', opacity: 1 }),
-    };
-
     const getYouTubeId = (url: string) => {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
         const match = url.match(regExp);
@@ -257,84 +244,89 @@ const AllMedia: React.FC = () => {
 
     return (
         <>
-            <div ref={containerRef} className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar scroll-smooth" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onWheel={handleWheel}>
-                <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
-                    <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
-                        <div className="pointer-events-auto">
-                            <button
-                                onClick={() => {
-                                    window.dispatchEvent(new CustomEvent('open-sidebar-search'));
-                                }}
-                                className="w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
-                            >
-                                <Search size={20} />
-                            </button>
-                        </div>
-                    </div>
-
-                    <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                        <motion.div key={currentOffer.id} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }} className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5">
-                            {/* Main Card - Full Height Video */}
-                            <div className="w-full h-full sm:flex-1 bg-[#121212] sm:rounded-[1rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 relative group">
-                                <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
-                                    {currentOffer.video_url ? (
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
-                                                {getYouTubeId(currentOffer.video_url) ? (
-                                                    <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(currentOffer.video_url)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(currentOffer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" onLoad={() => { setVideoReady(true); setIsPlaying(true); }} className="w-full h-full pointer-events-none"></iframe>
-                                                ) : (
-                                                    <Player url={currentOffer.video_url} playing={isPlaying} loop muted={true} playsinline={true} width="100%" height="100%" onReady={() => { setVideoReady(true); setIsPlaying(true); }} onProgress={(state: any) => setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
-                                                )}
-                                            </div>
-                                            <div className="absolute inset-0 z-20 cursor-pointer" onClick={() => setIsPlaying(!isPlaying)} />
-                                        </div>
-                                    ) : (
-                                        <img src={currentOffer.image_url} alt={currentOffer.title} className="w-full h-full object-cover" />
-                                    )}
-                                    {currentOffer.video_url && (
-                                        <>
-                                            {!videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div></div> : !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
-                                            <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>
-                                        </>
-                                    )}
-                                    {/* Gradient for text readability */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-20" />
-                                </div>
-
-                                {/* Overlaid Info Area */}
-                                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
-                                    {/* Claim Offer Button inside overlay */}
+            <div
+                ref={containerRef}
+                className="h-screen sm:h-[calc(100vh-80px)] w-full overflow-y-auto snap-y snap-mandatory no-scrollbar scroll-smooth flex flex-col items-center"
+                onScroll={handleOnScroll}
+            >
+                {offers.map((offer, index) => (
+                    <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start flex items-center justify-center relative">
+                        <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
+                            <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
+                                <div className="pointer-events-auto">
                                     <button
-                                        onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }}
-                                        className="glow-on-hover w-full sm:w-auto"
-                                        type="button"
+                                        onClick={() => {
+                                            window.dispatchEvent(new CustomEvent('open-sidebar-search'));
+                                        }}
+                                        className="w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
                                     >
-                                        {currentOffer.cta || 'CLAIM OFFER'}
+                                        <Search size={20} />
                                     </button>
+                                </div>
+                            </div>
 
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
-                                            <img src={logo} alt="Logo" className="w-5" />
-                                        </div>
-                                        <h2 className="text-white font-bold text-[20px] tracking-tight cursor-pointer hover:underline pointer-events-auto" onClick={() => currentOffer.website_url && window.open(currentOffer.website_url, '_blank')}>{currentOffer.title}</h2>
+                            <div className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5">
+                                {/* Main Card - Full Height Video */}
+                                <div className="w-full h-full sm:flex-1 bg-[#121212] sm:rounded-[1rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 relative group">
+                                    <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
+                                        {offer.video_url ? (
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
+                                                    {getYouTubeId(offer.video_url) ? (
+                                                        <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=1&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-full pointer-events-none"></iframe>
+                                                    ) : (
+                                                        <Player url={offer.video_url} playing={index === currentIndex && isPlaying} loop muted={true} playsinline={true} width="100%" height="100%" onReady={() => index === currentIndex && setVideoReady(true)} onProgress={(state: any) => index === currentIndex && setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
+                                                    )}
+                                                </div>
+                                                <div className="absolute inset-0 z-20 cursor-pointer" onClick={() => index === currentIndex && setIsPlaying(!isPlaying)} />
+                                            </div>
+                                        ) : (
+                                            <img src={offer.image_url} alt={offer.title} className="w-full h-full object-cover" />
+                                        )}
+                                        {offer.video_url && index === currentIndex && (
+                                            <>
+                                                {!videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div></div> : !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
+                                                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>
+                                            </>
+                                        )}
+                                        {/* Gradient for text readability */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-20" />
                                     </div>
 
-                                    <div className="space-y-1">
-                                        <div className={`text-white/90 text-[14px] leading-relaxed drop-shadow-lg ${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
-                                            <span className="font-semibold block mb-0.5 text-white">{currentOffer.subtitle}</span>
-                                            {currentOffer.description}
-                                        </div>
-                                        <button onClick={(e) => { e.stopPropagation(); setIsDescriptionExpanded(!isDescriptionExpanded); }} className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto">
-                                            {isDescriptionExpanded ? 'See Less' : 'See More'}
+                                    {/* Overlaid Info Area */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
+                                        {/* Claim Offer Button inside overlay */}
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); if (offer.website_url) window.open(offer.website_url, '_blank'); }}
+                                            className="glow-on-hover w-full sm:w-auto"
+                                            type="button"
+                                        >
+                                            {offer.cta || 'CLAIM OFFER'}
                                         </button>
-                                    </div>
+
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
+                                                <img src={logo} alt="Logo" className="w-5" />
+                                            </div>
+                                            <h2 className="text-white font-bold text-[20px] tracking-tight cursor-pointer hover:underline pointer-events-auto" onClick={() => offer.website_url && window.open(offer.website_url, '_blank')}>{offer.title}</h2>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <div className={`text-white/90 text-[14px] leading-relaxed drop-shadow-lg ${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
+                                                <span className="font-semibold block mb-0.5 text-white">{offer.subtitle}</span>
+                                                {offer.description}
+                                            </div>
+                                            <button onClick={(e) => { e.stopPropagation(); setIsDescriptionExpanded(!isDescriptionExpanded); }} className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto">
+                                                {isDescriptionExpanded ? 'See Less' : 'See More'}
+                                            </button>
+                                        </div>
 
 
 
 
 
-                                    {/* Tags */}
-                                    {/* {currentOffer.tags && currentOffer.tags.length > 0 && (
+                                        {/* Tags */}
+                                        {/* {currentOffer.tags && currentOffer.tags.length > 0 && (
                                         <div className="flex flex-wrap gap-2 pt-1">
                                             {currentOffer.tags.map((tag, idx) => (
                                                 <span key={idx} className="px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-white/80 text-[11px] font-medium border border-white/10 whitespace-nowrap">
@@ -343,55 +335,64 @@ const AllMedia: React.FC = () => {
                                             ))}
                                         </div>
                                     )} */}
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* Sidebar Icons (Still separate from card) */}
-                            <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
-                                <div className="hidden sm:flex flex-col items-center gap-1.5">
-                                    {/* <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                {/* Sidebar Icons (Still separate from card) */}
+                                <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
+                                    <div className="hidden sm:flex flex-col items-center gap-1.5">
+                                        {/* <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                         <Search size={22} />
                                     </button> */}
-                                    {/* <div className="hidden sm:flex flex-col items-center gap-1.5">
-                                        <img className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5" src={currentOffer.image_url} alt="" />
+                                        {/* <div className="hidden sm:flex flex-col items-center gap-1.5">
+                                        <img className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5" src={offer.image_url} alt="" />
 
                                     </div> */}
-                                </div>
+                                    </div>
 
-                                <div className="flex flex-col items-center gap-1.5">
-                                    <button onClick={(e) => { e.stopPropagation(); toggleLike(currentOffer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
-                                        <Heart size={22} className={`${likedOffers.has(currentOffer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
-                                    </button>
-                                    <span className="text-white/80 text-[12px] font-bold">{formatNumber(currentOffer.likes)}</span>
-                                </div>
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                            <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
+                                        </button>
+                                        <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes + (index === currentIndex ? 0 : 0))}</span>
+                                    </div>
 
-                                <div className="flex flex-col items-center gap-1.5">
-                                    <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
-                                        <MessageCircle size={22} />
-                                    </button>
-                                    <span className="text-white/80 text-[12px] font-bold">{formatNumber(currentOffer.comments + comments.length)}</span>
-                                </div>
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                            <MessageCircle size={22} />
+                                        </button>
+                                        <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.comments + (index === currentIndex ? comments.length : 0))}</span>
+                                    </div>
 
-                                <div className="flex flex-col items-center gap-1.5">
-                                    <button onClick={(e) => { e.stopPropagation(); toggleSave(currentOffer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
-                                        <Bookmark size={22} className={`${savedOffers.has(currentOffer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
-                                    </button>
-                                </div>
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                            <Bookmark size={22} className={`${savedOffers.has(offer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
+                                        </button>
+                                    </div>
 
-                                <div className="flex flex-col items-center gap-1.5">
-                                    <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
-                                        <Share2 size={22} />
-                                    </button>
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                            <Share2 size={22} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </motion.div>
-                    </AnimatePresence>
-                </div>
-                <div className={`hidden sm:flex absolute bottom-10 flex-col gap-3 transition-all duration-300 z-[120] ${showComments ? 'right-[520px]' : 'right-10'}`}>
-                    <button onClick={() => handleScroll('up')} disabled={currentIndex === 0} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronUp size={28} /></button>
-                    <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronDown size={28} /></button>
-                </div>
+                        </div>
+                    </div>
+                ))}
             </div>
+
+            <motion.div
+                animate={{
+                    right: showComments ? (window.innerWidth < 640 ? 10 : 520) : 40,
+                    opacity: 1
+                }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="hidden sm:flex absolute bottom-10 flex-col gap-3 z-[120]"
+            >
+                <button onClick={() => handleScroll('up')} disabled={currentIndex === 0} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronUp size={28} /></button>
+                <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronDown size={28} /></button>
+            </motion.div>
 
             <AnimatePresence>
                 {showComments && (
@@ -400,7 +401,6 @@ const AllMedia: React.FC = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            onWheel={handleWheel}
                             className="fixed inset-0 bg-black/40 z-[9998] sm:bg-transparent sm:pointer-events-none"
                             onClick={() => setShowComments(false)}
                         />
@@ -417,7 +417,7 @@ const AllMedia: React.FC = () => {
                                     <Repeat2 size={24} />
                                 </button>
                                 <h3 className="text-black sm:text-white font-bold text-[15px] sm:text-lg text-center flex-1">
-                                    {formatNumber(comments.length + currentOffer.comments)} comments
+                                    {formatNumber(comments.length + (offers[currentIndex]?.comments || 0))} comments
                                 </h3>
                                 <div className="flex items-center gap-3">
                                     <button className="p-1 text-black/80 sm:text-white/80 sm:hidden">
@@ -654,19 +654,21 @@ const AllMedia: React.FC = () => {
                 )}
             </AnimatePresence>
 
-            {showNameSetup && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
-                    <div className="bg-black/20 backdrop-blur-lg rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 relative">
-                        <button onClick={() => setShowNameSetup(false)} className="absolute top-5 right-5 text-white/60 hover:text-white transition-colors">
-                            <X size={24} />
-                        </button>
-                        <div className="w-20 h-20 bg-red-600 rounded-2xl mx-auto mb-8 flex items-center justify-center rotate-12"><img src={logo} alt="Logo" className="w-12 -rotate-12" /></div>
-                        <h3 className="text-white text-2xl font-bold mb-3">Set your name</h3>
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your name" className="w-full bg-white/5 text-white px-6 py-4 rounded-2xl outline-none border border-white/10 mb-5 text-center" />
-                        <button onClick={handleNameSetup} className="w-full bg-red-600 text-white font-bold py-4.5 rounded-2xl">Get Started</button>
+            {
+                showNameSetup && (
+                    <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
+                        <div className="bg-black/20 backdrop-blur-lg rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 relative">
+                            <button onClick={() => setShowNameSetup(false)} className="absolute top-5 right-5 text-white/60 hover:text-white transition-colors">
+                                <X size={24} />
+                            </button>
+                            <div className="w-20 h-20 bg-red-600 rounded-2xl mx-auto mb-8 flex items-center justify-center rotate-12"><img src={logo} alt="Logo" className="w-12 -rotate-12" /></div>
+                            <h3 className="text-white text-2xl font-bold mb-3">Set your name</h3>
+                            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your name" className="w-full bg-white/5 text-white px-6 py-4 rounded-2xl outline-none border border-white/10 mb-5 text-center" />
+                            <button onClick={handleNameSetup} className="w-full bg-red-600 text-white font-bold py-4.5 rounded-2xl">Get Started</button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             <style>{`
                 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
