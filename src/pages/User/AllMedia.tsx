@@ -326,7 +326,7 @@ const AllMedia: React.FC = () => {
                                 {/* Overlaid Info Area */}
                                 <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
                                     {/* Claim Offer Button inside overlay */}
- <button
+                                    <button
                                         onClick={(e) => { e.stopPropagation(); if (currentOffer.website_url) window.open(currentOffer.website_url, '_blank'); }}
                                         className="glow-on-hover w-full sm:w-auto"
                                         type="button"
@@ -352,7 +352,7 @@ const AllMedia: React.FC = () => {
                                     </div>
 
 
-                                   
+
 
 
                                     {/* Tags */}
@@ -419,8 +419,8 @@ const AllMedia: React.FC = () => {
                 {showComments && (
                     <>
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onWheel={handleWheel} className="fixed inset-0   sm:bg-transparent z-[9998] pointer-events-none" />
-                        <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] backdrop-blur-md  z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
-                            <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-black  sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
+                        <motion.div initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }} exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed bottom-0 right-0 w-full h-[70vh] sm:h-full sm:w-[500px] backdrop-blur-lg bg-black/10 z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[20px] overflow-hidden">
+                            <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 bg-transparent sticky top-0 z-20"><h3 className="text-white font-bold text-[15px] sm:text-lg flex items-center gap-2">{formatNumber(comments.length + currentOffer.comments)} Comments</h3><button onClick={() => setShowComments(false)} className="p-1.5 hover:bg-white/10 rounded-full text-white/80"><X size={24} /></button></div>
                             <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar space-y-6">
                                 {comments.map((comment) => (
                                     <div key={comment.id} className="flex flex-col gap-1">
@@ -436,7 +436,7 @@ const AllMedia: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-                            <div className="p-4 bg-black border-t border-white/5">
+                            <div className="p-4 bg-transparent border-t border-white/5">
                                 {!username ? <button onClick={() => setShowNameSetup(true)} className="w-full bg-[#FE2C55] text-white font-bold py-3.5 rounded-full">Log in to comment</button> : <div className="flex flex-col gap-2">{replyTo && <div className="flex items-center justify-between px-4 py-1 bg-white/5 rounded-t-lg"><span className="text-[12px] text-white/60">Replying to {replyTo.user}</span><button onClick={() => setReplyTo(null)} className="text-white/40"><X size={14} /></button></div>}<div className="flex gap-3 items-center bg-white/5 p-2 rounded-full border border-white/10"><input ref={commentInputRef} type="text" value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Add a comment..." className="flex-1 bg-transparent text-white px-4 outline-none" onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()} /><button onClick={handleCommentSubmit} className={commentText.trim() ? 'text-[#FE2C55]' : 'text-white/20'}>Post</button></div></div>}
                             </div>
                         </motion.div>
@@ -447,7 +447,7 @@ const AllMedia: React.FC = () => {
             <AnimatePresence>
                 {showShareModal && (
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
-                        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#1a1a1a] rounded-3xl p-6 w-full max-w-[450px] relative border border-white/10" onClick={(e) => e.stopPropagation()}>
+                        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-black/20 backdrop-blur-lg rounded-3xl p-6 w-full max-w-[450px] relative border border-white/10" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center justify-center mb-8"><h3 className="text-white text-lg font-semibold">Share to</h3><button onClick={() => setShowShareModal(false)} className="absolute top-5 right-5 text-white/60"><X size={24} /></button></div>
                             <div className="relative group/share">
                                 <div className="flex overflow-x-auto gap-5 no-scrollbar pb-2 px-1 scroll-smooth" ref={shareScrollRef}>
@@ -481,7 +481,7 @@ const AllMedia: React.FC = () => {
 
             {showNameSetup && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
-                    <div className="bg-[#1a1a1a] rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10">
+                    <div className="bg-black/20 backdrop-blur-lg rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10">
                         <div className="w-20 h-20 bg-red-600 rounded-2xl mx-auto mb-8 flex items-center justify-center rotate-12"><img src={logo} alt="Logo" className="w-12 -rotate-12" /></div>
                         <h3 className="text-white text-2xl font-bold mb-3">Set your name</h3>
                         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your name" className="w-full bg-white/5 text-white px-6 py-4 rounded-2xl outline-none border border-white/10 mb-5 text-center" />

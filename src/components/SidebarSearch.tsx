@@ -108,7 +108,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSea
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.95, opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className={`fixed top-0 bottom-0 z-[9999] border-r border-white/10 shadow-2xl flex flex-col backdrop-blur-md`}
+                            className={`fixed top-0 bottom-0 z-[9999] border-r border-white/10 shadow-2xl flex flex-col backdrop-blur-lg bg-black/10`}
                             style={{
                                 left: isCollapsed ? '80px' : '280px',
                                 width: '350px'
