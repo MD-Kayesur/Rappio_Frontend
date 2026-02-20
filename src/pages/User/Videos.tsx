@@ -253,33 +253,15 @@ const Videos: React.FC = () => {
         <div ref={containerRef} className="h-screen sm:h-[calc(100vh-80px)] flex items-center justify-center relative overflow-hidden no-scrollbar" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onWheel={handleWheel}>
             <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
                 <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
-                    <div className={`pointer-events-auto transition-all duration-300 ${isSearchExpanded || searchQuery ? 'flex-1 relative group' : 'w-10'}`}>
-                        {!isSearchExpanded && !searchQuery ? (
-                            <button
-                                onClick={() => setIsSearchExpanded(true)}
-                                className="w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
-                            >
-                                <Search size={20} />
-                            </button>
-                        ) : (
-                            <div className="relative w-full">
-                                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-white/60"><Search size={18} /></div>
-                                <input
-                                    type="text"
-                                    placeholder="Search videos..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchParams({ q: e.target.value }, { replace: true })}
-                                    className="w-full py-2.5 pl-11 pr-11 bg-black/20 backdrop-blur-md text-white text-sm border border-white/10 rounded-full focus:outline-none focus:border-white/30 transition-all placeholder-white/40"
-                                    autoFocus
-                                    onBlur={() => !searchQuery && setIsSearchExpanded(false)}
-                                />
-                                {searchQuery ? (
-                                    <button onClick={(e) => { e.stopPropagation(); setSearchParams({}, { replace: true }); }} className="absolute inset-y-0 right-0 flex items-center pr-4 text-white"><X size={12} /></button>
-                                ) : (
-                                    <button onClick={(e) => { e.stopPropagation(); setIsSearchExpanded(false); }} className="absolute inset-y-0 right-0 flex items-center pr-4 text-white"><X size={12} /></button>
-                                )}
-                            </div>
-                        )}
+                    <div className="pointer-events-auto">
+                        <button
+                            onClick={() => {
+                                window.dispatchEvent(new CustomEvent('open-sidebar-search'));
+                            }}
+                            className="w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
+                        >
+                            <Search size={20} />
+                        </button>
                     </div>
                 </div>
 

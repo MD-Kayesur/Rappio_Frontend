@@ -3,6 +3,7 @@ import { UserSidebar } from "./UserSidebar";
 import { Outlet } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
 import { LayoutNavber } from "@/Layout/LayoutNavber";
+import { SidebarSearch } from "@/components/SidebarSearch";
 
 export default function UserLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -89,6 +90,11 @@ export default function UserLayout() {
           <Outlet />
         </div>
       </div>
+      <SidebarSearch
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+        disableTrigger={true}
+      />
     </div>
   );
 }

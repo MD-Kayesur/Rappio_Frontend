@@ -1,23 +1,53 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom"
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, X } from 'lucide-react'
+import { Search, X, ChevronLeft, Clock, RefreshCcw } from 'lucide-react'
 
 interface SidebarSearchProps {
     isCollapsed: boolean;
     setIsCollapsed: (open: boolean) => void;
     onSearchVisibilityChange?: (isVisible: boolean) => void;
+    disableModal?: boolean;
+    disableTrigger?: boolean;
 }
 
-export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSearchVisibilityChange }) => {
+export const SidebarSearch: React.FC<SidebarSearchProps> = ({
+    isCollapsed,
+    onSearchVisibilityChange,
+    disableModal = false,
+    disableTrigger = false
+}) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
     const searchQuery = searchParams.get('q') || ''
     const [isOpen, setIsOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 1024);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [allTitles, setAllTitles] = useState<string[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    // Mock data to match user's image
+    const [recentSearches] = useState([
+        { id: 1, text: 'kyttäinffo', hasNewPost: true },
+        { id: 2, text: 'selaa työpaikkoja kuin TikTok', hasNewPost: false },
+        { id: 3, text: 'vibes.jovely', hasNewPost: false }
+    ]);
+
+    const [youMayLike] = useState([
+        { text: 'vammalansanomat', isRecent: true },
+        { text: 'broidicom', isRecent: false },
+        { text: 'karvalakkinainen', isRecent: false },
+        { text: 'tuvalu', isRecent: true },
+        { text: 'karvalakkimies', isRecent: false },
+        { text: 'juhani sigmaball', isRecent: false }
+    ]);
 
     useEffect(() => {
         fetch('/mediaData.json')
@@ -35,6 +65,14 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSea
         }
         onSearchVisibilityChange?.(isOpen);
     }, [isOpen, onSearchVisibilityChange]);
+
+    useEffect(() => {
+        const handleOpenSearch = () => {
+            if (!disableModal) setIsOpen(prev => !prev);
+        };
+        window.addEventListener('open-sidebar-search', handleOpenSearch);
+        return () => window.removeEventListener('open-sidebar-search', handleOpenSearch);
+    }, [disableModal]);
 
     const handleSearchChange = (val: string) => {
         const mediaPages = ['/user/all', '/user/videos', '/user/photos', '/user/favorites', '/user/top-casinos'];
@@ -69,52 +107,89 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSea
         closeSearch();
     };
 
-    // Click outside listener
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            const modal = document.getElementById('search-modal');
-            if (isOpen && modal && !modal.contains(event.target as Node)) {
-                closeSearch();
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isOpen]);
 
     return (
         <>
             {/* Trigger */}
-            <div className={`px-4 py-2 ${isCollapsed ? 'flex justify-center' : ''}`}>
-                <button
-                    onClick={() => {
-                        setIsOpen(true);
-                    }}
-                    className={`flex items-center transition-all bg-[#1A1C1D] border border-white/5 hover:border-white/10 text-gray-400 hover:text-white rounded-full ${isCollapsed
-                        ? 'w-10 h-10 justify-center p-0 flex-shrink-0'
-                        : 'w-full px-4 py-2.5 gap-3'
-                        }`}
-                >
-                    <Search size={isCollapsed ? 20 : 18} className="flex-shrink-0" />
-                    {!isCollapsed && <span className="text-[15px] whitespace-nowrap">Search</span>}
-                </button>
-            </div>
+            {!disableTrigger && (
+                <div className={`px-4 py-2 ${isCollapsed ? 'flex justify-center' : ''}`}>
+                    <button
+                        onClick={() => {
+                            if (disableModal) {
+                                window.dispatchEvent(new CustomEvent('open-sidebar-search'));
+                            } else {
+                                setIsOpen(!isOpen);
+                            }
+                        }}
+                        className={`flex items-center transition-all bg-[#1A1C1D] border border-white/5 hover:border-white/10 text-gray-400 hover:text-white rounded-full ${isCollapsed
+                            ? 'w-10 h-10 justify-center p-0 flex-shrink-0'
+                            : 'w-full px-4 py-2.5 gap-3'
+                            }`}
+                    >
+                        <Search size={isCollapsed ? 20 : 18} className="flex-shrink-0" />
+                        {!isCollapsed && <span className="text-[15px] whitespace-nowrap">Search</span>}
+                    </button>
+                </div>
+            )}
 
             <AnimatePresence>
-                {isOpen && (
-                    <>
-                        <motion.div
-                            id="search-modal"
-                            initial={{ scale: 0.95, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.95, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className={`fixed top-0 bottom-0 z-[9999] border-r border-white/10 shadow-2xl flex flex-col backdrop-blur-lg bg-black/10`}
-                            style={{
-                                left: isCollapsed ? '80px' : '280px',
-                                width: '350px'
-                            }}
-                        >
-                            <div className="p-6 flex flex-col gap-6">
+                {isOpen && (!isMobile || !disableModal) && (
+                    <motion.div
+                        id="search-modal"
+                        initial={isMobile ? { y: '100%' } : { scale: 0.95, opacity: 0 }}
+                        animate={isMobile ? { y: 0 } : { scale: 1, opacity: 1 }}
+                        exit={isMobile ? { y: '100%' } : { scale: 0.95, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                        className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'left-0 right-0 w-full bg-black/40 backdrop-blur-lg text-white' : 'border-r border-white/10 shadow-2xl bg-black/40 backdrop-blur-lg text-white'}`}
+                        style={!isMobile ? {
+                            left: isCollapsed ? '80px' : '280px',
+                            width: '350px',
+                            pointerEvents: 'auto'
+                        } : { pointerEvents: 'auto' }}
+                    >
+                        <div className={`${isMobile ? 'p-4' : 'p-6'} flex flex-col gap-6`}>
+                            {isMobile ? (
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        onClick={closeSearch}
+                                        className="p-1 text-white hover:opacity-70"
+                                    >
+                                        <ChevronLeft size={32} />
+                                    </button>
+                                    <div className="relative flex-1 group">
+                                        <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60" />
+                                        <input
+                                            ref={inputRef}
+                                            type="text"
+                                            placeholder="vammalansanomat"
+                                            value={searchQuery}
+                                            onChange={(e) => handleSearchChange(e.target.value)}
+                                            className="w-full py-2.5 pl-12 pr-11 bg-white/10 text-white rounded-lg border border-white/10 focus:outline-none placeholder-white/20 text-[17px]"
+                                            onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
+                                            autoFocus
+                                        />
+                                        {searchQuery && (
+                                            <button
+                                                onClick={() => handleSearchChange('')}
+                                                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                                            >
+                                                <X size={16} />
+                                            </button>
+                                        )}
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            if (searchQuery.trim()) {
+                                                handleSearchChange(searchQuery);
+                                                closeSearch();
+                                            }
+                                        }}
+                                        className="text-[#FF2D55] font-bold text-[18px] px-1"
+                                    >
+                                        Search
+                                    </button>
+                                </div>
+                            ) : (
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-white text-2xl font-bold">Search</h2>
                                     <button
@@ -124,7 +199,9 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSea
                                         <X size={20} />
                                     </button>
                                 </div>
+                            )}
 
+                            {!isMobile && (
                                 <div className="relative group">
                                     <input
                                         ref={inputRef}
@@ -134,6 +211,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSea
                                         onChange={(e) => handleSearchChange(e.target.value)}
                                         className="w-full py-3 px-5 bg-white/10 text-white rounded-full border border-transparent focus:border-white/20 outline-none placeholder-white/30 text-[15px]"
                                         onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
+                                        autoFocus
                                     />
                                     {searchQuery && (
                                         <button
@@ -144,7 +222,31 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSea
                                         </button>
                                     )}
                                 </div>
+                            )}
 
+                            {isMobile ? (
+                                <div className="flex-1 overflow-y-auto no-scrollbar">
+                                    {searchQuery && (
+                                        <div className="flex flex-col gap-1">
+                                            {suggestions.map((title, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    onClick={() => handleSuggestionClick(title)}
+                                                    className="w-full px-4 py-3 text-left text-[16px] text-white/80 hover:bg-white/5 active:bg-white/10 transition-all flex items-center gap-4"
+                                                >
+                                                    <Search size={18} className="text-white/30" />
+                                                    <span className="truncate">{title}</span>
+                                                </button>
+                                            ))}
+                                            {suggestions.length === 0 && (
+                                                <div className="px-4 py-10 text-center text-white/40 text-[15px]">
+                                                    No results found for "{searchQuery}"
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
                                 <div className="flex flex-col gap-1">
                                     {suggestions.map((title, idx) => (
                                         <button
@@ -162,11 +264,11 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({ isCollapsed, onSea
                                         </div>
                                     )}
                                 </div>
-                            </div>
-                        </motion.div>
-                    </>
+                            )}
+                        </div>
+                    </motion.div>
                 )}
             </AnimatePresence>
         </>
-    )
-}
+    );
+};

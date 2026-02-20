@@ -133,7 +133,11 @@ export const UserSidebar: React.FC<SidebarProps> = ({
               )}
             </div>
           </a>
-          <SidebarSearch isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+          <SidebarSearch
+            isCollapsed={isCollapsed}
+            setIsCollapsed={setIsCollapsed}
+            disableModal={true}
+          />
         </div>
       )}
 
