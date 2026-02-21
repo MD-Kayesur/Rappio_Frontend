@@ -235,7 +235,7 @@ const Photos: React.FC = () => {
                 {offers.map((offer, index) => (
                     <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start sm:snap-always flex items-center justify-center relative">
                         <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
-                            <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
+                            {/* <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
                                 <div className="pointer-events-auto">
                                     <button
                                         onClick={() => {
@@ -246,7 +246,7 @@ const Photos: React.FC = () => {
                                         <Search size={20} />
                                     </button>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5 touch-none">
                                 {/* Main Card - Full Height Image */}
@@ -308,28 +308,47 @@ const Photos: React.FC = () => {
                                     </button>
                                 </div> */}
 
+
+
+
+                                    
+
+
+
+
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                       <button
+                                        onClick={() => {
+                                            window.dispatchEvent(new CustomEvent('open-sidebar-search'));
+                                        }}
+                                        className="w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
+                                    >
+                                        <Search size={20} />
+                                    </button>
+                                    </div>
+
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes)}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <MessageCircle size={22} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.comments + (index === currentIndex ? comments.length : 0))}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Bookmark size={22} className={`${savedOffers.has(offer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
                                         </button>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <Share2 size={22} />
                                         </button>
                                     </div>

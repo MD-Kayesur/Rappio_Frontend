@@ -121,11 +121,25 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                 {isOpen && (!isMobile || !disableModal) && (
                     <motion.div
                         id="search-modal"
-                        initial={isMobile ? { y: '100%' } : { scale: 0.95, opacity: 0 }}
-                        animate={isMobile ? { y: 0 } : { scale: 1, opacity: 1 }}
-                        exit={isMobile ? { y: '100%' } : { scale: 0.95, opacity: 0 }}
-                        transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-                        className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'left-0 right-0 w-full bg-black/40 backdrop-blur-lg text-white' : 'border-r border-white/10 shadow-2xl bg-black/40 backdrop-blur-lg text-white'}`}
+                        variants={{
+                            hidden: { y: '100%', opacity: 0, filter: 'blur(10px)' },
+                            visible: {
+                                y: 0,
+                                opacity: 1,
+                                filter: 'blur(0px)',
+                                transition: {
+                                    duration: 1.0,
+                                    ease: [0.22, 1, 0.36, 1],
+                                    staggerChildren: 0.1,
+                                    delayChildren: 0.2
+                                }
+                            },
+                            exit: { y: '100%', opacity: 0, filter: 'blur(10px)', transition: { duration: 0.6 } }
+                        }}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'left-0 right-0 w-full bg-black/60 backdrop-blur-xl text-white' : 'border-r border-white/10 shadow-2xl bg-black/60 backdrop-blur-xl text-white'}`}
                         style={!isMobile ? {
                             left: isCollapsed ? '80px' : '280px',
                             width: '350px',
@@ -133,23 +147,71 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                         } : { pointerEvents: 'auto' }}
                     >
                         <div className={`${isMobile ? 'p-4' : 'p-6'} flex flex-col gap-6`}>
-                            {isMobile ? (
-                                <div className="flex items-center gap-3">
-                                    <button
-                                        onClick={closeSearch}
-                                        className="p-1 text-white hover:opacity-70"
-                                    >
-                                        <ChevronLeft size={32} />
-                                    </button>
-                                    <div className="relative flex-1 group">
-                                        <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60" />
+                            <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
+                                {isMobile ? (
+                                    <div className="flex items-center gap-3">
+                                        <button
+                                            onClick={closeSearch}
+                                            className="p-1 text-white hover:opacity-70"
+                                        >
+                                            <ChevronLeft size={32} />
+                                        </button>
+                                        <div className="relative flex-1 group">
+                                            <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60" />
+                                            <input
+                                                ref={inputRef}
+                                                type="text"
+                                                placeholder="Search..."
+                                                value={searchQuery}
+                                                onChange={(e) => handleSearchChange(e.target.value)}
+                                                className="w-full py-2.5 pl-12 pr-11 bg-white/10 text-white rounded-lg border border-white/10 focus:outline-none placeholder-white/20 text-[17px]"
+                                                onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
+                                                autoFocus
+                                            />
+                                            {searchQuery && (
+                                                <button
+                                                    onClick={() => handleSearchChange('')}
+                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                                                >
+                                                    <X size={16} />
+                                                </button>
+                                            )}
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                if (searchQuery.trim()) {
+                                                    handleSearchChange(searchQuery);
+                                                    closeSearch();
+                                                }
+                                            }}
+                                            className=" font-bold text-[18px] px-1"
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center justify-between">
+                                        <h2 className="text-white text-2xl font-bold">Search</h2>
+                                        <button
+                                            onClick={closeSearch}
+                                            className="p-2 hover:bg-white/10 rounded-full text-white/60 hover:text-white transition-all"
+                                        >
+                                            <X size={20} />
+                                        </button>
+                                    </div>
+                                )}
+                            </motion.div>
+
+                            <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
+                                {!isMobile && (
+                                    <div className="relative group">
                                         <input
                                             ref={inputRef}
                                             type="text"
-                                            placeholder="vammalansanomat"
+                                            placeholder="Search anything..."
                                             value={searchQuery}
                                             onChange={(e) => handleSearchChange(e.target.value)}
-                                            className="w-full py-2.5 pl-12 pr-11 bg-white/10 text-white rounded-lg border border-white/10 focus:outline-none placeholder-white/20 text-[17px]"
+                                            className="w-full py-3 px-5 bg-white/10 text-white rounded-full border border-transparent focus:border-white/20 outline-none placeholder-white/30 text-[15px]"
                                             onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
                                             autoFocus
                                         />
@@ -162,94 +224,52 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                             </button>
                                         )}
                                     </div>
-                                    <button
-                                        onClick={() => {
-                                            if (searchQuery.trim()) {
-                                                handleSearchChange(searchQuery);
-                                                closeSearch();
-                                            }
-                                        }}
-                                        className=" font-bold text-[18px] px-1"
-                                    >
-                                        Search
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="flex items-center justify-between">
-                                    <h2 className="text-white text-2xl font-bold">Search</h2>
-                                    <button
-                                        onClick={closeSearch}
-                                        className="p-2 hover:bg-white/10 rounded-full text-white/60 hover:text-white transition-all"
-                                    >
-                                        <X size={20} />
-                                    </button>
-                                </div>
-                            )}
+                                )}
+                            </motion.div>
 
-                            {!isMobile && (
-                                <div className="relative group">
-                                    <input
-                                        ref={inputRef}
-                                        type="text"
-                                        placeholder="Search"
-                                        value={searchQuery}
-                                        onChange={(e) => handleSearchChange(e.target.value)}
-                                        className="w-full py-3 px-5 bg-white/10 text-white rounded-full border border-transparent focus:border-white/20 outline-none placeholder-white/30 text-[15px]"
-                                        onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
-                                        autoFocus
-                                    />
-                                    {searchQuery && (
-                                        <button
-                                            onClick={() => handleSearchChange('')}
-                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
-                                        >
-                                            <X size={16} />
-                                        </button>
-                                    )}
-                                </div>
-                            )}
-
-                            {isMobile ? (
-                                <div className="flex-1 overflow-y-auto no-scrollbar">
-                                    {searchQuery && (
-                                        <div className="flex flex-col gap-1">
-                                            {suggestions.map((title, idx) => (
-                                                <button
-                                                    key={idx}
-                                                    onClick={() => handleSuggestionClick(title)}
-                                                    className="w-full px-4 py-3 text-left text-[16px] text-white/80 hover:bg-white/5 active:bg-white/10 transition-all flex items-center gap-4"
-                                                >
-                                                    <Search size={18} className="text-white/30" />
-                                                    <span className="truncate">{title}</span>
-                                                </button>
-                                            ))}
-                                            {suggestions.length === 0 && (
-                                                <div className="px-4 py-10 text-center text-white/40 text-[15px]">
-                                                    No results found for "{searchQuery}"
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="flex flex-col gap-1">
-                                    {suggestions.map((title, idx) => (
-                                        <button
-                                            key={idx}
-                                            onClick={() => handleSuggestionClick(title)}
-                                            className="w-full px-4 py-3 text-left text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-all rounded-xl flex items-center gap-3"
-                                        >
-                                            <Search size={14} className="opacity-40" />
-                                            <span className="truncate">{title}</span>
-                                        </button>
-                                    ))}
-                                    {searchQuery && suggestions.length === 0 && (
-                                        <div className="px-4 py-10 text-center text-gray-500 text-sm">
-                                            No results found
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                            <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex-1 overflow-y-auto no-scrollbar">
+                                {isMobile ? (
+                                    <div className="flex-1 overflow-y-auto no-scrollbar">
+                                        {searchQuery && (
+                                            <div className="flex flex-col gap-1">
+                                                {suggestions.map((title, idx) => (
+                                                    <button
+                                                        key={idx}
+                                                        onClick={() => handleSuggestionClick(title)}
+                                                        className="w-full px-4 py-3 text-left text-[16px] text-white/80 hover:bg-white/5 active:bg-white/10 transition-all flex items-center gap-4"
+                                                    >
+                                                        <Search size={18} className="text-white/30" />
+                                                        <span className="truncate">{title}</span>
+                                                    </button>
+                                                ))}
+                                                {suggestions.length === 0 && (
+                                                    <div className="px-4 py-10 text-center text-white/40 text-[15px]">
+                                                        No results found for "{searchQuery}"
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col gap-1">
+                                        {suggestions.map((title, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => handleSuggestionClick(title)}
+                                                className="w-full px-4 py-3 text-left text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-all rounded-xl flex items-center gap-3"
+                                            >
+                                                <Search size={14} className="opacity-40" />
+                                                <span className="truncate">{title}</span>
+                                            </button>
+                                        ))}
+                                        {searchQuery && suggestions.length === 0 && (
+                                            <div className="px-4 py-10 text-center text-gray-500 text-sm">
+                                                No results found
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </motion.div>
                         </div>
                     </motion.div>
                 )}
