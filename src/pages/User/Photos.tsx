@@ -261,9 +261,38 @@ const Photos: React.FC = () => {
                                     <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
                                         {/* Claim Offer Button inside overlay */}
                                         <div className="pointer-events-auto mb-2">
-                                            <button onClick={(e) => { e.stopPropagation(); if (offer.website_url) window.open(offer.website_url, '_blank'); }} className="glow-on-hover w-full sm:w-auto" type="button">
+                                            {/* <button onClick={(e) => { e.stopPropagation(); if (offer.website_url) window.open(offer.website_url, '_blank'); }} className="glow-on-hover w-full sm:w-auto" type="button">
                                                 {offer.cta || 'Claim Offer'}
-                                            </button>
+                                            </button> */}
+
+<button
+  onClick={(e) => {
+    e.stopPropagation();
+    if (offer.website_url) window.open(offer.website_url, '_blank');
+  }}
+  type="button"
+  className="
+    w-full sm:w-auto
+    px-6 py-3
+    rounded-xl
+    bg-white/10
+    backdrop-blur-md
+    text-white
+    border border-white/20
+    transition-all duration-300 ease-in-out
+    hover:bg-white
+    hover:text-black
+    hover:shadow-xl
+    hover:scale-105
+    active:scale-95
+  "
+>
+  {offer.cta || 'CLAIM OFFER'}
+</button>
+
+
+
+
                                         </div>
 
                                         <div className="flex items-center gap-3">

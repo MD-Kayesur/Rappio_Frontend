@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+
+
 
 import React, { useState, useRef, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import logo from "../../assets/Vector.svg";
 import {
     Heart,
@@ -24,7 +29,6 @@ import {
     Repeat2,
 } from 'lucide-react';
 import PageLoader from '@/Layout/PageLoader';
-import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 
@@ -71,16 +75,16 @@ const Videos: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(true);
     const [progress, setProgress] = useState(0);
     const [videoReady, setVideoReady] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const [replyTo, setReplyTo] = useState<{ id: number; user: string } | null>(null);
     const commentInputRef = useRef<HTMLInputElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const shareScrollRef = useRef<HTMLDivElement>(null);
-    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get('q') || '';
     const [allOffers, setAllOffers] = useState<Offer[]>([]);
-    const [showShareModal, setShowShareModal] = useState(false);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const [comments, setComments] = useState<Comment[]>([
         { id: 1, user: 'Robert Fox', avatar: '👤', text: 'That\'s Amazing', likes: 0, timestamp: '2m' },
@@ -108,7 +112,9 @@ const Videos: React.FC = () => {
                 }
                 setOffers(allOffers);
                 setAllOffers(allOffers);
-                if (typeof initialIndex === 'number' && initialIndex < allOffers.length) setCurrentIndex(initialIndex);
+                if (typeof initialIndex === 'number' && initialIndex < allOffers.length) {
+                    setCurrentIndex(initialIndex);
+                }
             })
             .catch(error => console.error('Error fetching offers:', error));
 
@@ -153,8 +159,6 @@ const Videos: React.FC = () => {
             setCurrentIndex(newIndex);
         }
     };
-
-
 
     const toggleLike = (offerId: number) => {
         setLikedOffers(prev => {
@@ -222,8 +226,6 @@ const Videos: React.FC = () => {
 
     const handleNameSetup = () => { if (username.trim()) { localStorage.setItem('username', username); setShowNameSetup(false); } };
 
-
-
     const getYouTubeId = (url: string) => {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
         const match = url.match(regExp);
@@ -250,7 +252,7 @@ const Videos: React.FC = () => {
                 {offers.map((offer, index) => (
                     <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start sm:snap-always flex items-center justify-center relative">
                         <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
-                            <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
+                            {/* <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
                                 <div className="pointer-events-auto">
                                     <button
                                         onClick={() => {
@@ -261,7 +263,7 @@ const Videos: React.FC = () => {
                                         <Search size={20} />
                                     </button>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5">
                                 {/* Main Card - Full Height Video */}
@@ -271,9 +273,9 @@ const Videos: React.FC = () => {
                                             <div className="absolute inset-0 flex items-center justify-center">
                                                 <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
                                                     {getYouTubeId(offer.video_url) ? (
-                                                        <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=1&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" onLoad={() => { if (index === currentIndex) { setVideoReady(true); setIsPlaying(true); } }} className="w-full h-full pointer-events-none"></iframe>
+                                                        <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=1&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-full pointer-events-none"></iframe>
                                                     ) : (
-                                                        <Player url={offer.video_url} playing={index === currentIndex && isPlaying} loop muted={true} playsinline={true} width="100%" height="100%" onReady={() => { if (index === currentIndex) { setVideoReady(true); setIsPlaying(true); } }} onProgress={(state: any) => { if (index === currentIndex) setProgress(state.played * 100); }} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
+                                                        <Player url={offer.video_url} playing={index === currentIndex && isPlaying} loop muted={true} playsinline={true} width="100%" height="100%" onReady={() => index === currentIndex && setVideoReady(true)} onProgress={(state: any) => index === currentIndex && setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
                                                     )}
                                                 </div>
                                                 <div className="absolute inset-0 z-20 cursor-pointer" onClick={() => index === currentIndex && setIsPlaying(!isPlaying)} />
@@ -281,10 +283,10 @@ const Videos: React.FC = () => {
                                         ) : (
                                             <img src={offer.image_url} alt={offer.title} className="w-full h-full object-cover" />
                                         )}
-                                        {offer.video_url && (
+                                        {offer.video_url && index === currentIndex && (
                                             <>
-                                                {index === currentIndex && !videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div></div> : index === currentIndex && !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
-                                                {index === currentIndex && <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>}
+                                                {!videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div></div> : !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
+                                                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>
                                             </>
                                         )}
                                         {/* Gradient for text readability */}
@@ -294,11 +296,41 @@ const Videos: React.FC = () => {
                                     {/* Overlaid Info Area */}
                                     <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
                                         {/* Claim Offer Button inside overlay */}
-                                        <div className="pointer-events-auto mb-2">
-                                            <button onClick={(e) => { e.stopPropagation(); if (offer.website_url) window.open(offer.website_url, '_blank'); }} className="glow-on-hover w-full sm:w-auto" type="button">
-                                                {offer.cta || 'Claim Offer'}
-                                            </button>
-                                        </div>
+                                        {/* <button
+                                            onClick={(e) => { e.stopPropagation(); if (offer.website_url) window.open(offer.website_url, '_blank'); }}
+                                            className="glow-on-hover w-full sm:w-auto"
+                                            type="button"
+                                        >
+                                            {offer.cta || 'CLAIM OFFER'}
+                                        </button> */}
+
+
+
+<button
+  onClick={(e) => {
+    e.stopPropagation();
+    if (offer.website_url) window.open(offer.website_url, '_blank');
+  }}
+  type="button"
+  className="
+    w-full sm:w-auto
+    px-6 py-3
+    rounded-xl
+    bg-white/10
+    backdrop-blur-md
+    text-white
+    border border-white/20
+    transition-all duration-300 ease-in-out
+    hover:bg-white
+    hover:text-black
+    hover:shadow-xl
+    hover:scale-105
+    active:scale-95
+  "
+>
+  {offer.cta || 'CLAIM OFFER'}
+</button>
+
 
                                         <div className="flex items-center gap-3">
                                             <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
@@ -320,48 +352,64 @@ const Videos: React.FC = () => {
 
 
 
+
                                         {/* Tags */}
-                                        {/* {offer.tags && offer.tags.length > 0 && (
-                                            <div className="flex flex-wrap gap-2 pt-1">
-                                                {offer.tags.map((tag, idx) => (
-                                                    <span key={idx} className="px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-white/80 text-[11px] font-medium border border-white/10 whitespace-nowrap">
-                                                        {tag}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        )} */}
+                                        {/* {currentOffer.tags && currentOffer.tags.length > 0 && (
+                                        <div className="flex flex-wrap gap-2 pt-1">
+                                            {currentOffer.tags.map((tag, idx) => (
+                                                <span key={idx} className="px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-white/80 text-[11px] font-medium border border-white/10 whitespace-nowrap">
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )} */}
                                     </div>
                                 </div>
 
                                 {/* Sidebar Icons (Still separate from card) */}
                                 <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
                                     {/* <div className="hidden sm:flex flex-col items-center gap-1.5">
+                                        <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <Search size={22} />
+                                    </button>
+                                        <div className="hidden sm:flex flex-col items-center gap-1.5">
                                         <img className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5" src={offer.image_url} alt="" />
 
+                                    </div>
                                     </div> */}
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                          <button
+                                        onClick={() => {
+                                            window.dispatchEvent(new CustomEvent('open-sidebar-search'));
+                                        }}
+                                        className="w-10 h-10 bg-black/20 hover:bg-neutral-700/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
+                                    >
+                                        <Search size={20} />
+                                    </button>
+                                    </div>
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes + (index === currentIndex ? 0 : 0))}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <MessageCircle size={22} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.comments + (index === currentIndex ? comments.length : 0))}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Bookmark size={22} className={`${savedOffers.has(offer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
                                         </button>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <Share2 size={22} />
                                         </button>
                                     </div>
@@ -384,7 +432,6 @@ const Videos: React.FC = () => {
                 <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronDown size={28} /></button>
             </motion.div>
 
-
             <AnimatePresence>
                 {showComments && (
                     <>
@@ -392,7 +439,6 @@ const Videos: React.FC = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            // onWheel={handleWheel} // Removed manual scroll logic
                             className="fixed inset-0 bg-black/40 z-[9998] sm:bg-transparent sm:pointer-events-none"
                             onClick={() => setShowComments(false)}
                         />
@@ -409,7 +455,7 @@ const Videos: React.FC = () => {
                                     <Repeat2 size={24} />
                                 </button>
                                 <h3 className="text-black sm:text-white font-bold text-[15px] sm:text-lg text-center flex-1">
-                                    {formatNumber(comments.length + offers[currentIndex].comments)} comments
+                                    {formatNumber(comments.length + (offers[currentIndex]?.comments || 0))} comments
                                 </h3>
                                 <div className="flex items-center gap-3">
                                     <button className="p-1 text-black/80 sm:text-white/80 sm:hidden">
@@ -646,26 +692,32 @@ const Videos: React.FC = () => {
                 )}
             </AnimatePresence>
 
-            {showNameSetup && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
-                    <div className="bg-black/20 backdrop-blur-lg rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 relative">
-                        <button onClick={() => setShowNameSetup(false)} className="absolute top-5 right-5 text-white/60 hover:text-white transition-colors">
-                            <X size={24} />
-                        </button>
-                        <div className="w-20 h-20 bg-red-600 rounded-2xl mx-auto mb-8 flex items-center justify-center rotate-12"><img src={logo} alt="Logo" className="w-12 -rotate-12" /></div>
-                        <h3 className="text-white text-2xl font-bold mb-3">Set your name</h3>
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your name" className="w-full bg-white/5 text-white px-6 py-4 rounded-2xl outline-none border border-white/10 mb-5 text-center" />
-                        <button onClick={handleNameSetup} className="w-full bg-red-600 text-white font-bold py-4.5 rounded-2xl">Get Started</button>
+            {
+                showNameSetup && (
+                    <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
+                        <div className="bg-black/20 backdrop-blur-lg rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 relative">
+                            <button onClick={() => setShowNameSetup(false)} className="absolute top-5 right-5 text-white/60 hover:text-white transition-colors">
+                                <X size={24} />
+                            </button>
+                            <div className="w-20 h-20 bg-red-600 rounded-2xl mx-auto mb-8 flex items-center justify-center rotate-12"><img src={logo} alt="Logo" className="w-12 -rotate-12" /></div>
+                            <h3 className="text-white text-2xl font-bold mb-3">Set your name</h3>
+                            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your name" className="w-full bg-white/5 text-white px-6 py-4 rounded-2xl outline-none border border-white/10 mb-5 text-center" />
+                            <button onClick={handleNameSetup} className="w-full bg-red-600 text-white font-bold py-4.5 rounded-2xl">Get Started</button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             <style>{`
                 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
                 .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 20px; }
                 @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
                 .animate-spin-slow { animation: spin-slow 4s linear infinite; }
-                
+                @keyframes gradient-xy { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+                .animate-gradient-xy { animation: gradient-xy 3s ease infinite; }
+                @keyframes shine { 100% { transform: translateX(200%) skewX(12deg); } }
+                .animate-shine { animation: shine 1s ease-in-out infinite; }
+
                 .glow-on-hover {
                     position: relative;
                     background: transparent;
@@ -684,6 +736,7 @@ const Videos: React.FC = () => {
                     letter-spacing: 0.5px;
                     text-transform: uppercase;
                 }
+
                 .glow-on-hover::before {
                     content: '';
                     position: absolute;
@@ -699,6 +752,7 @@ const Videos: React.FC = () => {
                     animation: spin-border 4s linear infinite;
                     z-index: -2;
                 }
+
                 .glow-on-hover::after {
                     content: '';
                     position: absolute;
@@ -708,9 +762,11 @@ const Videos: React.FC = () => {
                     z-index: -1;
                     transition: background 0.3s;
                 }
+
                 .glow-on-hover:hover::after {
                     background: #111;
                 }
+
                 @keyframes spin-border {
                     from { transform: translate(-50%, -50%) rotate(0deg); }
                     to { transform: translate(-50%, -50%) rotate(360deg); }
