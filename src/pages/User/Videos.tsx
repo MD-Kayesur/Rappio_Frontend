@@ -252,18 +252,18 @@ const Videos: React.FC = () => {
                 {offers.map((offer, index) => (
                     <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start sm:snap-always flex items-center justify-center relative">
                         <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
-                            {/* <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
+                            <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-0 sm:hidden pointer-events-none">
                                 <div className="pointer-events-auto">
                                     <button
                                         onClick={() => {
                                             window.dispatchEvent(new CustomEvent('open-sidebar-search'));
                                         }}
-                                        className="w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
+                                        className="w-12 h-12 bg-neutral-800/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
                                     >
                                         <Search size={20} />
                                     </button>
                                 </div>
-                            </div> */}
+                            </div>
 
                             <div className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5">
                                 {/* Main Card - Full Height Video */}
@@ -306,13 +306,13 @@ const Videos: React.FC = () => {
 
 
 
-<button
-  onClick={(e) => {
-    e.stopPropagation();
-    if (offer.website_url) window.open(offer.website_url, '_blank');
-  }}
-  type="button"
-  className="
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (offer.website_url) window.open(offer.website_url, '_blank');
+                                            }}
+                                            type="button"
+                                            className="
     w-full sm:w-auto
     px-6 py-3
     rounded-xl
@@ -327,9 +327,9 @@ const Videos: React.FC = () => {
     hover:scale-105
     active:scale-95
   "
->
-  {offer.cta || 'CLAIM OFFER'}
-</button>
+                                        >
+                                            {offer.cta || 'CLAIM OFFER'}
+                                        </button>
 
 
                                         <div className="flex items-center gap-3">
@@ -378,16 +378,16 @@ const Videos: React.FC = () => {
                                     </div>
                                     </div> */}
 
-                                    <div className="flex flex-col items-center gap-1.5">
+                                    {/* <div className="flex flex-col items-center gap-1.5">
                                           <button
                                         onClick={() => {
                                             window.dispatchEvent(new CustomEvent('open-sidebar-search'));
                                         }}
-                                        className="w-10 h-10 hover:bg-neutral-700/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
+                                        className="w-10 h-10  hover:bg-neutral-700/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
                                     >
                                         <Search size={20} />
                                     </button>
-                                    </div>
+                                    </div> */}
                                     <div className="flex flex-col items-center gap-1.5">
                                         <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
