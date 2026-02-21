@@ -1,38 +1,36 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
-import NotFound from "../pages/NotFound";
-import Home from "../pages/Home";
+
+import NotFound from "@/pages/NotFound";
+import Home from "@/pages/Home";
 import AdminRoute from "./AdminRoutes";
-import AdminDashboard from "@/pages/Admin/AdminDashboard";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
-import Form from "@/pages/Form";
-import Services from "@/pages/Services";
+import UserLayout from "@/Layout/UserLayout/UserLayout";
+ import Videos from "@/pages/User/Videos";
+import Photos from "@/pages/User/Photos";
+import Favorites from "@/pages/User/Favorites";
+import TopCasinos from "@/pages/User/TopCasinos";
+import AdminLayout from "@/Layout/AdminLayout/AdminLayout";
+import Overview from "@/pages/Admin/Overview";
+import FeedOrdering from "@/pages/Admin/FeedOrdering";
+import Analytics from "@/pages/Admin/Analytics";
+import Settings from "@/pages/Admin/Settings";
+import AllMedia from "@/pages/User/AllMedia";
+import Sittings from "@/pages/User/Sittings";
 
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+
+
       {
-        path: "/",
+        path: "",
         element: <Home />,
       },
-      {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/contact",
-        element: <Contact />,
-      },
-      {
-        path: "/services",
-        element: <Services />,
-      },
-     
+
       {
         path: "/login",
         element: <Login />,
@@ -42,10 +40,32 @@ const routes = createBrowserRouter([
         element: <Signup />,
       },
       {
+        path: "/user",
+        element: <UserLayout />,
+        children: [
+          { path: "", element: <AllMedia /> },
+          { path: "all", element: <AllMedia /> },
+          { path: "videos", element: <Videos /> },
+          { path: "photos", element: <Photos /> },
+          { path: "favorites", element: <Favorites /> },
+          { path: "settings", element: <Sittings /> },
+          { path: "top-casinos", element: <TopCasinos /> },
+        ],
+      },
+      {
         path: "/admin",
         element: <AdminRoute />, // This will check if the user is an admin
         children: [
-          { path: "", element: <AdminDashboard /> }, // Admin Dashboard
+          {
+            element: <AdminLayout />,
+            children: [
+              { path: "", element: <Overview /> },
+              { path: "overview", element: <Overview /> },
+              { path: "feed-ordering", element: <FeedOrdering /> },
+              { path: "analytics", element: <Analytics /> },
+              { path: "settings", element: <Settings /> },
+            ],
+          },
         ],
       },
     ],

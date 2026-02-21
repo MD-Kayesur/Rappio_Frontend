@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+
 @theme {
   --color-website-color-black: #212a31;
   --color-website-color-darkGray: #2e3944;
@@ -15,26 +20,45 @@
 .corner-border {
   content: '';
   position: absolute;
-  width: 70px; /* Length of the border piece */
-  height: 70px; /* Length of the border piece */
-  border-color: #609D60; /* Green color from your original */
+  width: 70px;
+  /* Length of the border piece */
+  height: 70px;
+  /* Length of the border piece */
+  border-color: #609D60;
+  /* Green color from your original */
   border-style: solid;
-  border-width: 0; /* Start with no border visible */
-  transition: border-width 0.3s ease; 
+  border-width: 0;
+  /* Start with no border visible */
+  transition: border-width 0.3s ease;
   z-index: 10;
   pointer-events: none;
 }
 
 /* Positioning the Corners */
-.corner-tl { top: 0; left: 0; }
-.corner-tr { top: 0; right: 0; }
-.corner-bl { bottom: 0; left: 0; }
-.corner-br { bottom: 0; right: 0; }
+.corner-tl {
+  top: 0;
+  left: 0;
+}
+
+.corner-tr {
+  top: 0;
+  right: 0;
+}
+
+.corner-bl {
+  bottom: 0;
+  left: 0;
+}
+
+.corner-br {
+  bottom: 0;
+  right: 0;
+}
 
 /* HOVER STATES: Applies border thickness (4px) when the parent 'group' is hovered */
 .group:hover .corner-tl {
   border-top-width: 2px;
-   border-left-width: 2px;
+  border-left-width: 2px;
 }
 
 .group:hover .corner-tr {
@@ -55,4 +79,48 @@
 
 body {
   font-family: 'MyCustomFont', sans-serif;
+  background-image: url('/src/assets/home.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #1a1a1a;
+}
+
+button {
+  cursor: pointer;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  border: 2px solid #1a1a1a;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.08);
 }
