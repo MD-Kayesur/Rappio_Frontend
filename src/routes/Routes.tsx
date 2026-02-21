@@ -7,7 +7,7 @@ import AdminRoute from "./AdminRoutes";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import UserLayout from "@/Layout/UserLayout/UserLayout";
- import Videos from "@/pages/User/Videos";
+import Videos from "@/pages/User/Videos";
 import Photos from "@/pages/User/Photos";
 import Favorites from "@/pages/User/Favorites";
 import TopCasinos from "@/pages/User/TopCasinos";

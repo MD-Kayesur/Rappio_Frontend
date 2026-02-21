@@ -40,7 +40,7 @@ const publicRouter = createBrowserRouter([
           { path: "videos", element: <Videos /> },
           { path: "photos", element: <Photos /> },
           { path: "favorites", element: <Favorites /> },
-        //   { path: "settings", element: <Settings /> },
+          //   { path: "settings", element: <Settings /> },
           { path: "top-casinos", element: <TopCasinos /> },
         ],
       },
