@@ -383,7 +383,7 @@ const AllMedia: React.FC = () => {
                                         onClick={() => {
                                             window.dispatchEvent(new CustomEvent('open-sidebar-search'));
                                         }}
-                                        className="w-10 h-10 bg-black/20 hover:bg-neutral-700/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
+                                        className="w-10 h-10  hover:bg-neutral-700/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
                                     >
                                         <Search size={20} />
                                     </button>
