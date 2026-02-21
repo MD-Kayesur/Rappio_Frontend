@@ -81,6 +81,7 @@ const Videos: React.FC = () => {
     const commentInputRef = useRef<HTMLInputElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const shareScrollRef = useRef<HTMLDivElement>(null);
+    const [flippedCardId, setFlippedCardId] = useState<number | null>(null);
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get('q') || '';
     const [allOffers, setAllOffers] = useState<Offer[]>([]);
@@ -157,6 +158,7 @@ const Videos: React.FC = () => {
         const newIndex = Math.round(scrollPos / itemHeight);
         if (newIndex !== currentIndex && newIndex >= 0 && newIndex < offers.length) {
             setCurrentIndex(newIndex);
+            setFlippedCardId(null);
         }
     };
 
@@ -252,119 +254,160 @@ const Videos: React.FC = () => {
                 {offers.map((offer, index) => (
                     <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start sm:snap-always flex items-center justify-center relative">
                         <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
-                            <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-0 sm:hidden pointer-events-none">
-                                <div className="pointer-events-auto">
-                                    <button
-                                        onClick={() => {
-                                            window.dispatchEvent(new CustomEvent('open-sidebar-search'));
-                                        }}
-                                        className="w-12 h-12 bg-neutral-800/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
-                                    >
-                                        <Search size={20} />
-                                    </button>
-                                </div>
-                            </div>
 
-                            <div className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5">
+
+                            <div className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5" style={{ perspective: "1200px" }}>
                                 {/* Main Card - Full Height Video */}
-                                <div className="w-full h-full sm:flex-1 bg-[#121212] sm:rounded-[1rem] overflow-hidden shadow-2xl sm:border sm:border-white/10 relative group">
-                                    <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
-                                        {offer.video_url ? (
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
-                                                    {getYouTubeId(offer.video_url) ? (
-                                                        <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=1&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-full pointer-events-none"></iframe>
-                                                    ) : (
-                                                        <Player url={offer.video_url} playing={index === currentIndex && isPlaying} loop muted={true} playsinline={true} width="100%" height="100%" onReady={() => index === currentIndex && setVideoReady(true)} onProgress={(state: any) => index === currentIndex && setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
-                                                    )}
+                                <motion.div
+                                    animate={{ rotateY: flippedCardId === offer.id ? 180 : 0 }}
+                                    transition={{ duration: 0.7, ease: "easeInOut" }}
+                                    style={{ transformStyle: "preserve-3d" }}
+                                    className="w-full h-full sm:flex-1 bg-[#121212] sm:rounded-[1rem] shadow-2xl sm:border sm:border-white/10 relative group"
+                                >
+                                    {/* Front Side */}
+                                    <div
+                                        className="absolute inset-0 w-full h-full overflow-hidden bg-black sm:rounded-[1rem] cursor-pointer"
+                                        style={{ backfaceVisibility: "hidden" }}
+                                        onClick={() => {
+                                            if (index === currentIndex) {
+                                                if (window.innerWidth < 640) {
+                                                    setFlippedCardId(flippedCardId === offer.id ? null : offer.id);
+                                                } else {
+                                                    setIsPlaying(!isPlaying);
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
+                                            {offer.video_url ? (
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
+                                                        {getYouTubeId(offer.video_url) ? (
+                                                            <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=1&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-full pointer-events-none"></iframe>
+                                                        ) : (
+                                                            <Player url={offer.video_url} playing={index === currentIndex && isPlaying} loop muted={true} playsinline={true} width="100%" height="100%" onReady={() => index === currentIndex && setVideoReady(true)} onProgress={(state: any) => index === currentIndex && setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
+                                                        )}
+                                                    </div>
                                                 </div>
-                                                <div className="absolute inset-0 z-20 cursor-pointer" onClick={() => index === currentIndex && setIsPlaying(!isPlaying)} />
-                                            </div>
-                                        ) : (
-                                            <img src={offer.image_url} alt={offer.title} className="w-full h-full object-cover" />
-                                        )}
-                                        {offer.video_url && index === currentIndex && (
-                                            <>
-                                                {!videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div></div> : !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
-                                                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>
-                                            </>
-                                        )}
-                                        {/* Gradient for text readability */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-20" />
-                                    </div>
-
-                                    {/* Overlaid Info Area */}
-                                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
-                                        {/* Claim Offer Button inside overlay */}
-                                        {/* <button
-                                            onClick={(e) => { e.stopPropagation(); if (offer.website_url) window.open(offer.website_url, '_blank'); }}
-                                            className="glow-on-hover w-full sm:w-auto"
-                                            type="button"
-                                        >
-                                            {offer.cta || 'CLAIM OFFER'}
-                                        </button> */}
-
-
-
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (offer.website_url) window.open(offer.website_url, '_blank');
-                                            }}
-                                            type="button"
-                                            className="
-    w-full sm:w-auto
-    px-6 py-3
-    rounded-xl
-    bg-white/10
-    backdrop-blur-md
-    text-white
-    border border-white/20
-    transition-all duration-300 ease-in-out
-    hover:bg-white
-    hover:text-black
-    hover:shadow-xl
-    hover:scale-105
-    active:scale-95
-  "
-                                        >
-                                            {offer.cta || 'CLAIM OFFER'}
-                                        </button>
-
-
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
-                                                <img src={logo} alt="Logo" className="w-5" />
-                                            </div>
-                                            <h2 className="text-white font-bold text-[20px] tracking-tight cursor-pointer hover:underline pointer-events-auto" onClick={() => offer.website_url && window.open(offer.website_url, '_blank')}>{offer.title}</h2>
+                                            ) : (
+                                                <img src={offer.image_url} alt={offer.title} className="w-full h-full object-cover" />
+                                            )}
+                                            {offer.video_url && index === currentIndex && (
+                                                <>
+                                                    {!videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div></div> : !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
+                                                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>
+                                                </>
+                                            )}
+                                            {/* Gradient for text readability */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-20" />
                                         </div>
 
-                                        <div className="space-y-1">
-                                            <div className={`text-white/90 text-[14px] leading-relaxed drop-shadow-lg ${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
-                                                <span className="font-semibold block mb-0.5 text-white">{offer.subtitle}</span>
-                                                {offer.description}
-                                            </div>
-                                            <button onClick={(e) => { e.stopPropagation(); setIsDescriptionExpanded(!isDescriptionExpanded); }} className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto">
-                                                {isDescriptionExpanded ? 'See Less' : 'See More'}
+                                        {/* Overlaid Info Area */}
+                                        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (offer.website_url) window.open(offer.website_url, '_blank');
+                                                }}
+                                                type="button"
+                                                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:shadow-xl hover:scale-105 active:scale-95 pointer-events-auto"
+                                            >
+                                                {offer.cta || 'CLAIM OFFER'}
                                             </button>
+
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
+                                                    <img src={logo} alt="Logo" className="w-5" />
+                                                </div>
+                                                <h2 className="text-white font-bold text-[20px] tracking-tight cursor-pointer hover:underline pointer-events-auto" onClick={(e) => { e.stopPropagation(); offer.website_url && window.open(offer.website_url, '_blank'); }}>{offer.title}</h2>
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <div className={`text-white/90 text-[14px] leading-relaxed drop-shadow-lg ${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
+                                                    <span className="font-semibold block mb-0.5 text-white">{offer.subtitle}</span>
+                                                    {offer.description}
+                                                </div>
+                                                <button onClick={(e) => { e.stopPropagation(); setIsDescriptionExpanded(!isDescriptionExpanded); }} className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto">
+                                                    {isDescriptionExpanded ? 'See Less' : 'See More'}
+                                                </button>
+                                            </div>
                                         </div>
-
-
-
-
-
-                                        {/* Tags */}
-                                        {/* {currentOffer.tags && currentOffer.tags.length > 0 && (
-                                        <div className="flex flex-wrap gap-2 pt-1">
-                                            {currentOffer.tags.map((tag, idx) => (
-                                                <span key={idx} className="px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-white/80 text-[11px] font-medium border border-white/10 whitespace-nowrap">
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )} */}
                                     </div>
-                                </div>
+
+                                    {/* Back Side */}
+                                    <div
+                                        className="absolute inset-0 w-full h-full bg-[#121212] sm:rounded-[1rem] overflow-hidden p-6 sm:p-8 flex flex-col gap-6 custom-scrollbar cursor-pointer"
+                                        style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+                                        onClick={() => setFlippedCardId(null)}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+                                                <img src={logo} alt="Logo" className="w-8" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <h3 className="text-white text-xl font-bold truncate">{offer.title}</h3>
+                                                <p className="text-white/60 text-sm truncate">{offer.subtitle}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-4 flex-1 overflow-y-auto no-scrollbar">
+                                            <div className="space-y-2">
+                                                <h4 className="text-white/80 font-bold text-xs uppercase tracking-wider">About this offer</h4>
+                                                <p className="text-white/70 text-[15px] leading-relaxed">{offer.description}</p>
+                                            </div>
+
+                                            {offer.tags && offer.tags.length > 0 && (
+                                                <div className="flex flex-wrap gap-2 py-2">
+                                                    {offer.tags.map((tag, idx) => (
+                                                        <span key={idx} className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white/50 text-[10px] font-bold uppercase tracking-tight">
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {offer.terms_highlights && (
+                                                <div className="space-y-3 pt-2">
+                                                    <h4 className="text-white/80 font-bold text-xs uppercase tracking-wider">Key Highlights</h4>
+                                                    <ul className="space-y-2.5">
+                                                        {offer.terms_highlights.map((term, idx) => (
+                                                            <li key={idx} className="flex items-start gap-3 text-white/60 text-sm">
+                                                                <div className="w-1.5 h-1.5 rounded-full bg-[#FF2D55] mt-1.5 shrink-0" />
+                                                                {term}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="space-y-4 pt-6 mt-auto border-t border-white/10">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (offer.website_url) window.open(offer.website_url, '_blank');
+                                                }}
+                                                className="w-full bg-[#FF2D55] text-white font-bold py-4 rounded-2xl hover:bg-[#ff4d6d] transition-all shadow-[0_0_20px_rgba(255,45,85,0.3)] active:scale-95"
+                                            >
+                                                {offer.cta || 'CLAIM OFFER NOW'}
+                                            </button>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setFlippedCardId(null);
+                                                }}
+                                                className="w-full bg-white/5 text-white/60 font-medium py-3 rounded-2xl hover:bg-white/10 transition-all text-sm"
+                                            >
+                                                Back to Video
+                                            </button>
+                                            {offer.disclaimer && (
+                                                <p className="text-white/20 text-[10px] text-center leading-tight">
+                                                    {offer.disclaimer}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </motion.div>
 
                                 {/* Sidebar Icons (Still separate from card) */}
                                 <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
@@ -418,6 +461,19 @@ const Videos: React.FC = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Fixed Mobile Search Button */}
+            <div className="fixed top-1 left-1 z-[200] sm:hidden">
+                <button
+                    id="mobile-search-button"
+                    onClick={() => {
+                        window.dispatchEvent(new CustomEvent('open-sidebar-search'));
+                    }}
+                    className="w-12 h-12 bg-neutral-800/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all"
+                >
+                    <Search size={20} />
+                </button>
             </div>
 
             <motion.div

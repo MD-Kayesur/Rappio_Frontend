@@ -254,18 +254,7 @@ const AllMedia: React.FC = () => {
                 {offers.map((offer, index) => (
                     <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start sm:snap-always flex items-center justify-center relative">
                         <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
-                            <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-0 sm:hidden pointer-events-none">
-                                <div className="pointer-events-auto">
-                                    <button
-                                        onClick={() => {
-                                            window.dispatchEvent(new CustomEvent('open-sidebar-search'));
-                                        }}
-                                        className="w-12 h-12 bg-neutral-800/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
-                                    >
-                                        <Search size={20} />
-                                    </button>
-                                </div>
-                            </div>
+
 
                             <div
                                 className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5"
@@ -284,7 +273,11 @@ const AllMedia: React.FC = () => {
                                         style={{ backfaceVisibility: "hidden" }}
                                         onClick={() => {
                                             if (index === currentIndex) {
-                                                setFlippedCardId(flippedCardId === offer.id ? null : offer.id);
+                                                if (window.innerWidth < 640) {
+                                                    setFlippedCardId(flippedCardId === offer.id ? null : offer.id);
+                                                } else {
+                                                    setIsPlaying(!isPlaying);
+                                                }
                                             }
                                         }}
                                     >
@@ -325,27 +318,13 @@ const AllMedia: React.FC = () => {
 
 
 
-                                            <button
+                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
                                                 type="button"
-                                                className="
-    w-full sm:w-auto
-    px-6 py-3
-    rounded-xl
-    bg-white/10
-    backdrop-blur-md
-    text-white
-    border border-white/20
-    transition-all duration-300 ease-in-out
-    hover:bg-white
-    hover:text-black
-    hover:shadow-xl
-    hover:scale-105
-    active:scale-95
-  "
+                                                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:shadow-xl hover:scale-105 active:scale-95 pointer-events-auto"
                                             >
                                                 {offer.cta || 'CLAIM OFFER'}
                                             </button>
@@ -498,6 +477,19 @@ const AllMedia: React.FC = () => {
                     </div>
                 ))}
             </div >
+
+            {/* Fixed Mobile Search Button */}
+            <div className="fixed top-1 left-1 z-[200] sm:hidden">
+                <button
+                    id="mobile-search-button"
+                    onClick={() => {
+                        window.dispatchEvent(new CustomEvent('open-sidebar-search'));
+                    }}
+                    className="w-12 h-12 bg-neutral-800/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all"
+                >
+                    <Search size={20} />
+                </button>
+            </div>
 
             <motion.div
                 animate={{
