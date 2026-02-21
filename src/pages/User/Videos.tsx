@@ -248,7 +248,7 @@ const Videos: React.FC = () => {
                 onScroll={handleOnScroll}
             >
                 {offers.map((offer, index) => (
-                    <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start flex items-center justify-center relative">
+                    <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start sm:snap-always flex items-center justify-center relative">
                         <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
                             <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
                                 <div className="pointer-events-auto">

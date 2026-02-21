@@ -250,9 +250,9 @@ const AllMedia: React.FC = () => {
                 onScroll={handleOnScroll}
             >
                 {offers.map((offer, index) => (
-                    <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start flex items-center justify-center relative">
+                    <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start sm:snap-always flex items-center justify-center relative">
                         <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
-                            <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
+                            {/* <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between p-6 pr-16 sm:hidden pointer-events-none">
                                 <div className="pointer-events-auto">
                                     <button
                                         onClick={() => {
@@ -263,7 +263,7 @@ const AllMedia: React.FC = () => {
                                         <Search size={20} />
                                     </button>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="absolute inset-0 h-full w-full block sm:flex sm:flex-row sm:items-end sm:gap-5">
                                 {/* Main Card - Full Height Video */}
@@ -296,13 +296,41 @@ const AllMedia: React.FC = () => {
                                     {/* Overlaid Info Area */}
                                     <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 pr-16 sm:pr-6 space-y-3 z-30 pointer-events-none">
                                         {/* Claim Offer Button inside overlay */}
-                                        <button
+                                        {/* <button
                                             onClick={(e) => { e.stopPropagation(); if (offer.website_url) window.open(offer.website_url, '_blank'); }}
                                             className="glow-on-hover w-full sm:w-auto"
                                             type="button"
                                         >
                                             {offer.cta || 'CLAIM OFFER'}
-                                        </button>
+                                        </button> */}
+
+
+
+<button
+  onClick={(e) => {
+    e.stopPropagation();
+    if (offer.website_url) window.open(offer.website_url, '_blank');
+  }}
+  type="button"
+  className="
+    w-full sm:w-auto
+    px-6 py-3
+    rounded-xl
+    bg-white/10
+    backdrop-blur-md
+    text-white
+    border border-white/20
+    transition-all duration-300 ease-in-out
+    hover:bg-white
+    hover:text-black
+    hover:shadow-xl
+    hover:scale-105
+    active:scale-95
+  "
+>
+  {offer.cta || 'CLAIM OFFER'}
+</button>
+
 
                                         <div className="flex items-center gap-3">
                                             <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
@@ -340,38 +368,48 @@ const AllMedia: React.FC = () => {
 
                                 {/* Sidebar Icons (Still separate from card) */}
                                 <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
-                                    <div className="hidden sm:flex flex-col items-center gap-1.5">
-                                        {/* <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                    {/* <div className="hidden sm:flex flex-col items-center gap-1.5">
+                                        <button className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                         <Search size={22} />
-                                    </button> */}
-                                        {/* <div className="hidden sm:flex flex-col items-center gap-1.5">
+                                    </button>
+                                        <div className="hidden sm:flex flex-col items-center gap-1.5">
                                         <img className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5" src={offer.image_url} alt="" />
 
-                                    </div> */}
                                     </div>
+                                    </div> */}
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                          <button
+                                        onClick={() => {
+                                            window.dispatchEvent(new CustomEvent('open-sidebar-search'));
+                                        }}
+                                        className="w-10 h-10 bg-black/20 hover:bg-neutral-700/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10"
+                                    >
+                                        <Search size={20} />
+                                    </button>
+                                    </div>
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes + (index === currentIndex ? 0 : 0))}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <MessageCircle size={22} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.comments + (index === currentIndex ? comments.length : 0))}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Bookmark size={22} className={`${savedOffers.has(offer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
                                         </button>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full bg-neutral-800/80 backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <Share2 size={22} />
                                         </button>
                                     </div>

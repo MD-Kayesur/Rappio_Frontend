@@ -124,7 +124,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                         initial={isMobile ? { y: '100%' } : { scale: 0.95, opacity: 0 }}
                         animate={isMobile ? { y: 0 } : { scale: 1, opacity: 1 }}
                         exit={isMobile ? { y: '100%' } : { scale: 0.95, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                        transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
                         className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'left-0 right-0 w-full bg-black/40 backdrop-blur-lg text-white' : 'border-r border-white/10 shadow-2xl bg-black/40 backdrop-blur-lg text-white'}`}
                         style={!isMobile ? {
                             left: isCollapsed ? '80px' : '280px',
@@ -169,7 +169,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                                 closeSearch();
                                             }
                                         }}
-                                        className="text-[#FF2D55] font-bold text-[18px] px-1"
+                                        className=" font-bold text-[18px] px-1"
                                     >
                                         Search
                                     </button>
