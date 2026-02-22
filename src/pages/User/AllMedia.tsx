@@ -27,6 +27,8 @@ import {
     ChevronLeft,
     ChevronRight,
     Repeat2,
+    Volume2,
+    VolumeX
 } from 'lucide-react';
 import PageLoader from '@/Layout/PageLoader';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -81,6 +83,7 @@ const AllMedia: React.FC = () => {
     const commentInputRef = useRef<HTMLInputElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const shareScrollRef = useRef<HTMLDivElement>(null);
+    const [isMuted, setIsMuted] = useState(true);
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get('q') || '';
     const [allOffers, setAllOffers] = useState<Offer[]>([]);
@@ -177,6 +180,11 @@ const AllMedia: React.FC = () => {
             sessionStorage.setItem('favorites', JSON.stringify(Array.from(newSet)));
             return newSet;
         });
+    };
+
+    const toggleMute = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsMuted(!isMuted);
     };
 
     const formatNumber = (num: number) => {
@@ -293,9 +301,9 @@ const AllMedia: React.FC = () => {
                                             <div className="absolute inset-0 flex items-end justify-center">
                                                 <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100dvh] sm:w-[177.77vh] sm:h-[85vh]">
                                                     {getYouTubeId(offer.video_url) ? (
-                                                        <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=1&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-full pointer-events-none"></iframe>
+                                                        <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-full pointer-events-none"></iframe>
                                                     ) : (
-                                                        <Player url={offer.video_url} playing={index === currentIndex && isPlaying} loop muted={true} playsinline={true} width="100%" height="100%" onReady={() => index === currentIndex && setVideoReady(true)} onProgress={(state: any) => index === currentIndex && setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
+                                                        <Player url={offer.video_url} playing={index === currentIndex && isPlaying} loop muted={isMuted} playsinline={true} width="100%" height="100%" onReady={() => index === currentIndex && setVideoReady(true)} onProgress={(state: any) => index === currentIndex && setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
                                                     )}
                                                 </div>
                                             </div>
@@ -329,10 +337,15 @@ const AllMedia: React.FC = () => {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    if (offer.website_url) window.open(offer.website_url, '_blank');
+                                                    if (offer.website_url) {
+                                                        window.open(offer.website_url, '_blank');
+                                                        toast.success('Redirecting to offer...');
+                                                    } else {
+                                                        toast.error('Offer link not available at the moment');
+                                                    }
                                                 }}
                                                 type="button"
-                                                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:shadow-xl hover:scale-105 active:scale-95 pointer-events-auto"
+                                                className="glow-on-hover w-full sm:w-auto px-10 py-4 focus:outline-none active:scale-95 pointer-events-auto"
                                             >
                                                 {offer.cta || 'CLAIM OFFER'}
                                             </button>
@@ -417,9 +430,14 @@ const AllMedia: React.FC = () => {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    if (offer.website_url) window.open(offer.website_url, '_blank');
+                                                    if (offer.website_url) {
+                                                        window.open(offer.website_url, '_blank');
+                                                        toast.success('Redirecting to offer...');
+                                                    } else {
+                                                        toast.error('Offer link not available at the moment');
+                                                    }
                                                 }}
-                                                className="w-full bg-[#FF2D55] text-white font-bold py-4 rounded-2xl hover:bg-[#ff4d6d] transition-all shadow-[0_0_20px_rgba(255,45,85,0.3)] active:scale-95"
+                                                className="glow-on-hover w-full py-4 focus:outline-none active:scale-95"
                                             >
                                                 {offer.cta || 'CLAIM OFFER NOW'}
                                             </button>
@@ -486,6 +504,12 @@ const AllMedia: React.FC = () => {
                                     <div className="flex flex-col items-center gap-1.5">
                                         <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <Share2 size={22} />
+                                        </button>
+                                    </div>
+
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <button onClick={toggleMute} className="w-12 h-12 rounded-full backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                            {isMuted ? <VolumeX size={22} /> : <Volume2 size={22} />}
                                         </button>
                                     </div>
                                 </div>
@@ -849,8 +873,19 @@ const AllMedia: React.FC = () => {
                     transition: background 0.3s;
                 }
 
-                .glow-on-hover:hover::after {
+                .glow-on-hover:hover::after,
+                .glow-on-hover:focus::after {
                     background: #111;
+                }
+
+                .glow-on-hover:hover,
+                .glow-on-hover:focus {
+                    transform: scale(1.03);
+                    box-shadow: 0 0 30px rgba(255, 45, 85, 0.4);
+                }
+
+                .glow-on-hover:focus {
+                    outline: none;
                 }
 
                 @keyframes spin-border {
