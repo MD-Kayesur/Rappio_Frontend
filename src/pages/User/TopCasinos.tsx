@@ -51,8 +51,8 @@ const TopCasinos = () => {
         console.error('Error fetching offers:', error);
       });
 
-    // Load favorites from localStorage
-    const savedFavorites = localStorage.getItem('favorites');
+    // Load favorites from sessionStorage
+    const savedFavorites = sessionStorage.getItem('favorites');
     if (savedFavorites) {
       setFavorites(new Set(JSON.parse(savedFavorites)));
     }
@@ -91,7 +91,7 @@ const TopCasinos = () => {
       } else {
         newFavorites.add(id);
       }
-      localStorage.setItem('favorites', JSON.stringify(Array.from(newFavorites)));
+      sessionStorage.setItem('favorites', JSON.stringify(Array.from(newFavorites)));
       return newFavorites;
     });
   };

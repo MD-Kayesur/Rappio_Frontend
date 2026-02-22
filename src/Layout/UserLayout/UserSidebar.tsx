@@ -179,7 +179,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                 />
 
                 {!isCollapsed && (
-                  <span className="flex items-center gap-2 text-[16px] truncate">
+                  <span className="flex  items-center gap-2 text-[16px] truncate">
                     {item.label}
                     {isDisabled && (
                       <span className="text-xs  text-black px-2 py-0.5 rounded whitespace-nowrap">

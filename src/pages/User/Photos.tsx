@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import logo from "../../assets/Vector.svg";
 import {
     Heart,
@@ -77,6 +77,7 @@ const Photos: React.FC = () => {
     const searchQuery = searchParams.get('q') || '';
     const [allOffers, setAllOffers] = useState<Offer[]>([]);
     const [showShareModal, setShowShareModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [comments, setComments] = useState<Comment[]>([
         { id: 1, user: 'Robert Fox', avatar: '👤', text: 'That\'s Amazing', likes: 0, timestamp: '2m' },
@@ -85,22 +86,50 @@ const Photos: React.FC = () => {
     ]);
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const location = useLocation();
+    const { feedType, initialIndex, initialCategory } = (location.state as { feedType?: string; initialIndex?: number; initialCategory?: string }) || {};
+    const isFirstLoad = useRef(true);
 
     useEffect(() => {
         fetch('/mediaData.json')
             .then(response => response.json())
             .then(data => {
-                const allOffers = Array.isArray(data) ? data : [data];
+                let allOffers = Array.isArray(data) ? data : [data];
+                if (feedType === 'favorites') {
+                    const savedFavorites = sessionStorage.getItem('favorites');
+                    const favoritesSet = new Set<number>(savedFavorites ? JSON.parse(savedFavorites) : []);
+                    allOffers = allOffers.filter(o => favoritesSet.has(o.id));
+                }
+                if (initialCategory && initialCategory !== 'All') {
+                    allOffers = allOffers.filter(o => o.tags.includes(initialCategory));
+                }
                 setOffers(allOffers);
                 setAllOffers(allOffers);
+                if (typeof initialIndex === 'number' && initialIndex < allOffers.length) {
+                    setCurrentIndex(initialIndex);
+                }
+                setIsLoading(false);
             })
-            .catch(error => console.error('Error fetching offers:', error));
+            .catch(error => {
+                console.error('Error fetching offers:', error);
+                setIsLoading(false);
+            });
 
         const savedUsername = localStorage.getItem('username');
         if (savedUsername) {
             setUsername(savedUsername);
         }
-    }, []);
+    }, [feedType, initialIndex, initialCategory]);
+
+    useEffect(() => {
+        if (!isLoading && typeof initialIndex === 'number' && containerRef.current) {
+            const itemHeight = containerRef.current.clientHeight;
+            containerRef.current.scrollTo({
+                top: initialIndex * itemHeight,
+                behavior: 'instant' as any
+            });
+        }
+    }, [isLoading, initialIndex]);
 
     useEffect(() => {
         setIsDescriptionExpanded(false);
@@ -116,8 +145,19 @@ const Photos: React.FC = () => {
             offer.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setOffers(filtered);
-        setCurrentIndex(0);
-    }, [searchQuery, allOffers]);
+
+        // Only reset to index 0 if it's a manual search and NOT the first load with an initial index
+        if (!isFirstLoad.current) {
+            setCurrentIndex(0);
+        } else if (!searchQuery && typeof initialIndex !== 'number') {
+            // Even on first load, if no initial index, ensure we're at 0
+            setCurrentIndex(0);
+        }
+
+        if (allOffers.length > 0) {
+            isFirstLoad.current = false;
+        }
+    }, [searchQuery, allOffers, initialIndex]);
 
     const handleScroll = (scrollDirection: 'up' | 'down') => {
         if (!containerRef.current) return;
@@ -226,7 +266,7 @@ const Photos: React.FC = () => {
 
     const currentOffer = offers[currentIndex];
 
-    if (!currentOffer) return <div className="h-full bg-black flex items-center justify-center text-white text-xl"><PageLoader /></div>;
+    if (isLoading || !currentOffer) return <div className="h-full bg-black flex items-center justify-center text-white text-xl"><PageLoader /></div>;
 
     return (
         <>

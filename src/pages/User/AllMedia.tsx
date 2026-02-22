@@ -90,6 +90,7 @@ const AllMedia: React.FC = () => {
     const [allOffers, setAllOffers] = useState<Offer[]>([]);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [flippedCardId, setFlippedCardId] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [comments, setComments] = useState<Comment[]>([
         { id: 1, user: 'Robert Fox', avatar: '👤', text: 'That\'s Amazing', likes: 0, timestamp: '2m' },
@@ -101,6 +102,7 @@ const AllMedia: React.FC = () => {
 
     const location = useLocation();
     const { feedType, initialIndex, initialCategory } = (location.state as { feedType?: string; initialIndex?: number; initialCategory?: string }) || {};
+    const isFirstLoad = useRef(true);
 
     useEffect(() => {
         fetch('/mediaData.json')
@@ -120,12 +122,26 @@ const AllMedia: React.FC = () => {
                 if (typeof initialIndex === 'number' && initialIndex < allOffers.length) {
                     setCurrentIndex(initialIndex);
                 }
+                setIsLoading(false);
             })
-            .catch(error => console.error('Error fetching offers:', error));
+            .catch(error => {
+                console.error('Error fetching offers:', error);
+                setIsLoading(false);
+            });
 
         const savedUsername = localStorage.getItem('username');
         if (savedUsername) setUsername(savedUsername);
     }, [feedType, initialIndex, initialCategory]);
+
+    useEffect(() => {
+        if (!isLoading && typeof initialIndex === 'number' && containerRef.current) {
+            const itemHeight = containerRef.current.clientHeight;
+            containerRef.current.scrollTo({
+                top: initialIndex * itemHeight,
+                behavior: 'instant' as any
+            });
+        }
+    }, [isLoading, initialIndex]);
 
     useEffect(() => {
         setIsPlaying(true);
@@ -143,8 +159,19 @@ const AllMedia: React.FC = () => {
     useEffect(() => {
         const filtered = allOffers.filter(offer => offer.title.toLowerCase().includes(searchQuery.toLowerCase()));
         setOffers(filtered);
-        setCurrentIndex(0);
-    }, [searchQuery, allOffers]);
+
+        // Only reset to index 0 if it's a manual search and NOT the first load with an initial index
+        if (!isFirstLoad.current) {
+            setCurrentIndex(0);
+        } else if (!searchQuery && typeof initialIndex !== 'number') {
+            // Even on first load, if no initial index, ensure we're at 0
+            setCurrentIndex(0);
+        }
+
+        if (allOffers.length > 0) {
+            isFirstLoad.current = false;
+        }
+    }, [searchQuery, allOffers, initialIndex]);
 
     const handleScroll = (scrollDirection: 'up' | 'down') => {
         if (!containerRef.current) return;
@@ -244,7 +271,7 @@ const AllMedia: React.FC = () => {
     };
 
     const currentOffer = offers[currentIndex];
-    if (!currentOffer) return <div className="h-full bg-black flex items-center justify-center"><PageLoader /></div>;
+    if (isLoading || !currentOffer) return <div className="h-full bg-black flex items-center justify-center"><PageLoader /></div>;
 
     const Player = ReactPlayer as any;
 
@@ -302,7 +329,20 @@ const AllMedia: React.FC = () => {
                                             <div className="absolute inset-0 flex items-end justify-center">
                                                 <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100dvh] sm:w-[177.77vh] sm:h-[85vh]">
                                                     {getYouTubeId(offer.video_url) ? (
-                                                        <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-full pointer-events-none"></iframe>
+                                                        <iframe
+                                                            width="100%"
+                                                            height="100%"
+                                                            src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`}
+                                                            title="YouTube video player"
+                                                            frameBorder="0"
+                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                            className="w-full h-full pointer-events-none"
+                                                            onLoad={() => {
+                                                                if (index === currentIndex) {
+                                                                    setVideoReady(true);
+                                                                }
+                                                            }}
+                                                        ></iframe>
                                                     ) : (
                                                         <Player url={offer.video_url} playing={index === currentIndex && isPlaying} loop muted={isMuted} playsinline={true} width="100%" height="100%" onReady={() => index === currentIndex && setVideoReady(true)} onProgress={(state: any) => index === currentIndex && setProgress(state.played * 100)} className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0 }} config={{ file: { attributes: { style: { width: '100%', height: '100%', objectFit: 'cover' } } } }} />
                                                     )}
@@ -315,7 +355,7 @@ const AllMedia: React.FC = () => {
                                         )}
                                         {offer.video_url && index === currentIndex && (
                                             <>
-                                                {!videoReady ? <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none"><div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div></div> : !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
+                                                {!videoReady && !isPlaying && <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none"><Play size={60} className="text-white opacity-80" fill="white" /></div>}
                                                 <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-white/20 z-30"><div className="h-full bg-white transition-all duration-100 ease-linear shadow-[0_0_8px_rgba(255,255,255,0.8)]" style={{ width: `${progress}%` }} /></div>
                                             </>
                                         )}
@@ -356,7 +396,7 @@ const AllMedia: React.FC = () => {
 
                                             <div className="space-y-1">
                                                 <div className={`text-white/90 text-[14px] leading-relaxed drop-shadow-lg ${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
-                                                    <span className="font-semibold block mb-0.5 text-white">{offer.subtitle}</span>
+                                                    <span className="block mb-0.5 text-white">{offer.subtitle}</span>
                                                     {offer.description}
                                                 </div>
                                                 <button
@@ -364,7 +404,7 @@ const AllMedia: React.FC = () => {
                                                         e.stopPropagation();
                                                         setFlippedCardId(offer.id);
                                                     }}
-                                                    className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto"
+                                                    className="text-white font-normal text-[13px] hover:opacity-70 transition-opacity pointer-events-auto"
                                                 >
                                                     Read More
                                                 </button>
@@ -513,7 +553,7 @@ const AllMedia: React.FC = () => {
                     onClick={() => {
                         window.dispatchEvent(new CustomEvent('open-sidebar-search'));
                     }}
-                    className="w-12 h-12 bg-neutral-800/80 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all"
+                    className="w-12 h-12  backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all"
                 >
                     <Search size={20} />
                 </button>
