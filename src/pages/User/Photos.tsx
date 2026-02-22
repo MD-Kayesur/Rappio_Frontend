@@ -298,15 +298,11 @@ const Photos: React.FC = () => {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        if (window.innerWidth < 640) {
-                                                            setFlippedCardId(offer.id);
-                                                        } else {
-                                                            setIsDescriptionExpanded(!isDescriptionExpanded);
-                                                        }
+                                                        setFlippedCardId(offer.id);
                                                     }}
                                                     className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto"
                                                 >
-                                                    {window.innerWidth < 640 ? 'Read More' : (isDescriptionExpanded ? 'Read Less' : 'Read More')}
+                                                    Read More
                                                 </button>
                                             </div>
                                         </div>
@@ -441,12 +437,12 @@ const Photos: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div >
                 ))}
-            </div>
+            </div >
 
             {/* Fixed Mobile Search Button */}
-            <div className="fixed top-1 left-1 z-[200] sm:hidden">
+            < div className="fixed top-1 left-1 z-[200] sm:hidden" >
                 <button
                     id="mobile-search-button"
                     onClick={() => {
@@ -456,7 +452,7 @@ const Photos: React.FC = () => {
                 >
                     <Search size={20} />
                 </button>
-            </div>
+            </div >
 
             <motion.div
                 animate={{
@@ -732,44 +728,46 @@ const Photos: React.FC = () => {
                 )}
             </AnimatePresence>
 
-            {showNameSetup && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
-                    <div className="bg-[#121212]/80 backdrop-blur-2xl rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 relative shadow-2xl">
-                        <button onClick={() => setShowNameSetup(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:text-white transition-colors border border-white/5">
-                            <X size={20} />
-                        </button>
+            {
+                showNameSetup && (
+                    <div className="fixed inset-0 bg-black/70 backdrop-blur-xl z-[9999] flex items-center justify-center p-4">
+                        <div className="bg-[#121212]/80 backdrop-blur-2xl rounded-[2.5rem] p-10 max-w-sm w-full text-center border border-white/10 relative shadow-2xl">
+                            <button onClick={() => setShowNameSetup(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:text-white transition-colors border border-white/5">
+                                <X size={20} />
+                            </button>
 
-                        <div className="mb-8 flex justify-center">
-                            <img src={logo} alt="Logo" className="h-12 object-contain" />
-                        </div>
-
-                        <h3 className="text-white text-2xl font-bold mb-2">Setup a Name</h3>
-                        <p className="text-white/60 text-[14px] mb-8 max-w-[250px] mx-auto leading-relaxed">
-                            Before commenting you need to provide a name for your comment.
-                        </p>
-
-                        <div className="relative w-full mb-6">
-                            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/40">
-                                <User size={20} />
+                            <div className="mb-8 flex justify-center">
+                                <img src={logo} alt="Logo" className="h-12 object-contain" />
                             </div>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder="Marcus"
-                                className="w-full bg-white/5 text-white pl-14 pr-6 py-4 rounded-2xl outline-none border border-white/10 focus:border-red-500/50 transition-all placeholder:text-white/20"
-                            />
-                        </div>
 
-                        <button
-                            onClick={handleNameSetup}
-                            className="w-full bg-[#E52D2D] hover:bg-[#FF3B3B] text-white font-bold py-4.5 rounded-2xl transition-all shadow-[0_8px_20px_rgba(229,45,45,0.3)] active:scale-95"
-                        >
-                            Continue
-                        </button>
+                            <h3 className="text-white text-2xl font-bold mb-2">Setup a Name</h3>
+                            <p className="text-white/60 text-[14px] mb-8 max-w-[250px] mx-auto leading-relaxed">
+                                Before commenting you need to provide a name for your comment.
+                            </p>
+
+                            <div className="relative w-full mb-6">
+                                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/40">
+                                    <User size={20} />
+                                </div>
+                                <input
+                                    type="text"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    placeholder="Marcus"
+                                    className="w-full bg-white/5 text-white pl-14 pr-6 py-4 rounded-2xl outline-none border border-white/10 focus:border-red-500/50 transition-all placeholder:text-white/20"
+                                />
+                            </div>
+
+                            <button
+                                onClick={handleNameSetup}
+                                className="w-full bg-[#E52D2D] hover:bg-[#FF3B3B] text-white font-bold py-4.5 rounded-2xl transition-all shadow-[0_8px_20px_rgba(229,45,45,0.3)] active:scale-95"
+                            >
+                                Continue
+                            </button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
             <style>{`.custom-scrollbar::-webkit-scrollbar { width: 4px; } .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 20px; }
                 .glow-on-hover {
                     position: relative;

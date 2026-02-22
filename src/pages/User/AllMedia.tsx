@@ -362,15 +362,11 @@ const AllMedia: React.FC = () => {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        if (window.innerWidth < 640) {
-                                                            setFlippedCardId(offer.id);
-                                                        } else {
-                                                            setIsDescriptionExpanded(!isDescriptionExpanded);
-                                                        }
+                                                        setFlippedCardId(offer.id);
                                                     }}
                                                     className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto"
                                                 >
-                                                    {window.innerWidth < 640 ? 'Read More' : (isDescriptionExpanded ? 'Read Less' : 'Read More')}
+                                                    Read More
                                                 </button>
                                             </div>
                                         </div>

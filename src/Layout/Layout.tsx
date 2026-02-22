@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import homeBg from '../assets/home.jpg';
 
 
 
@@ -11,7 +12,7 @@ const Layout: React.FC = () => {
     <div
       className="flex flex-col h-screen overflow-hidden"
       style={{
-        backgroundImage: 'url(/src/assets/home.jpg)',
+        backgroundImage: `url(${homeBg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -27,7 +28,7 @@ const Layout: React.FC = () => {
       </main>
 
 
-    </div>
+    </div >
   );
 };
 
