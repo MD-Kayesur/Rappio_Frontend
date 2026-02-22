@@ -323,15 +323,10 @@ const Videos: React.FC = () => {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    if (offer.website_url) {
-                                                        window.open(offer.website_url, '_blank');
-                                                        toast.success('Redirecting to offer...');
-                                                    } else {
-                                                        toast.error('Offer link not available at the moment');
-                                                    }
+                                                    if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
                                                 type="button"
-                                                className="glow-on-hover w-full sm:w-auto px-10 py-4 focus:outline-none active:scale-95 pointer-events-auto"
+                                                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:shadow-xl hover:scale-105 active:scale-95 pointer-events-auto"
                                             >
                                                 {offer.cta || 'CLAIM OFFER'}
                                             </button>
@@ -415,14 +410,9 @@ const Videos: React.FC = () => {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    if (offer.website_url) {
-                                                        window.open(offer.website_url, '_blank');
-                                                        toast.success('Redirecting to offer...');
-                                                    } else {
-                                                        toast.error('Offer link not available at the moment');
-                                                    }
+                                                    if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
-                                                className="glow-on-hover w-full py-4 focus:outline-none active:scale-95"
+                                                className="w-full bg-[#FF2D55] text-white font-bold py-4 rounded-2xl hover:bg-[#ff4d6d] transition-all shadow-[0_0_20px_rgba(255,45,85,0.3)] active:scale-95"
                                             >
                                                 {offer.cta || 'CLAIM OFFER NOW'}
                                             </button>
@@ -860,19 +850,8 @@ const Videos: React.FC = () => {
                     transition: background 0.3s;
                 }
 
-                .glow-on-hover:hover::after,
-                .glow-on-hover:focus::after {
+                .glow-on-hover:hover::after {
                     background: #111;
-                }
-
-                .glow-on-hover:hover,
-                .glow-on-hover:focus {
-                    transform: scale(1.03);
-                    box-shadow: 0 0 30px rgba(255, 45, 85, 0.4);
-                }
-
-                .glow-on-hover:focus {
-                    outline: none;
                 }
 
                 @keyframes spin-border {
