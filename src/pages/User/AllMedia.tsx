@@ -466,7 +466,7 @@ const AllMedia: React.FC = () => {
                                                     e.stopPropagation();
                                                     if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
-                                                className="w-full bg-[#FF2D55] text-white font-bold py-4 rounded-2xl hover:bg-[#ff4d6d] transition-all shadow-[0_0_20px_rgba(255,45,85,0.3)] active:scale-95"
+                                                className="w-full   text-white font-bold py-4 rounded-2xl hover:bg-[#ff4d6d] transition-all shadow-[0_0_20px_rgba(255,45,85,0.3)] active:scale-95"
                                             >
                                                 {offer.cta || 'CLAIM OFFER NOW'}
                                             </button>
@@ -510,14 +510,14 @@ const AllMedia: React.FC = () => {
                                         <Search size={20} />
                                     </button>
                                     </div> */}
-                                    <div className="flex flex-col items-center gap-1.5">
+                                    <div className="flex flex-col items-center gap-0">
                                         <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes + (index === currentIndex ? 0 : 0))}</span>
                                     </div>
 
-                                    <div className="flex flex-col items-center gap-1.5">
+                                    <div className="flex flex-col items-center gap-0">
                                         <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full  backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <MessageCircle size={22} />
                                         </button>

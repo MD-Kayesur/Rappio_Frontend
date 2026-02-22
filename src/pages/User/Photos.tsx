@@ -451,21 +451,21 @@ const Photos: React.FC = () => {
                                     </button>
                                     </div> */}
 
-                                    <div className="flex flex-col items-center gap-1.5">
+                                    <div className="flex flex-col items-center gap-0">
                                         <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes)}</span>
                                     </div>
 
-                                    <div className="flex flex-col items-center gap-1.5">
+                                    <div className="flex flex-col items-center gap-0">
                                         <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <MessageCircle size={22} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.comments + (index === currentIndex ? comments.length : 0))}</span>
                                     </div>
 
-                                    <div className="flex flex-col items-center gap-1.5">
+                                    <div className="flex flex-col items-center gap-0">
                                         <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Bookmark size={22} className={`${savedOffers.has(offer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
                                         </button>
