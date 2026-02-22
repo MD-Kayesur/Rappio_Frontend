@@ -248,12 +248,12 @@ const AllMedia: React.FC = () => {
         <>
             <div
                 ref={containerRef}
-                className="h-screen sm:h-[calc(100vh-80px)] w-full overflow-y-auto snap-y snap-mandatory no-scrollbar scroll-smooth flex flex-col items-center"
+                className="h-[100dvh] sm:h-[calc(100vh-80px)] w-full overflow-y-auto snap-y snap-mandatory no-scrollbar scroll-smooth flex flex-col items-center"
                 onScroll={handleOnScroll}
             >
                 {offers.map((offer, index) => (
-                    <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start sm:snap-always flex items-center justify-center relative">
-                        <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-full sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
+                    <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start snap-always flex items-end sm:items-center justify-center relative">
+                        <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-[100dvh] sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
 
 
                             <div
@@ -282,8 +282,8 @@ const AllMedia: React.FC = () => {
                                         }}
                                     >
                                         {offer.video_url ? (
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100vh] sm:w-[177.77vh] sm:h-[85vh]">
+                                            <div className="absolute inset-0 flex items-end justify-center">
+                                                <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100dvh] sm:w-[177.77vh] sm:h-[85vh]">
                                                     {getYouTubeId(offer.video_url) ? (
                                                         <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${getYouTubeId(offer.video_url)}?autoplay=${index === currentIndex ? 1 : 0}&mute=1&controls=0&loop=1&playlist=${getYouTubeId(offer.video_url)}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&origin=${window.location.origin}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-full pointer-events-none"></iframe>
                                                     ) : (
@@ -318,7 +318,7 @@ const AllMedia: React.FC = () => {
 
 
 
-                                             <button
+                                            <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     if (offer.website_url) window.open(offer.website_url, '_blank');
