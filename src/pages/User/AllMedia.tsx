@@ -262,8 +262,16 @@ const AllMedia: React.FC = () => {
                             >
                                 {/* Main Card - Full Height Video */}
                                 <motion.div
-                                    animate={{ rotateY: flippedCardId === offer.id ? 180 : 0 }}
-                                    transition={{ duration: 0.7, ease: "easeInOut" }}
+                                    animate={{
+                                        rotateY: flippedCardId === offer.id ? 180 : 0,
+                                        scale: flippedCardId === offer.id ? 0.95 : 1,
+                                    }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 100,
+                                        damping: 20,
+                                        mass: 1
+                                    }}
                                     style={{ transformStyle: "preserve-3d" }}
                                     className="w-full h-full sm:flex-1 bg-[#121212] sm:rounded-[1rem] shadow-2xl sm:border sm:border-white/10 relative group"
                                 >
@@ -342,8 +350,18 @@ const AllMedia: React.FC = () => {
                                                     <span className="font-semibold block mb-0.5 text-white">{offer.subtitle}</span>
                                                     {offer.description}
                                                 </div>
-                                                <button onClick={(e) => { e.stopPropagation(); setIsDescriptionExpanded(!isDescriptionExpanded); }} className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto">
-                                                    {isDescriptionExpanded ? 'See Less' : 'See More'}
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (window.innerWidth < 640) {
+                                                            setFlippedCardId(offer.id);
+                                                        } else {
+                                                            setIsDescriptionExpanded(!isDescriptionExpanded);
+                                                        }
+                                                    }}
+                                                    className="text-white font-bold text-[13px] hover:opacity-70 transition-opacity pointer-events-auto"
+                                                >
+                                                    {window.innerWidth < 640 ? 'Read More' : (isDescriptionExpanded ? 'Read Less' : 'Read More')}
                                                 </button>
                                             </div>
                                         </div>
@@ -351,9 +369,8 @@ const AllMedia: React.FC = () => {
 
                                     {/* Back Side */}
                                     <div
-                                        className="absolute inset-0 w-full h-full bg-[#121212] sm:rounded-[1rem] overflow-hidden p-6 sm:p-8 flex flex-col gap-6 custom-scrollbar cursor-pointer"
+                                        className="absolute inset-0 w-full h-full bg-[#121212] sm:rounded-[1rem] overflow-hidden p-6 sm:p-8 flex flex-col gap-6 custom-scrollbar"
                                         style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-                                        onClick={() => setFlippedCardId(null)}
                                     >
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
