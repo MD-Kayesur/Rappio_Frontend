@@ -12,7 +12,7 @@ import {
   Settings,
   LogOut
 } from "lucide-react";
- import {
+import {
   MdKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
 } from "react-icons/md";
@@ -55,7 +55,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
     >
       {/* Mobile Close Button */}
       {sidebarOpen && (
-        <div className="absolute top-3 right-3 lg:hidden z-10">
+        <div className="absolute top-3 right-3 md:hidden z-10">
           <button
             onClick={() => setSidebarOpen(false)}
             className="w-8 h-8 bg-[#1A1C1D] dark:bg-gray-800 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer shadow-lg"
@@ -104,7 +104,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
                 key={item.path}
                 to={item.path}
                 onClick={() => {
-                  if (window.innerWidth < 1024) {
+                  if (window.innerWidth < 768) {
                     setSidebarOpen(false);
                   }
                 }}
@@ -148,7 +148,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
 
       {/* Collapse Button */}
       {sidebarOpen && (
-        <div className="hidden lg:block p-3">
+        <div className="hidden md:block p-3">
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="flex items-center justify-center w-full gap-2 px-3 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"

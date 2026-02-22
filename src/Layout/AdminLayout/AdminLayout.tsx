@@ -11,7 +11,7 @@ export default function AdminLayout() {
 
   // Function to check if the screen is mobile or desktop
   const checkIfMobile = () => {
-    const mobile = window.innerWidth < 1024; // lg breakpoint
+    const mobile = window.innerWidth < 768; // md breakpoint
     setIsMobile(mobile);
     // On desktop, sidebar should be open by default
     if (!mobile) {
@@ -35,17 +35,17 @@ export default function AdminLayout() {
   }, []);
 
   return (
-    <div className="flex h-screen relative overflow-hidden bg-transparent">
+    <div className="flex h-[100dvh] relative overflow-hidden bg-transparent">
       {/* Sidebar Container */}
       <div
-        className={`fixed lg:relative inset-0 lg:inset-auto z-[10000] lg:z-auto transition-all duration-300 flex-shrink-0 
-          ${isMobile ? (sidebarOpen ? "w-70" : "w-0 overflow-hidden pointer-events-none") : (isCollapsed ? "lg:w-20" : "lg:w-70")}
+        className={`fixed md:relative inset-0 md:inset-auto z-[10000] md:z-auto transition-all duration-300 flex-shrink-0 
+          ${isMobile ? (sidebarOpen ? "w-70" : "w-0 overflow-hidden pointer-events-none") : (isCollapsed ? "md:w-20" : "md:w-70")}
         `}
       >
         {/* Mobile Overlay backdrop */}
         {isMobile && sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-md lg:hidden pointer-events-auto"
+            className="fixed inset-0 bg-black/60 backdrop-blur-md md:hidden pointer-events-auto"
             onClick={() => setSidebarOpen(false)}
           />
         )}
@@ -69,7 +69,7 @@ export default function AdminLayout() {
       {isMobile && !sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
-          className="fixed top-6 right-6 z-[9999] w-12 h-12 bg-neutral-800/80 backdrop-blur-md text-white rounded-full flex items-center justify-center border border-white/10 hover:bg-neutral-700/80 transition-all cursor-pointer shadow-lg active:scale-95 lg:hidden"
+          className="fixed top-6 right-6 z-[9999] w-12 h-12 bg-neutral-800/80 backdrop-blur-md text-white rounded-full flex items-center justify-center border border-white/10 hover:bg-neutral-700/80 transition-all cursor-pointer shadow-lg active:scale-95 md:hidden"
           aria-label="Open menu"
         >
           <AiOutlineMenuFold className="w-6 h-6" />
@@ -79,7 +79,7 @@ export default function AdminLayout() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden relative w-full transition-all duration-300">
         {/* Layout Navbar */}
-        <div className="sticky top-0 z-30 hidden lg:block border-b border-white/5">
+        <div className="sticky top-0 z-30 hidden md:block border-b border-white/5">
           <LayoutNavber />
         </div>
 

@@ -98,7 +98,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
     >
       {/* Close Button - Mobile Only */}
       {sidebarOpen && (
-        <div className="absolute top-3 right-3 z-10 lg:hidden">
+        <div className="absolute top-3 right-3 z-10 md:hidden">
           <button
             onClick={() => setSidebarOpen(false)}
             className="w-8 h-8 bg-[#1A1C1D] dark:bg-gray-800 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer shadow-lg"
@@ -158,7 +158,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                     return;
                   }
                   // Close sidebar on mobile after navigation
-                  if (window.innerWidth < 1024) {
+                  if (window.innerWidth < 768) {
                     setSidebarOpen(false);
                   }
                 }}
@@ -210,7 +210,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
 
       {/* Collapse Button - Desktop only */}
       {sidebarOpen && (
-        <div className="hidden lg:block p-3">
+        <div className="hidden md:block p-3">
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="flex items-center justify-center w-full gap-2 px-3 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"

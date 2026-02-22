@@ -284,12 +284,12 @@ const AllMedia: React.FC = () => {
         <>
             <div
                 ref={containerRef}
-                className="h-[100dvh] sm:h-[calc(100vh-80px)] w-full overflow-y-auto snap-y snap-mandatory no-scrollbar scroll-smooth flex flex-col items-center"
+                className="h-[100dvh] sm:h-[calc(100dvh-84px)] w-full overflow-y-auto snap-y snap-mandatory no-scrollbar scroll-smooth flex flex-col items-center"
                 onScroll={handleOnScroll}
             >
                 {offers.map((offer, index) => (
                     <div key={offer.id} className="w-full h-full flex-shrink-0 snap-start snap-always flex items-end sm:items-center justify-center relative">
-                        <div className={`relative transition-all duration-500 ease-in-out sm:max-w-[550px] w-full h-[100dvh] sm:h-[85vh] ${showComments ? 'sm:-translate-x-[320px]' : 'sm:translate-x-0'} z-[120]`}>
+                        <div className={`relative transition-all duration-500 ease-in-out md:max-w-[450px] lg:max-w-[550px] w-full h-[100dvh] md:h-[85vh] ${showComments ? 'md:-translate-x-[250px] lg:-translate-x-[320px]' : 'md:translate-x-0'} z-[120]`}>
 
 
                             <div
@@ -327,7 +327,7 @@ const AllMedia: React.FC = () => {
                                     >
                                         {offer.video_url ? (
                                             <div className="absolute inset-0 flex items-end justify-center">
-                                                <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100dvh] sm:w-[177.77vh] sm:h-[85vh]">
+                                                <div className="absolute min-w-full min-h-full w-[177.77vh] h-[100dvh] md:w-[177.77vh] md:h-[85vh]">
                                                     {getYouTubeId(offer.video_url) ? (
                                                         <iframe
                                                             width="100%"
@@ -549,7 +549,7 @@ const AllMedia: React.FC = () => {
             </div >
 
             {/* Fixed Mobile Search Button */}
-            <div className="fixed top-1 right-1 z-[200] sm:hidden">
+            <div className="fixed top-3 right-3 z-[200] md:hidden">
                 <button
                     id="mobile-search-button"
                     onClick={() => {
@@ -563,7 +563,7 @@ const AllMedia: React.FC = () => {
 
             <motion.div
                 animate={{
-                    right: showComments ? (window.innerWidth < 640 ? 10 : 520) : 40,
+                    right: showComments ? (window.innerWidth < 768 ? 10 : (window.innerWidth < 1024 ? 420 : 520)) : 40,
                     opacity: 1
                 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
@@ -584,11 +584,11 @@ const AllMedia: React.FC = () => {
                             onClick={() => setShowComments(false)}
                         />
                         <motion.div
-                            initial={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }}
-                            animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }}
-                            exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }}
+                            initial={window.innerWidth < 768 ? { y: '100%' } : { x: '100%' }}
+                            animate={window.innerWidth < 768 ? { y: 0 } : { x: 0 }}
+                            exit={window.innerWidth < 768 ? { y: '100%' } : { x: '100%' }}
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed bottom-0 right-0 w-full h-[75vh] sm:h-full sm:w-[500px] backdrop-blur-lg sm:bg-black/20 sm:backdrop-blur-lg z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[16px] sm:rounded-none overflow-hidden"
+                            className="fixed bottom-0 right-0 w-full h-[75vh] md:h-full md:w-[400px] lg:w-[500px] backdrop-blur-lg md:bg-black/20 md:backdrop-blur-lg z-[9999] flex flex-col border-t md:border-t-0 md:border-l border-white/10 rounded-t-[16px] md:rounded-none overflow-hidden"
                         >
                             {/* Header */}
                             <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 sticky top-0 z-20 bg-transparent">
