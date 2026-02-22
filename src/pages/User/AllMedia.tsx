@@ -535,32 +535,32 @@ const AllMedia: React.FC = () => {
                             animate={window.innerWidth < 640 ? { y: 0 } : { x: 0 }}
                             exit={window.innerWidth < 640 ? { y: '100%' } : { x: '100%' }}
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed bottom-0 right-0 w-full h-[75vh] sm:h-full sm:w-[500px] bg-white sm:bg-black/20 sm:backdrop-blur-lg z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[16px] sm:rounded-none overflow-hidden"
+                            className="fixed bottom-0 right-0 w-full h-[75vh] sm:h-full sm:w-[500px] backdrop-blur-lg sm:bg-black/20 sm:backdrop-blur-lg z-[9999] flex flex-col border-t sm:border-t-0 sm:border-l border-white/10 rounded-t-[16px] sm:rounded-none overflow-hidden"
                         >
                             {/* Header */}
-                            <div className="px-5 py-4 flex items-center justify-between border-b border-gray-100 sm:border-white/5 sticky top-0 z-20 bg-white sm:bg-transparent">
+                            <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 sticky top-0 z-20 bg-transparent">
                                 <button className="p-1 sm:hidden opacity-0 pointer-events-none">
                                     <Repeat2 size={24} />
                                 </button>
-                                <h3 className="text-black sm:text-white font-bold text-[15px] sm:text-lg text-center flex-1">
+                                <h3 className="text-white font-bold text-[15px] sm:text-lg text-center flex-1">
                                     {formatNumber(comments.length + (offers[currentIndex]?.comments || 0))} comments
                                 </h3>
                                 <div className="flex items-center gap-3">
-                                    <button className="p-1 text-black/80 sm:text-white/80 sm:hidden">
+                                    <button className="p-1 text-white/80 sm:hidden">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="21" y1="10" x2="7" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="7" y2="18"></line></svg>
                                     </button>
-                                    <button onClick={() => setShowComments(false)} className="p-1 hover:bg-black/5 sm:hover:bg-white/10 rounded-full text-black/80 sm:text-white/80 transition-colors">
+                                    <button onClick={() => setShowComments(false)} className="p-1 hover:bg-white/10 rounded-full text-white/80 transition-colors">
                                         <X size={24} />
                                     </button>
                                 </div>
                             </div>
 
                             {/* Comment List */}
-                            <div className="flex-1 overflow-y-auto px-4 py-4 custom-scrollbar space-y-5 bg-white sm:bg-transparent">
+                            <div className="flex-1 overflow-y-auto px-4 py-4 custom-scrollbar space-y-5 bg-transparent">
                                 {comments.map((comment) => (
                                     <div key={comment.id} className="flex gap-3 group">
                                         {/* Avatar */}
-                                        <div className="w-9 h-9 rounded-full bg-gray-100 sm:bg-white/10 flex items-center justify-center text-base flex-shrink-0 overflow-hidden">
+                                        <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-base flex-shrink-0 overflow-hidden">
                                             {typeof comment.avatar === 'string' && comment.avatar.length > 2 ? (
                                                 <img src={comment.avatar} alt={comment.user} className="w-full h-full object-cover" />
                                             ) : (
@@ -572,25 +572,25 @@ const AllMedia: React.FC = () => {
                                         <div className="flex-1 min-w-0">
                                             <div className="flex flex-col">
                                                 <div className="flex items-center gap-1.5 mb-0.5">
-                                                    <span className="text-gray-500 sm:text-white/50 font-semibold text-[13px] leading-tight">{comment.user}</span>
+                                                    <span className="text-white/50 font-semibold text-[13px] leading-tight">{comment.user}</span>
                                                     {comment.user === 'Creator' && (
                                                         <span className="text-[#FF2D55] font-bold text-[11px]">· Creator</span>
                                                     )}
                                                 </div>
-                                                <p className="text-black sm:text-white text-[15px] leading-snug break-words">
+                                                <p className="text-white text-[15px] leading-snug break-words">
                                                     {comment.text}
                                                 </p>
                                             </div>
 
                                             <div className="flex items-center gap-4 mt-2">
-                                                <span className="text-black/40 sm:text-white/40 text-[12px]">{comment.timestamp}</span>
-                                                <button onClick={() => handleReplyClick(comment.id, comment.user)} className="text-black/50 sm:text-white/50 text-[12px] font-bold hover:text-black sm:hover:text-white transition-colors">Reply</button>
+                                                <span className="text-white/40 text-[12px]">{comment.timestamp}</span>
+                                                <button onClick={() => handleReplyClick(comment.id, comment.user)} className="text-white/50 text-[12px] font-bold hover:text-white transition-colors">Reply</button>
                                             </div>
 
                                             {/* Replies Toggle */}
                                             {comment.replies && comment.replies.length > 0 && (
-                                                <button onClick={() => toggleReplies(comment.id)} className="flex items-center gap-2 text-black/40 sm:text-white/40 text-[13px] font-bold mt-4">
-                                                    <div className="w-6 h-[1px] bg-black/5 sm:bg-white/10" />
+                                                <button onClick={() => toggleReplies(comment.id)} className="flex items-center gap-2 text-white/40 text-[13px] font-bold mt-4">
+                                                    <div className="w-6 h-[1px] bg-white/10" />
                                                     View {comment.replies.length} replies
                                                     <ChevronDown size={14} className={`transition-transform duration-300 ${comment.showReplies ? 'rotate-180' : ''}`} />
                                                 </button>
@@ -599,7 +599,7 @@ const AllMedia: React.FC = () => {
                                             <AnimatePresence>
                                                 {comment.showReplies && comment.replies?.map(reply => (
                                                     <div key={reply.id} className="flex gap-3 mt-4">
-                                                        <div className="w-6 h-6 rounded-full bg-gray-100 sm:bg-white/10 overflow-hidden flex items-center justify-center">
+                                                        <div className="w-6 h-6 rounded-full bg-white/10 overflow-hidden flex items-center justify-center">
                                                             {typeof reply.avatar === 'string' && reply.avatar.length > 2 ? (
                                                                 <img src={reply.avatar} alt={reply.user} />
                                                             ) : (
@@ -608,13 +608,13 @@ const AllMedia: React.FC = () => {
                                                         </div>
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-1.5 mb-0.5">
-                                                                <span className="text-gray-500 sm:text-white/50 text-[12px] font-bold">{reply.user}</span>
+                                                                <span className="text-white/50 text-[12px] font-bold">{reply.user}</span>
                                                                 {reply.user === 'Creator' && <span className="text-[#FF2D55] font-bold text-[10px]">· Creator</span>}
                                                             </div>
-                                                            <p className="text-black sm:text-white text-[14px] leading-snug">{reply.text}</p>
+                                                            <p className="text-white text-[14px] leading-snug">{reply.text}</p>
                                                             <div className="mt-2 flex items-center gap-4">
-                                                                <span className="text-black/40 sm:text-white/40 text-[11px]">{reply.timestamp}</span>
-                                                                <button onClick={() => toggleCommentLike(reply.id, true, comment.id)} className={`transition-all active:scale-125 ${reply.isLiked ? 'text-[#FF2D55]' : 'text-black/30 sm:text-white/30'}`}>
+                                                                <span className="text-white/40 text-[11px]">{reply.timestamp}</span>
+                                                                <button onClick={() => toggleCommentLike(reply.id, true, comment.id)} className={`transition-all active:scale-125 ${reply.isLiked ? 'text-[#FF2D55]' : 'text-white/30'}`}>
                                                                     <Heart size={14} fill={reply.isLiked ? 'currentColor' : 'none'} />
                                                                 </button>
                                                             </div>
@@ -629,13 +629,13 @@ const AllMedia: React.FC = () => {
                                             <div className="flex flex-col items-center gap-0.5">
                                                 <button
                                                     onClick={() => toggleCommentLike(comment.id)}
-                                                    className={`transition-all active:scale-125 ${comment.isLiked ? 'text-[#FF2D55]' : 'text-black/30 sm:text-white/30 hover:text-black/50 sm:hover:text-white/50'}`}
+                                                    className={`transition-all active:scale-125 ${comment.isLiked ? 'text-[#FF2D55]' : 'text-white/30 hover:text-white/50'}`}
                                                 >
                                                     <Heart size={20} fill={comment.isLiked ? 'currentColor' : 'none'} />
                                                 </button>
-                                                <span className="text-black/40 sm:text-white/40 text-[11px] font-medium">{comment.likes}</span>
+                                                <span className="text-white/40 text-[11px] font-medium">{comment.likes}</span>
                                             </div>
-                                            <button className="text-black/30 sm:text-white/30 hover:text-black/50 sm:hover:text-white/50 sm:hidden">
+                                            <button className="text-white/30 hover:text-white/50 sm:hidden">
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
                                             </button>
                                         </div>
@@ -644,24 +644,24 @@ const AllMedia: React.FC = () => {
                             </div>
 
                             {/* Input Container */}
-                            <div className="p-3 bg-white sm:bg-black/40 border-t border-gray-100 sm:border-white/5 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+                            <div className="p-3 bg-black/40 backdrop-blur-md border-t border-white/5 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
                                 <div className="flex flex-col gap-2">
                                     {replyTo && (
-                                        <div className="flex items-center justify-between px-4 py-1.5 bg-gray-50 sm:bg-white/5 rounded-t-xl transition-all">
-                                            <span className="text-[12px] text-gray-500 sm:text-white/50">Replying to <span className="text-black sm:text-white/80">{replyTo.user}</span></span>
-                                            <button onClick={() => setReplyTo(null)} className="text-gray-400 sm:text-white/40 hover:text-black sm:hover:text-white">
+                                        <div className="flex items-center justify-between px-4 py-1.5 bg-white/5 rounded-t-xl transition-all">
+                                            <span className="text-[12px] text-white/50">Replying to <span className="text-white/80">{replyTo.user}</span></span>
+                                            <button onClick={() => setReplyTo(null)} className="text-white/40 hover:text-white">
                                                 <X size={14} />
                                             </button>
                                         </div>
                                     )}
                                     <div className="flex items-center gap-2 sm:gap-3">
                                         {/* My Avatar */}
-                                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black flex flex-shrink-0 items-center justify-center overflow-hidden border border-gray-100 sm:border-white/10">
+                                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black flex flex-shrink-0 items-center justify-center overflow-hidden border border-white/10">
                                             <img src={logo} alt="My Avatar" className="w-6 sm:w-7 contrast-125" />
                                         </div>
 
                                         {/* Input Box */}
-                                        <div className="flex-1 flex items-center bg-gray-100 sm:bg-white/5 rounded-full pl-3 pr-2 sm:px-4 border border-transparent focus-within:border-black/5 sm:focus-within:border-white/10 transition-all relative">
+                                        <div className="flex-1 flex items-center bg-white/5 rounded-full pl-3 pr-2 sm:px-4 border border-transparent focus-within:border-white/10 transition-all relative">
                                             <input
                                                 ref={commentInputRef}
                                                 type="text"
@@ -670,11 +670,11 @@ const AllMedia: React.FC = () => {
                                                 onFocus={() => { if (!username) setShowNameSetup(true); }}
                                                 onClick={() => { if (!username) setShowNameSetup(true); }}
                                                 placeholder="Add comment..."
-                                                className="flex-1 bg-transparent py-2.5 text-[15px] text-black sm:text-white outline-none placeholder:text-gray-400 sm:placeholder:text-white/30"
+                                                className="flex-1 bg-transparent py-2.5 text-[15px] text-white outline-none placeholder:text-white/30"
                                                 onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
                                             />
 
-                                            <div className="flex items-center gap-2 sm:gap-3 ml-1 sm:ml-2 text-black/60 sm:text-white/40">
+                                            <div className="flex items-center gap-2 sm:gap-3 ml-1 sm:ml-2 text-white/40">
                                                 <input
                                                     type="file"
                                                     ref={fileInputRef}
@@ -687,14 +687,14 @@ const AllMedia: React.FC = () => {
                                                 />
                                                 <button
                                                     onClick={() => fileInputRef.current?.click()}
-                                                    className="hover:text-black sm:hover:text-white transition-colors"
+                                                    className="hover:text-white transition-colors"
                                                 >
                                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                 </button>
                                                 <div className="relative">
                                                     <button
                                                         onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                                                        className={`hover:text-black sm:hover:text-white transition-colors ${showEmojiPicker ? 'text-[#FF2D55]' : ''}`}
+                                                        className={`hover:text-white transition-colors ${showEmojiPicker ? 'text-[#FF2D55]' : ''}`}
                                                     >
                                                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
                                                     </button>
@@ -704,7 +704,7 @@ const AllMedia: React.FC = () => {
                                                                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                                className="absolute bottom-full right-0 mb-4 p-2 bg-white sm:bg-neutral-900 rounded-2xl shadow-xl border border-gray-100 sm:border-white/10 z-50 flex gap-2"
+                                                                className="absolute bottom-full right-0 mb-4 p-2 bg-neutral-900 rounded-2xl shadow-xl border border-white/10 z-50 flex gap-2"
                                                             >
                                                                 {['😊', '😂', '🥰', '😍', '🔥', '✨'].map(emoji => (
                                                                     <button
@@ -722,7 +722,7 @@ const AllMedia: React.FC = () => {
                                                         )}
                                                     </AnimatePresence>
                                                 </div>
-                                                <button className="hover:text-black sm:hover:text-white transition-colors" onClick={() => setCommentText(prev => prev + '@')}>
+                                                <button className="hover:text-white transition-colors" onClick={() => setCommentText(prev => prev + '@')}>
                                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path></svg>
                                                 </button>
                                             </div>
