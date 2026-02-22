@@ -71,7 +71,7 @@ export default function UserLayout() {
       {isMobile && !sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
-          className="fixed top-0 right-0 z-[9999] w-12 h-12 bg-neutral-800/80 backdrop-blur-md text-white rounded-full flex items-center justify-center border border-white/10 hover:bg-neutral-700/80 transition-all cursor-pointer shadow-lg active:scale-95 lg:hidden"
+          className="fixed top-1 left-1 z-[203] w-12 h-12 backdrop-blur-lg text-white rounded-full flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all cursor-pointer shadow-lg active:scale-95 lg:hidden"
           aria-label="Open menu"
         >
           <AiOutlineMenu className="w-6 h-6" />

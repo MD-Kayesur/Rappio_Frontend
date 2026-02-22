@@ -399,15 +399,17 @@ const AllMedia: React.FC = () => {
                                                     <span className="block mb-0.5 text-white">{offer.subtitle}</span>
                                                     {offer.description}
                                                 </div>
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setFlippedCardId(offer.id);
-                                                    }}
-                                                    className="text-white font-normal text-[13px] hover:opacity-70 transition-opacity pointer-events-auto"
-                                                >
-                                                    Read More
-                                                </button>
+                                                <div className="flex justify-end">
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setFlippedCardId(offer.id);
+                                                        }}
+                                                        className="text-white font-normal text-[13px] hover:opacity-70 transition-opacity pointer-events-auto"
+                                                    >
+                                                        Read More
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -423,20 +425,20 @@ const AllMedia: React.FC = () => {
                                             </div>
                                             <div className="min-w-0">
                                                 <h3 className="text-white text-xl font-bold truncate">{offer.title}</h3>
-                                                <p className="text-white/60 text-sm truncate">{offer.subtitle}</p>
+                                                <p className="text-white text-sm truncate">{offer.subtitle}</p>
                                             </div>
                                         </div>
 
                                         <div className="space-y-4 flex-1 overflow-y-auto no-scrollbar">
                                             <div className="space-y-2">
-                                                <h4 className="text-white/80 font-bold text-xs uppercase tracking-wider">About this offer</h4>
-                                                <p className="text-white/70 text-[15px] leading-relaxed">{offer.description}</p>
+                                                <h4 className="text-white font-bold text-xs uppercase tracking-wider">About this offer</h4>
+                                                <p className="text-white text-[15px] leading-relaxed">{offer.description}</p>
                                             </div>
 
                                             {offer.tags && offer.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-2 py-2">
                                                     {offer.tags.map((tag, idx) => (
-                                                        <span key={idx} className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white/50 text-[10px] font-bold uppercase tracking-tight">
+                                                        <span key={idx} className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white text-[10px] font-bold uppercase tracking-tight">
                                                             {tag}
                                                         </span>
                                                     ))}
@@ -445,10 +447,10 @@ const AllMedia: React.FC = () => {
 
                                             {offer.terms_highlights && (
                                                 <div className="space-y-3 pt-2">
-                                                    <h4 className="text-white/80 font-bold text-xs uppercase tracking-wider">Key Highlights</h4>
+                                                    <h4 className="text-white font-bold text-xs uppercase tracking-wider">Key Highlights</h4>
                                                     <ul className="space-y-2.5">
                                                         {offer.terms_highlights.map((term, idx) => (
-                                                            <li key={idx} className="flex items-start gap-3 text-white/60 text-sm">
+                                                            <li key={idx} className="flex items-start gap-3 text-white text-sm">
                                                                 <div className="w-1.5 h-1.5 rounded-full bg-[#FF2D55] mt-1.5 shrink-0" />
                                                                 {term}
                                                             </li>
@@ -473,7 +475,7 @@ const AllMedia: React.FC = () => {
                                                     e.stopPropagation();
                                                     setFlippedCardId(null);
                                                 }}
-                                                className="w-full bg-white/5 text-white/60 font-medium py-3 rounded-2xl hover:bg-white/10 transition-all text-sm"
+                                                className="w-full bg-white/5 text-white font-medium py-3 rounded-2xl hover:bg-white/10 transition-all text-sm"
                                             >
                                                 Back to Video
                                             </button>
@@ -547,13 +549,13 @@ const AllMedia: React.FC = () => {
             </div >
 
             {/* Fixed Mobile Search Button */}
-            <div className="fixed top-1 left-1 z-[200] sm:hidden">
+            <div className="fixed top-1 right-1 z-[200] sm:hidden">
                 <button
                     id="mobile-search-button"
                     onClick={() => {
                         window.dispatchEvent(new CustomEvent('open-sidebar-search'));
                     }}
-                    className="w-12 h-12  backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all"
+                    className="w-12 h-12 backdrop-blur-lg rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all hover:bg-white/10"
                 >
                     <Search size={20} />
                 </button>
@@ -798,7 +800,7 @@ const AllMedia: React.FC = () => {
 
             <AnimatePresence>
                 {showShareModal && (
-                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
+                    <div className="fixed inset-0  backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
                         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-black/20 backdrop-blur-lg rounded-3xl p-6 w-full max-w-[450px] relative border border-white/10" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center justify-center mb-8"><h3 className="text-white text-lg font-semibold">Share to</h3><button onClick={() => setShowShareModal(false)} className="absolute top-5 right-5 text-white/60"><X size={24} /></button></div>
                             <div className="relative group/share">
