@@ -534,7 +534,7 @@ const Videos: React.FC = () => {
             </div >
 
             {/* Fixed Mobile Search Button */}
-            <div className="fixed top-3 right-3 z-[200] md:hidden">
+            <div className="fixed top-0 left-0 z-[200] md:hidden">
                 <button
                     id="mobile-search-button"
                     onClick={() => {
