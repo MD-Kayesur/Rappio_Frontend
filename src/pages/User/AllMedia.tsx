@@ -381,7 +381,7 @@ const AllMedia: React.FC = () => {
                                                     if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
                                                 type="button"
-                                                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:shadow-xl hover:scale-105 active:scale-95 pointer-events-auto"
+                                                className="w-full px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:shadow-xl hover:scale-105 active:scale-95 pointer-events-auto"
                                             >
                                                 {offer.cta || 'CLAIM OFFER'}
                                             </button>
