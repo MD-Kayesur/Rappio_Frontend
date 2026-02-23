@@ -133,19 +133,18 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                         <motion.div
                             id="search-modal"
                             variants={isMobile ? {
-                                hidden: { y: '100%', opacity: 0, filter: 'blur(10px)' },
+                                hidden: { x: '100%', opacity: 1 },
                                 visible: {
-                                    y: 0,
+                                    x: 0,
                                     opacity: 1,
-                                    filter: 'blur(0px)',
                                     transition: {
-                                        duration: 0.8,
+                                        duration: 0.5,
                                         ease: [0.22, 1, 0.36, 1],
                                         staggerChildren: 0.1,
                                         delayChildren: 0.2
                                     }
                                 },
-                                exit: { y: '100%', opacity: 0, filter: 'blur(10px)', transition: { duration: 0.6 } }
+                                exit: { x: '100%', opacity: 1, transition: { duration: 0.4 } }
                             } : {
                                 hidden: { scale: 0.95, opacity: 0, x: -20 },
                                 visible: {
@@ -165,7 +164,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                             initial="hidden"
                             animate="visible"
                             exit="exit"
-                            className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'inset-0 w-full backdrop-blur-lg' : 'border-r border-white/10 shadow-2xl backdrop-blur-lg'} text-white overflow-hidden`}
+                            className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'inset-0 w-full bg-[#0A0A0A]' : 'border-r border-white/10 shadow-2xl backdrop-blur-lg'} text-white overflow-hidden`}
                             style={!isMobile ? {
                                 left: isCollapsed ? '80px' : '280px',
                                 width: '350px',
