@@ -446,12 +446,12 @@ const Videos: React.FC = () => {
                                         </div>
 
                                         <div className="space-y-4 pt-6 mt-auto border-t border-white/10">
-                                            <button
+                                           <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
-                                                className="w-full bg-[#FF2D55] text-white font-bold py-4 rounded-2xl hover:bg-[#ff4d6d] transition-all shadow-[0_0_20px_rgba(255,45,85,0.3)] active:scale-95"
+                                                className="w-full   text-white font-bold py-4 rounded-2xl hover:bg-[#ff4d6d] transition-all shadow-[0_0_20px_rgba(255,45,85,0.3)] active:scale-95"
                                             >
                                                 {offer.cta || 'CLAIM OFFER NOW'}
                                             </button>
