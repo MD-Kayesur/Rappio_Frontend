@@ -45,6 +45,7 @@ interface Comment {
     timestamp: string;
     replies?: Comment[];
     showReplies?: boolean;
+    commentImage?: string;
 }
 
 interface Offer {
@@ -91,6 +92,7 @@ const Videos: React.FC = () => {
     const [allOffers, setAllOffers] = useState<Offer[]>([]);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const [comments, setComments] = useState<Comment[]>([
         { id: 1, user: 'Robert Fox', avatar: '👤', text: 'That\'s Amazing', likes: 0, timestamp: '2m' },
@@ -223,7 +225,7 @@ const Videos: React.FC = () => {
     const handleCommentSubmit = () => {
         const savedUsername = localStorage.getItem('username');
         if (!savedUsername && !username) { setShowNameSetup(true); return; }
-        if (commentText.trim()) {
+        if (commentText.trim() || selectedImage) {
             const newComment: Comment = {
                 id: Date.now(),
                 user: username || savedUsername || 'Anonymous',
@@ -231,7 +233,8 @@ const Videos: React.FC = () => {
                 text: commentText,
                 likes: 0,
                 timestamp: 'Just now',
-                replies: []
+                replies: [],
+                commentImage: selectedImage || undefined
             };
             if (replyTo) {
                 setComments(prev => prev.map(c => {
@@ -243,6 +246,7 @@ const Videos: React.FC = () => {
                 setComments([newComment, ...comments]);
             }
             setCommentText('');
+            setSelectedImage(null);
         }
     };
 
@@ -618,6 +622,11 @@ const Videos: React.FC = () => {
                                                 <p className="text-white text-[15px] leading-snug break-words">
                                                     {comment.text}
                                                 </p>
+                                                {comment.commentImage && (
+                                                    <div className="mt-3 rounded-xl overflow-hidden border border-white/10 max-w-[200px]">
+                                                        <img src={comment.commentImage} alt="Comment attachment" className="w-full h-auto object-cover" />
+                                                    </div>
+                                                )}
                                             </div>
 
                                             <div className="flex items-center gap-4 mt-2">
@@ -650,6 +659,11 @@ const Videos: React.FC = () => {
                                                                 {reply.user === 'Creator' && <span className="text-[#FF2D55] font-bold text-[10px]">· Creator</span>}
                                                             </div>
                                                             <p className="text-white text-[14px] leading-snug">{reply.text}</p>
+                                                            {reply.commentImage && (
+                                                                <div className="mt-2 rounded-lg overflow-hidden border border-white/10 max-w-[150px]">
+                                                                    <img src={reply.commentImage} alt="Reply attachment" className="w-full h-auto object-cover" />
+                                                                </div>
+                                                            )}
                                                             <div className="mt-2 flex items-center gap-4">
                                                                 <span className="text-white/40 text-[11px]">{reply.timestamp}</span>
                                                                 <button onClick={() => toggleCommentLike(reply.id, true, comment.id)} className={`transition-all active:scale-125 ${reply.isLiked ? 'text-[#FF2D55]' : 'text-white/30'}`}>
@@ -684,6 +698,21 @@ const Videos: React.FC = () => {
                             {/* Input Container */}
                             <div className="p-3 bg-black/40 backdrop-blur-md border-t border-white/5 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
                                 <div className="flex flex-col gap-2">
+                                    {selectedImage && (
+                                        <div className="relative inline-block w-20 h-20 ml-12 mb-1 group mt-2">
+                                            <img src={selectedImage} alt="Preview" className="w-full h-full object-cover rounded-lg border border-white/20" />
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedImage(null);
+                                                    if (fileInputRef.current) fileInputRef.current.value = '';
+                                                }}
+                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg opacity-100 transition-opacity hover:bg-red-600 z-50"
+                                            >
+                                                <X size={12} />
+                                            </button>
+                                        </div>
+                                    )}
                                     {replyTo && (
                                         <div className="flex items-center justify-between px-4 py-1.5 bg-white/5 rounded-t-xl transition-all">
                                             <span className="text-[12px] text-white/50">Replying to <span className="text-white/80">{replyTo.user}</span></span>
@@ -708,11 +737,11 @@ const Videos: React.FC = () => {
                                                 onFocus={() => { if (!username) setShowNameSetup(true); }}
                                                 onClick={() => { if (!username) setShowNameSetup(true); }}
                                                 placeholder="Add comment..."
-                                                className="flex-1 bg-transparent py-2.5 text-[15px] text-white outline-none placeholder:text-white/30"
+                                                className="flex-1 bg-transparent py-2.5 text-[15px] text-white outline-none placeholder:text-white/30 min-w-0"
                                                 onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
                                             />
 
-                                            <div className="flex items-center gap-2 sm:gap-3 ml-1 sm:ml-2 text-white/40">
+                                            <div className="flex items-center gap-1.5 sm:gap-3 ml-1 sm:ml-2 text-white/40">
                                                 <input
                                                     type="file"
                                                     ref={fileInputRef}
@@ -720,57 +749,44 @@ const Videos: React.FC = () => {
                                                     accept="image/*"
                                                     onChange={(e) => {
                                                         const file = e.target.files?.[0];
-                                                        if (file) toast.success(`Image selected: ${file.name}`);
+                                                        if (file) {
+                                                            const reader = new FileReader();
+                                                            reader.onloadend = () => {
+                                                                setSelectedImage(reader.result as string);
+                                                                toast.success('Image added to comment');
+                                                            };
+                                                            reader.readAsDataURL(file);
+                                                        }
                                                     }}
                                                 />
-                                                <button
-                                                    onClick={() => fileInputRef.current?.click()}
-                                                    className="hover:text-white transition-colors"
-                                                >
-                                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                                <button onClick={() => fileInputRef.current?.click()} className="hover:text-white transition-colors flex-shrink-0">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                 </button>
-                                                <div className="relative">
-                                                    <button
-                                                        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                                                        className={`hover:text-white transition-colors ${showEmojiPicker ? 'text-[#FF2D55]' : ''}`}
-                                                    >
-                                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                                                <div className="relative flex-shrink-0">
+                                                    <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className={`hover:text-white transition-colors ${showEmojiPicker ? 'text-[#FF2D55]' : ''}`}>
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
                                                     </button>
                                                     <AnimatePresence>
                                                         {showEmojiPicker && (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                                className="absolute bottom-full right-0 mb-4 p-2 bg-neutral-900 rounded-2xl shadow-xl border border-white/10 z-50 flex gap-2"
-                                                            >
+                                                            <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} className="absolute bottom-full right-0 mb-4 p-2 bg-neutral-900 rounded-2xl shadow-xl border border-white/10 z-50 flex gap-2">
                                                                 {['😊', '😂', '🥰', '😍', '🔥', '✨'].map(emoji => (
-                                                                    <button
-                                                                        key={emoji}
-                                                                        onClick={() => {
-                                                                            setCommentText(prev => prev + emoji);
-                                                                            setShowEmojiPicker(false);
-                                                                        }}
-                                                                        className="text-xl hover:scale-125 transition-transform p-1"
-                                                                    >
-                                                                        {emoji}
-                                                                    </button>
+                                                                    <button key={emoji} onClick={() => { setCommentText(prev => prev + emoji); setShowEmojiPicker(false); }} className="text-xl hover:scale-125 transition-transform p-1">{emoji}</button>
                                                                 ))}
                                                             </motion.div>
                                                         )}
                                                     </AnimatePresence>
                                                 </div>
-                                                <button className="hover:text-white transition-colors" onClick={() => setCommentText(prev => prev + '@')}>
-                                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path></svg>
+                                                <button className="hover:text-white transition-colors flex-shrink-0" onClick={() => setCommentText(prev => prev + '@')}>
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path></svg>
                                                 </button>
                                             </div>
                                         </div>
 
-                                        {/* Post Button (Floating when text exists) */}
-                                        {commentText.trim() && (
+                                        {/* Post Button - OUTSIDE */}
+                                        {(commentText.trim() || selectedImage) && (
                                             <button
                                                 onClick={handleCommentSubmit}
-                                                className="text-[#FF2D55] font-bold text-[15px] px-1 transition-all active:scale-90 flex-shrink-0"
+                                                className="text-[#DF2E38] font-bold text-[13px] sm:text-[14px] px-3 py-2 bg-[#DF2E38]/10 rounded-full hover:bg-[#DF2E38]/20 transition-all active:scale-95 uppercase tracking-wide flex-shrink-0"
                                             >
                                                 Post
                                             </button>
