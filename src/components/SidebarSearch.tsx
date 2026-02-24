@@ -164,7 +164,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                             initial="hidden"
                             animate="visible"
                             exit="exit"
-                            className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'inset-0 w-full bg-[#0A0A0A]' : 'border-r border-white/10 shadow-2xl backdrop-blur-lg'} text-white overflow-hidden`}
+                            className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'inset-0 w-full backdrop-blur-lg bg-black/40' : 'border-r border-white/10 shadow-2xl backdrop-blur-lg'} text-white overflow-hidden`}
                             style={!isMobile ? {
                                 left: isCollapsed ? '80px' : '280px',
                                 width: '350px',

@@ -433,7 +433,7 @@ const AllMedia: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        <div className="space-y-4 flex-1 overflow-y-auto no-scrollbar">
+                                        <div className="space-y-4 flex-1 overflow-y-auto custom-scrollbar pr-2">
                                             <div className="space-y-2">
                                                 <h4 className="text-white font-bold text-xs uppercase tracking-wider">About this offer</h4>
                                                 <p className="text-white text-[15px] leading-relaxed">{offer.description}</p>

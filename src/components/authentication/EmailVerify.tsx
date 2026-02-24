@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ModeToggle } from "../ThemeToggle/mode-toggle";
 // import { useVerifyEmailMutation } from "@/redux/features/auth/authApi";
  
+ 
+
 
 export default function EmailVerify() {
   const location = useLocation();
