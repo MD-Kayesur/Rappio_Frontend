@@ -146,32 +146,30 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                 },
                                 exit: { x: '100%', opacity: 1, transition: { duration: 0.4 } }
                             } : {
-                                hidden: { scale: 0.95, opacity: 0, x: -20 },
+                                hidden: { opacity: 0, scale: 1.05 },
                                 visible: {
-                                    scale: 1,
                                     opacity: 1,
-                                    x: 0,
+                                    scale: 1,
                                     transition: {
-                                        type: "spring",
-                                        damping: 25,
-                                        stiffness: 280,
+                                        duration: 0.4,
+                                        ease: [0.22, 1, 0.36, 1],
                                         staggerChildren: 0.1,
                                         delayChildren: 0.1
                                     }
                                 },
-                                exit: { scale: 0.95, opacity: 0, x: -20, transition: { duration: 0.2 } }
+                                exit: { opacity: 0, scale: 1.05, transition: { duration: 0.3 } }
                             }}
                             initial="hidden"
                             animate="visible"
                             exit="exit"
-                            className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'inset-0 w-full backdrop-blur-lg bg-black/40' : 'border-r border-white/10 shadow-2xl backdrop-blur-lg'} text-white overflow-hidden`}
-                            style={!isMobile ? {
-                                left: isCollapsed ? '80px' : '280px',
-                                width: '350px',
-                                pointerEvents: 'auto'
-                            } : { pointerEvents: 'auto' }}
+                            className={`fixed inset-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col backdrop-blur-[20px] bg-black/80 text-white overflow-hidden`}
+                            style={{ pointerEvents: 'auto' }}
+                            onClick={!isMobile ? closeSearch : undefined}
                         >
-                            <div className={`${isMobile ? 'p-4' : 'p-6'} flex flex-col gap-6`}>
+                            <div
+                                onClick={(e) => !isMobile && e.stopPropagation()}
+                                className={`${isMobile ? 'p-4' : 'max-w-4xl mx-auto w-full p-8 md:pt-32'} flex flex-col gap-8`}
+                            >
                                 <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
                                     {isMobile ? (
                                         <div className="flex items-center gap-3">
@@ -230,22 +228,23 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                 <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
                                     {!isMobile && (
                                         <div className="relative group">
+                                            <Search size={24} className="absolute left-6 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-white/70 transition-colors" />
                                             <input
                                                 ref={inputRef}
                                                 type="text"
                                                 placeholder="Search anything..."
                                                 value={searchQuery}
                                                 onChange={(e) => handleSearchChange(e.target.value)}
-                                                className="w-full py-3 px-5 bg-white/10 text-white rounded-full border border-transparent focus:border-white/20 outline-none placeholder-white/30 text-[15px]"
+                                                className="w-full py-5 pl-16 pr-14 bg-white/5 hover:bg-white/10 text-white rounded-2xl border border-white/10 focus:border-white/20 focus:bg-white/10 outline-none placeholder-white/20 text-xl transition-all shadow-2xl"
                                                 onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
                                                 autoFocus
                                             />
                                             {searchQuery && (
                                                 <button
                                                     onClick={() => handleSearchChange('')}
-                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                                                    className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
                                                 >
-                                                    <X size={16} />
+                                                    <X size={20} />
                                                 </button>
                                             )}
                                         </div>
@@ -276,20 +275,22 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                             )}
                                         </div>
                                     ) : (
-                                        <div className="flex flex-col gap-1">
+                                        <div className="flex flex-col gap-2">
                                             {suggestions.map((title, idx) => (
                                                 <button
                                                     key={idx}
                                                     onClick={() => handleSuggestionClick(title)}
-                                                    className="w-full px-4 py-3 text-left text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-all rounded-xl flex items-center gap-3"
+                                                    className="w-full px-6 py-4 text-left text-lg text-white/60 hover:bg-white/5 hover:text-white transition-all rounded-2xl flex items-center gap-4 group"
                                                 >
-                                                    <Search size={14} className="opacity-40" />
+                                                    <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#DF2E38]/20 group-hover:text-[#DF2E38] transition-colors">
+                                                        <Search size={18} />
+                                                    </div>
                                                     <span className="truncate">{title}</span>
                                                 </button>
                                             ))}
                                             {searchQuery && suggestions.length === 0 && (
-                                                <div className="px-4 py-10 text-center text-gray-500 text-sm">
-                                                    No results found
+                                                <div className="px-6 py-16 text-center text-white/20 text-lg italic">
+                                                    No results found for "{searchQuery}"
                                                 </div>
                                             )}
                                         </div>
