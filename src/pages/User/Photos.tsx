@@ -328,9 +328,9 @@ const Photos: React.FC = () => {
                                             </button>
 
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
+                                                {/* <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center overflow-hidden border border-white/20">
                                                     <img src={logo} alt="Logo" className="w-5" />
-                                                </div>
+                                                </div> */}
                                                 <h2 className="text-white font-bold text-[20px] tracking-tight cursor-pointer hover:underline pointer-events-auto" onClick={(e) => { e.stopPropagation(); offer.website_url && window.open(offer.website_url, '_blank'); }}>{offer.title}</h2>
                                             </div>
 
@@ -360,9 +360,9 @@ const Photos: React.FC = () => {
                                         style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                                     >
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+                                            {/* <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
                                                 <img src={logo} alt="Logo" className="w-8" />
-                                            </div>
+                                            </div> */}
                                             <div className="min-w-0">
                                                 <h3 className="text-white text-xl font-bold truncate">{offer.title}</h3>
                                                 <p className="text-white text-sm truncate">{offer.subtitle}</p>
@@ -456,27 +456,27 @@ const Photos: React.FC = () => {
                                     </div> */}
 
                                     <div className="flex flex-col items-center gap-0">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full     hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes)}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-0">
-                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full     hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <MessageCircle size={22} />
                                         </button>
                                         <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.comments + (index === currentIndex ? comments.length : 0))}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-0">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full     hover:bg-neutral-700/80  flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Bookmark size={22} className={`${savedOffers.has(offer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
                                         </button>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full   backdrop-blur-md hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full     hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <Share2 size={22} />
                                         </button>
                                     </div>
@@ -494,7 +494,7 @@ const Photos: React.FC = () => {
                     onClick={() => {
                         window.dispatchEvent(new CustomEvent('open-sidebar-search'));
                     }}
-                    className="w-12 h-12 backdrop-blur-lg rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all hover:bg-white/10"
+                    className="w-12 h-12  rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all hover:bg-white/10"
                 >
                     <Search size={20} />
                 </button>
@@ -529,7 +529,7 @@ const Photos: React.FC = () => {
                             animate={window.innerWidth < 768 ? { y: 0 } : { x: 0 }}
                             exit={window.innerWidth < 768 ? { y: '100%' } : { x: '100%' }}
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed bottom-0 right-0 w-full h-[75vh] md:h-full md:w-[400px] lg:w-[500px] backdrop-blur-lg md:bg-black/20 md:backdrop-blur-lg z-[9999] flex flex-col border-t md:border-t-0 md:border-l border-white/10 rounded-t-[16px] md:rounded-none overflow-hidden"
+                            className="fixed bottom-0 right-0 w-full h-[75vh] md:h-full md:w-[400px] lg:w-[500px] bg-black md:bg-black/20 md:backdrop-blur-lg z-[9999] flex flex-col border-t md:border-t-0 md:border-l border-white/10 rounded-t-[16px] md:rounded-none overflow-hidden"
                         >
                             {/* Header */}
                             <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 sticky top-0 z-20 bg-transparent">

@@ -69,7 +69,7 @@ export default function AdminLayout() {
       {isMobile && !sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
-          className="fixed top-6 right-6 z-[9999] w-12 h-12 bg-neutral-800/80 backdrop-blur-md text-white rounded-full flex items-center justify-center border border-white/10 hover:bg-neutral-700/80 transition-all cursor-pointer shadow-lg active:scale-95 md:hidden"
+          className="fixed top-6 right-6 z-[9999] w-12 h-12 bg-neutral-800/80  text-white rounded-full flex items-center justify-center border border-white/10 hover:bg-neutral-700/80 transition-all cursor-pointer shadow-lg active:scale-95 md:hidden"
           aria-label="Open menu"
         >
           <AiOutlineMenuFold className="w-6 h-6" />
