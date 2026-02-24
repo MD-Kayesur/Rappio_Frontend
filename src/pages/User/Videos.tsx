@@ -12,7 +12,6 @@ import {
     Heart,
     MessageCircle,
     Bookmark,
-    Share2,
     X,
     ChevronUp,
     ChevronDown,
@@ -217,10 +216,10 @@ const Videos: React.FC = () => {
         setIsMuted(!isMuted);
     };
 
-    const formatNumber = (num: number) => {
-        if (num >= 1000) return `${(num / 1000).toFixed(1)}k`;
-        return num.toString();
-    };
+    // const formatNumber = (num: number) => {
+    //     if (num >= 1000) return `${(num / 1000).toFixed(1)}k`;
+    //     return num.toString();
+    // };
 
     const handleCommentSubmit = () => {
         const savedUsername = localStorage.getItem('username');
@@ -503,7 +502,7 @@ const Videos: React.FC = () => {
                                         <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full    hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
                                             <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
                                         </button>
-                                        <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes + (index === currentIndex ? 0 : 0))}</span>
+                                        {/* <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes + (index === currentIndex ? 0 : 0))}</span> */}
                                     </div>
 
                                     <div className="flex flex-col items-center gap-0">
@@ -518,10 +517,13 @@ const Videos: React.FC = () => {
                                         </button>
                                     </div>
 
-                                    <div className="flex flex-col items-center gap-1.5">
-                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full    hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
-                                            <Share2 size={22} />
+                                    <div className="flex flex-col items-center gap-0">
+                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full hover:bg-white/10 flex items-center justify-center text-white transition-all shadow-lg border border-white/5 active:scale-90 duration-300">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z" />
+                                            </svg>
                                         </button>
+                                        <span className="text-white/80 text-[12px] font-bold">Share</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-1.5">

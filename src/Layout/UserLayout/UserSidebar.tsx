@@ -91,7 +91,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
 
   return (
     <div
-      className={`relative z-50 flex flex-col  transition-all duration-300 ease-in-out h-full ${sidebarOpen
+      className={`relative z-50 flex flex-col   transition-all duration-300 ease-in-out h-full ${sidebarOpen
         ? (isCollapsed ? "w-20" : "w-64 sm:w-70")
         : "w-0 overflow-hidden"
         }`}

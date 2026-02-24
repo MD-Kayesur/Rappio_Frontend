@@ -129,7 +129,7 @@ const TopCasinos = () => {
           {showLeftArrow && (
             <button
               onClick={() => scroll('left')}
-              className="absolute left-0 z-20 p-1.5 bg-black/60 rounded-full text-white backdrop-blur-sm border border-white/10 hover:bg-black/80 transition-all shadow-lg"
+              className="absolute left-0 z-20 hidden md:flex p-1.5 bg-black/60 rounded-full text-white backdrop-blur-sm border border-white/10 hover:bg-black/80 transition-all shadow-lg"
             >
               <ChevronLeft size={20} />
             </button>
@@ -159,7 +159,7 @@ const TopCasinos = () => {
           {showRightArrow && (
             <button
               onClick={() => scroll('right')}
-              className="absolute right-0 z-20 p-1.5 bg-black/60 rounded-full text-white backdrop-blur-sm border border-white/10 hover:bg-black/80 transition-all shadow-lg"
+              className="absolute right-0 z-20 hidden md:flex p-1.5 bg-black/60 rounded-full text-white backdrop-blur-sm border border-white/10 hover:bg-black/80 transition-all shadow-lg"
             >
               <ChevronRight size={20} />
             </button>
