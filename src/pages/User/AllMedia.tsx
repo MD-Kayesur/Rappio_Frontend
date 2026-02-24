@@ -420,7 +420,7 @@ const AllMedia: React.FC = () => {
 
                                     {/* Back Side */}
                                     <div
-                                        className="absolute inset-0 w-full h-full bg-[#121212] sm:rounded-[1rem] overflow-hidden p-6 sm:p-8 flex flex-col gap-6 custom-scrollbar"
+                                        className="absolute inset-0 w-full h-full bg-[#121212] sm:rounded-[1rem] overflow-hidden p-6 sm:p-8 flex flex-col gap-6 custom-scrollbar overflow-y-auto"
                                         style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                                     >
                                         <div className="flex items-center gap-4">
@@ -768,7 +768,6 @@ const AllMedia: React.FC = () => {
                                                             const reader = new FileReader();
                                                             reader.onloadend = () => {
                                                                 setSelectedImage(reader.result as string);
-                                                                toast.success('Image added to comment');
                                                             };
                                                             reader.readAsDataURL(file);
                                                         }

@@ -3,7 +3,7 @@
     "id": 31,
     "title": "Fortune Ox",
     "subtitle": "Fortune Ox Gameplay",
-    "description": "Watch the Fortune Ox slot gameplay... consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit? Voluptate /n explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius  /n molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero.",
+"description": "Watch the Fortune Ox slot gameplay...\n\nLorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit?\n\nVoluptate explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero.\n\nQuam, itaque minus similique repellendus distinctio dolorem, rem beatae, officiis expedita omnis veniam atque velit.",
     "cta": "Watch Now",
     "likes": 500,
     "comments": 100,
@@ -12,16 +12,25 @@
     "website_url": "",
     "tags": [
       "FortuneOx",
+      "FortuneOx",
+      "FortuneOx",
+      "FortuneOx",
       "Slot"
     ],
-    "terms_highlights": [],
+       "terms_highlights": [
+      "Bonus valid for new users",
+      "Bonus valid for new users",
+      "Bonus valid for new users",
+      "Bonus valid for new users",
+      "Wagering applies"
+    ],
     "disclaimer": "Entertainment purpose only."
   },
   {
     "id": 32,
     "title": "Golden Treasure Spin",
     "subtitle": "Huge Win or Epic Fail?",
-    "description": "Golden Treasure Spin gameplay...",
+    "description": "Golden Treasure Spin gameplay.....\n\nLorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit?\n\nVoluptate explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero.\n\nQuam, itaque minus similique repellendus distinctio dolorem, rem beatae, officiis expedita omnis veniam atque velit.",
     "cta": "Watch Now",
     "likes": 600,
     "comments": 150,
@@ -30,16 +39,25 @@
     "website_url": "",
     "tags": [
       "GoldenTreasure",
+      "GoldenTreasure",
+      "GoldenTreasure",
+      "GoldenTreasure",
       "Spin"
     ],
-    "terms_highlights": [],
+      "terms_highlights": [
+      "Bonus valid for new users",
+      "Bonus valid for new users",
+      "Bonus valid for new users",
+      "Bonus valid for new users",
+      "Wagering applies"
+    ],
     "disclaimer": "Entertainment purpose only."
   },
   {
     "id": 1,
     "title": "Fortune's Fortune Casino",
     "subtitle": "Lorem Ipsum is simply dummy text of the printing industry.",
-    "description": "Lorem Ipsum has been the industry's standard dummy",
+    "description": "Lorem Ipsum has been the industry's standard dummy ..\n\nLorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit?\n\nVoluptate explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero.\n\nQuam, itaque minus similique repellendus distinctio dolorem, rem beatae, officiis expedita omnis veniam atque velit.",
     "cta": "Claim Offer",
     "likes": 1400,
     "comments": 1000,
@@ -49,9 +67,15 @@
     "tags": [
       "Casino",
       "Bonus",
+      "Bonus",
+      "Bonus",
+      "Bonus",
       "VIP"
     ],
     "terms_highlights": [
+      "Bonus valid for new users",
+      "Bonus valid for new users",
+      "Bonus valid for new users",
       "Bonus valid for new users",
       "Wagering applies"
     ],
@@ -61,7 +85,7 @@
     "id": 2,
     "title": "Golden Spin Casino",
     "subtitle": "Premium casino rewards for new players.",
-    "description": "Get free spins and cashback",
+    "description": "Get free spins and cashback ..\n\nLorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit?\n\nVoluptate explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero.\n\nQuam, itaque minus similique repellendus distinctio dolorem, rem beatae, officiis expedita omnis veniam atque velit.",
     "cta": "Claim Offer",
     "likes": 980,
     "comments": 430,
@@ -70,9 +94,15 @@
     "website_url": "https://goldenspin.com/",
     "tags": [
       "Free Spins",
+      "Free Spins",
+      "Free Spins",
+      "Free Spins",
       "New Users"
     ],
     "terms_highlights": [
+      "Free spins expire in 7 days",
+      "Free spins expire in 7 days",
+      "Free spins expire in 7 days",
       "Free spins expire in 7 days",
       "Min deposit required"
     ],
@@ -83,7 +113,7 @@
     "id": 3,
     "title": "Royal Jackpot Arena",
     "subtitle": "High payout casino platform.",
-    "description": "Exclusive jackpot rewards Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit? Voluptate /n explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius  /n molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero. Quam, itaque minus similique repellendus distinctio dolorem, rem beatae, officiis expedita omnis veniam atque velit. Sit libero deserunt maxime quas magnam voluptatibus eos neque?",
+    "description": "Exclusive jackpot rewards ....\n\nLorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit?\n\nVoluptate explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero.\n\nQuam, itaque minus similique repellendus distinctio dolorem, rem beatae, officiis expedita omnis veniam atque velit.",
     "cta": "Claim Offer",
     "likes": 2300,
     "comments": 780,
@@ -104,7 +134,7 @@
     "id": 4,
     "title": "Lucky Ace Casino",
     "subtitle": "Fast payouts and high RTP games.",
-    "description": "Lucky ace welcome offer",
+    "description": "Lucky ace welcome offer \n\nLorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit?\n\nVoluptate explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero.\n\nQuam, itaque minus similique repellendus distinctio dolorem, rem beatae, officiis expedita omnis veniam atque velit.",
     "cta": "Claim Offer",
     "likes": 1500,
     "comments": 620,
@@ -125,7 +155,7 @@
     "id": 5,
     "title": "Spin Palace",
     "subtitle": "Ultimate casino experience.",
-    "description": "Welcome bonus package",
+    "description": "Welcome bonus package \n\n Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis, consectetur, alias blanditiis necessitatibus quas explicabo reprehenderit quaerat debitis quod odit magnam deleniti mollitia in provident iusto cumque consequatur, aut totam natus temporibus non fugit?\n\nVoluptate explicabo optio labore ut, adipisci inventore qui aperiam rem iure dolore. Beatae, consequuntur ipsam. Porro sit sunt ipsum, eius molestias, repellendus rem quia natus rerum blanditiis explicabo itaque minus cum harum dicta voluptatum voluptas neque deleniti sed eligendi libero.\n\nQuam, itaque minus similique repellendus distinctio dolorem, rem beatae, officiis expedita omnis veniam atque velit.",
     "cta": "Claim Offer",
     "likes": 3100,
     "comments": 1200,
@@ -134,9 +164,15 @@
     "website_url": "https://www.spinpalace.com/",
     "tags": [
       "Welcome Bonus",
+      "Welcome Bonus",
+      "Welcome Bonus",
+      "Welcome Bonus",
       "Live Casino"
     ],
     "terms_highlights": [
+      "Bonus cap $500",
+      "Bonus cap $500",
+      "Bonus cap $500",
       "Bonus cap $500",
       "Wagering 35x"
     ],

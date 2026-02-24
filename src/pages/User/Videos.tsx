@@ -753,7 +753,6 @@ const Videos: React.FC = () => {
                                                             const reader = new FileReader();
                                                             reader.onloadend = () => {
                                                                 setSelectedImage(reader.result as string);
-                                                                toast.success('Image added to comment');
                                                             };
                                                             reader.readAsDataURL(file);
                                                         }
