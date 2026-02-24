@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Heart, ThumbsUp, MessageCircle, Bookmark, Play } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Heart, ThumbsUp, MessageCircle, Bookmark, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface Offer {
@@ -25,6 +25,9 @@ const Favorites = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('q') || '';
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
 
   // Helper function to extract YouTube video ID
   const extractYouTubeID = (url: string): string => {
@@ -38,6 +41,24 @@ const Favorites = () => {
       return `${(num / 1000).toFixed(1)}k`;
     }
     return num.toString();
+  };
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeftArrow(scrollLeft > 0);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 5);
+    }
+  };
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 200;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
@@ -57,6 +78,10 @@ const Favorites = () => {
       setFavorites(new Set(JSON.parse(savedFavorites)));
     }
   }, []);
+
+  useEffect(() => {
+    handleScroll();
+  }, [offers]);
 
   // Define favorited offers
   const favoritedOffers = offers.filter(offer => favorites.has(offer.id));
@@ -93,22 +118,46 @@ const Favorites = () => {
   return (
     <div className="min-h-full text-white overflow-hidden">
       {/* Category Filter Tabs */}
-      <div className="sticky top-0 z-10 w-full backdrop-blur-md">
-        <div className="overflow-x-auto no-scrollbar w-full">
-          <div className="flex gap-2 px-4 py-4 min-w-max ">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category
-                  ? 'bg-white text-black'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                  }`}
-              >
-                {category}
-              </button>
-            ))}
+      <div className="sticky top-0 z-10 w-full backdrop-blur-md px-2">
+        <div className="relative flex items-center group">
+          {showLeftArrow && (
+            <button
+              onClick={() => scroll('left')}
+              className="absolute left-0 z-20 p-1.5 bg-black/60 rounded-full text-white backdrop-blur-sm border border-white/10 hover:bg-black/80 transition-all shadow-lg"
+            >
+              <ChevronLeft size={20} />
+            </button>
+          )}
+
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="overflow-x-auto no-scrollbar w-full scroll-smooth"
+          >
+            <div className="flex gap-2 px-4 py-4 min-w-max ">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category
+                    ? 'bg-white text-black'
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {showRightArrow && (
+            <button
+              onClick={() => scroll('right')}
+              className="absolute right-0 z-20 p-1.5 bg-black/60 rounded-full text-white backdrop-blur-sm border border-white/10 hover:bg-black/80 transition-all shadow-lg"
+            >
+              <ChevronRight size={20} />
+            </button>
+          )}
         </div>
       </div>
 
