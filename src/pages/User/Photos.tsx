@@ -466,7 +466,6 @@ const Photos: React.FC = () => {
                                         <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full     hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
                                             <MessageCircle size={22} />
                                         </button>
-                                        <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.comments + (index === currentIndex ? comments.length : 0))}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-0">
@@ -537,7 +536,7 @@ const Photos: React.FC = () => {
                                     <Repeat2 size={24} />
                                 </button>
                                 <h3 className="text-white font-bold text-[15px] sm:text-lg text-center flex-1">
-                                    {formatNumber(comments.length + currentOffer.comments)} comments
+                                    Comments
                                 </h3>
                                 <div className="flex items-center gap-3">
                                     <button className="p-1 text-white/80 sm:hidden">
@@ -639,9 +638,9 @@ const Photos: React.FC = () => {
                                                 </button>
                                                 <span className="text-white/40 text-[11px] font-medium">{comment.likes}</span>
                                             </div>
-                                            <button className="text-white/30 hover:text-white/50 sm:hidden">
+                                            {/* <button className="text-white/30 hover:text-white/50 sm:hidden">
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
-                                            </button>
+                                            </button> */}
                                         </div>
                                     </div>
                                 ))}

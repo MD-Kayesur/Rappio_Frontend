@@ -195,7 +195,6 @@ const TopCasinos = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <MessageCircle className="h-3 w-3" />
-                        <span>{formatNumber(offer.comments)}</span>
                       </div>
                     </div>
                   </div>
