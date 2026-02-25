@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CommonWrapper from "@/common/CommonWrapper";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@/assets/Vector.svg";
+import logo from "@/assets/12142.png";
 import bgImage from "@/assets/home.jpg";
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -92,8 +92,8 @@ const Home = () => {
                 </p>
 
                 {/* Continue Button */}
-                <Button 
-                  onClick={handleContinue} 
+                <Button
+                  onClick={handleContinue}
                   className="w-full h-14 cursor-pointer bg-red-600 hover:bg-red-700 text-white font-bold text-lg rounded-xl transition-all active:scale-95 shadow-lg shadow-red-900/20"
                 >
                   Continue

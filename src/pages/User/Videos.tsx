@@ -7,7 +7,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import logo from "../../assets/Vector.svg";
+import logo from "../../assets/12142.png";
 import {
     Heart,
     MessageCircle,
