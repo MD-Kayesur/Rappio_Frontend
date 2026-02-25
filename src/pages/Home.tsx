@@ -57,7 +57,7 @@ const Home = () => {
               }}
               exit={{ opacity: 0 }}
             >
-              <img src={logo} alt="Logo" className="w-32 h-32 md:w-48 md:h-48" />
+              <img src={logo} alt="Logo" className="w-64 md:w-96 h-auto object-contain" />
             </motion.div>
           ) : (
             <motion.div
