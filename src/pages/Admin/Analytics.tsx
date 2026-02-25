@@ -232,7 +232,7 @@ const Analytics = () => {
                     <Eye className="h-4 w-4" />
                     <span>{formatNumber((item.likes || 0) * 15)}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[#FACC15]">
+                  <div className="flex items-center gap-1.5 text-[#FF2D55]">
                     <Heart className="h-4 w-4" />
                     <span>{formatNumber(item.likes)}</span>
                   </div>

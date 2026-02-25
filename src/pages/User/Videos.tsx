@@ -500,7 +500,7 @@ const Videos: React.FC = () => {
                                     </div> */}
                                     <div className="flex flex-col items-center gap-0">
                                         <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full    hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
-                                            <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#FACC15] text-[#FACC15]' : 'text-white'}`} />
+                                            <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#FF2D55] text-[#FF2D55]' : 'text-white'}`} />
                                         </button>
                                         {/* <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes + (index === currentIndex ? 0 : 0))}</span> */}
                                     </div>
@@ -667,7 +667,7 @@ const Videos: React.FC = () => {
                                                             )}
                                                             <div className="mt-2 flex items-center gap-4">
                                                                 <span className="text-white/40 text-[11px]">{reply.timestamp}</span>
-                                                                <button onClick={() => toggleCommentLike(reply.id, true, comment.id)} className={`transition-all active:scale-125 ${reply.isLiked ? 'text-[#FACC15]' : 'text-white/30'}`}>
+                                                                <button onClick={() => toggleCommentLike(reply.id, true, comment.id)} className={`transition-all active:scale-125 ${reply.isLiked ? 'text-[#FF2D55]' : 'text-white/30'}`}>
                                                                     <Heart size={14} fill={reply.isLiked ? 'currentColor' : 'none'} />
                                                                 </button>
                                                             </div>
@@ -682,7 +682,7 @@ const Videos: React.FC = () => {
                                             <div className="flex flex-col items-center gap-0.5">
                                                 <button
                                                     onClick={() => toggleCommentLike(comment.id)}
-                                                    className={`transition-all active:scale-125 ${comment.isLiked ? 'text-[#FACC15]' : 'text-white/30 hover:text-white/50'}`}
+                                                    className={`transition-all active:scale-125 ${comment.isLiked ? 'text-[#FF2D55]' : 'text-white/30 hover:text-white/50'}`}
                                                 >
                                                     <Heart size={20} fill={comment.isLiked ? 'currentColor' : 'none'} />
                                                 </button>

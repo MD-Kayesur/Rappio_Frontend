@@ -293,8 +293,8 @@ const Overview = () => {
                   <p className="text-xs text-gray-400 line-clamp-1">{item.subtitle}</p>
                 </div>
                 <div className="flex items-center gap-4 text-sm font-medium">
-                  <div className="flex items-center gap-1.5 text-[#FACC15]">
-                    <Heart className="h-4 w-4 fill-[#FACC15]/10" />
+                  <div className="flex items-center gap-1.5 text-[#FF2D55]">
+                    <Heart className="h-4 w-4 fill-[#FF2D55]/10" />
                     <span>{formatNumber(item.likes)}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-blue-500">
