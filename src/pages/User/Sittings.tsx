@@ -44,7 +44,7 @@ function Settings() {
     <div className="min-h-full bg-black text-white">
       {/* Profile Header */}
       <div className="relative mx-auto max-w-5xl">
-        <div className="mx-4 mt-8 rounded-2xl bg-gradient-to-br from-red-900 to-red-800 p-8">
+        <div className="mx-4 mt-8 rounded-2xl bg-gradient-to-br from-yellow-700/80 to-yellow-900/80 p-8">
           <div className="flex flex-col items-center">
             <div className="relative">
               <img
@@ -62,7 +62,7 @@ function Settings() {
             <p className="mt-1 text-white/80">{formData.email}</p>
             <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
               <DialogTrigger asChild>
-                <Button className="mt-4 bg-red-600 hover:bg-red-700">
+                <Button className="mt-4 bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">
                   Update Password
                 </Button>
               </DialogTrigger>
@@ -84,7 +84,7 @@ function Settings() {
                       placeholder="Password"
                       className="border-gray-700 bg-[#1A1C1D] pr-10"
                     />
-                    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
+                    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FACC15]">
                       👁
                     </button>
                   </div>
@@ -99,7 +99,7 @@ function Settings() {
                       placeholder="New Password"
                       className="border-gray-700 bg-[#1A1C1D] pr-10"
                     />
-                    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
+                    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FACC15]">
                       👁
                     </button>
                   </div>
@@ -109,11 +109,11 @@ function Settings() {
                       placeholder="Retype Password"
                       className="border-gray-700 bg-[#1A1C1D] pr-10"
                     />
-                    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
+                    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FACC15]">
                       👁
                     </button>
                   </div>
-                  <Button className="w-full bg-red-600 hover:bg-red-700">
+                  <Button className="w-full bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">
                     Change Password
                   </Button>
                 </div>
@@ -131,14 +131,14 @@ function Settings() {
               {!isEditing ? (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="text-red-500 hover:text-red-400"
+                  className="text-[#FACC15] hover:text-yellow-400"
                 >
                   <Pencil className="h-5 w-5" />
                 </button>
               ) : (
                 <Button
                   onClick={handleSaveChanges}
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-[#FACC15] hover:bg-[#EAB308] text-black"
                   size="sm"
                 >
                   Save Changes
@@ -291,7 +291,7 @@ function Settings() {
               <Switch
                 checked={emailNotifications}
                 onCheckedChange={setEmailNotifications}
-                className="data-[state=checked]:bg-red-600"
+                className="data-[state=checked]:bg-[#FACC15]"
               />
             </div>
 
@@ -303,7 +303,7 @@ function Settings() {
               <Switch
                 checked={loginNotifications}
                 onCheckedChange={setLoginNotifications}
-                className="data-[state=checked]:bg-red-600"
+                className="data-[state=checked]:bg-[#FACC15]"
               />
             </div>
 

@@ -166,8 +166,8 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                   ${isDisabled
                     ? "opacity-50 cursor-not-allowed bg-gray-200 dark:bg-gray-800 text-gray-400"
                     : isActive
-                      ? "bg-[#DF2E38] text-white shadow-md shadow-[#DF2E38]/20"
-                      : "text-[#686565] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#DF2E38] dark:hover:text-white"
+                      ? "bg-[#FACC15] text-black shadow-md shadow-[#FACC15]/20"
+                      : "text-[#686565] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#FACC15] dark:hover:text-white"
                   }
                   ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
                 `}
@@ -199,7 +199,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
         <div className="p-3 ">
           <button
             onClick={handleLogout}
-            className={`group w-full cursor-pointer flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-500 hover:text-white dark:hover:bg-red-600 transition-colors ${isCollapsed ? "justify-center" : ""
+            className={`group w-full cursor-pointer flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-[#FACC15] dark:text-[#FACC15] hover:bg-[#FACC15] hover:text-black transition-colors ${isCollapsed ? "justify-center" : ""
               }`}
           >
             <MdLogout className={isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7 dark:text-white text-black" : "w-5 h-5 sm:w-6 sm:h-6 dark:text-white text-black"} />

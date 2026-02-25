@@ -110,8 +110,8 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
                 }}
                 className={`group flex font-normal items-center gap-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer
                   ${isActive
-                    ? "bg-[#DF2E38] text-white shadow-md shadow-[#DF2E38]/20"
-                    : "text-[#686565] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#DF2E38] dark:hover:text-white"
+                    ? "bg-[#FACC15] text-black shadow-md shadow-[#FACC15]/20"
+                    : "text-[#686565] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#FACC15] dark:hover:text-white"
                   }
                   ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
                 `}
@@ -137,7 +137,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
         <div className="p-3  ">
           <button
             onClick={handleLogout}
-            className={`group w-full cursor-pointer flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-red-500 hover:bg-red-500 hover:text-white transition-colors ${isCollapsed ? "justify-center" : ""
+            className={`group w-full cursor-pointer flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors ${isCollapsed ? "justify-center" : ""
               }`}
           >
             <LogOut className={isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"} />

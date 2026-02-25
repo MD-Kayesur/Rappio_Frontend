@@ -83,8 +83,8 @@ const Settings = () => {
         <button
           onClick={() => setActiveTab('general')}
           className={`px-6 py-2 rounded-lg font-medium transition-colors ${activeTab === 'general'
-              ? 'bg-red-600 text-white'
-              : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+            ? 'bg-[#FACC15] text-black'
+            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
             }`}
         >
           General
@@ -92,8 +92,8 @@ const Settings = () => {
         <button
           onClick={() => setActiveTab('languages')}
           className={`px-6 py-2 rounded-lg font-medium transition-colors ${activeTab === 'languages'
-              ? 'bg-red-600 text-white'
-              : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+            ? 'bg-[#FACC15] text-black'
+            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
             }`}
         >
           Languages
@@ -236,7 +236,7 @@ const Settings = () => {
             <div className="flex justify-center">
               <Button
                 onClick={handleSaveInfo}
-                className="bg-red-600 hover:bg-red-700 px-8"
+                className="bg-[#FACC15] hover:bg-[#EAB308] text-black px-8"
               >
                 Save
               </Button>
@@ -283,7 +283,7 @@ const Settings = () => {
             <div className="flex justify-center">
               <Button
                 onClick={handleUpdatePassword}
-                className="bg-red-600 hover:bg-red-700 px-8"
+                className="bg-[#FACC15] hover:bg-[#EAB308] text-black px-8"
               >
                 Update
               </Button>

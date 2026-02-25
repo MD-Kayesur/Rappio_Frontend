@@ -207,7 +207,7 @@ const Overview = () => {
 
         <Button
           onClick={() => setShowCreatePost(true)}
-          className="bg-red-600 hover:bg-red-700"
+          className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold"
         >
           New Post
         </Button>
@@ -293,8 +293,8 @@ const Overview = () => {
                   <p className="text-xs text-gray-400 line-clamp-1">{item.subtitle}</p>
                 </div>
                 <div className="flex items-center gap-4 text-sm font-medium">
-                  <div className="flex items-center gap-1.5 text-red-500">
-                    <Heart className="h-4 w-4 fill-red-500/10" />
+                  <div className="flex items-center gap-1.5 text-[#FACC15]">
+                    <Heart className="h-4 w-4 fill-[#FACC15]/10" />
                     <span>{formatNumber(item.likes)}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-blue-500">
@@ -384,9 +384,9 @@ const Overview = () => {
                   type="monotone"
                   dataKey="videos"
                   name="Videos"
-                  stroke="#EE2B3E"
+                  stroke="#FACC15"
                   strokeWidth={1.5}
-                  dot={{ r: 3, fill: '#EE2B3E', strokeWidth: 0 }}
+                  dot={{ r: 3, fill: '#FACC15', strokeWidth: 0 }}
                   activeDot={{ r: 5, strokeWidth: 0 }}
                 />
                 <Line
@@ -550,7 +550,7 @@ const Overview = () => {
                             )}
                             <button
                               onClick={() => setFormData({ ...formData, mediaFile: null, mediaPreview: '' })}
-                              className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
+                              className="absolute top-2 right-2 p-1 bg-[#FACC15] hover:bg-[#EAB308] text-black rounded-full"
                             >
                               <X className="h-4 w-4" />
                             </button>
@@ -572,7 +572,7 @@ const Overview = () => {
                             <Button
                               type="button"
                               onClick={() => mediaInputRef.current?.click()}
-                              className="mt-4 bg-red-600 hover:bg-red-700"
+                              className="mt-4 bg-[#FACC15] hover:bg-[#EAB308] text-black"
                             >
                               Upload
                             </Button>
@@ -589,7 +589,7 @@ const Overview = () => {
                             <img src={formData.thumbnailPreview} alt="Thumbnail" className="w-full h-32 object-cover rounded-lg" />
                             <button
                               onClick={() => setFormData({ ...formData, thumbnailFile: null, thumbnailPreview: '' })}
-                              className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
+                              className="absolute top-2 right-2 p-1 bg-[#FACC15] hover:bg-[#EAB308] text-black rounded-full"
                             >
                               <X className="h-4 w-4" />
                             </button>
@@ -624,7 +624,7 @@ const Overview = () => {
                 </div>
 
                 <div className="flex gap-4 mt-6">
-                  <Button onClick={handlePreview} className="bg-red-600 hover:bg-red-700">
+                  <Button onClick={handlePreview} className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">
                     Publish
                   </Button>
                   <Button onClick={handlePreview} variant="outline" className="bg-[#1A1C1D] border-gray-800">
@@ -686,7 +686,7 @@ const Overview = () => {
                       {formData.description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry."}
                     </p>
 
-                    <Button className="bg-red-600 hover:bg-red-700">Claim Offer</Button>
+                    <Button className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">Claim Offer</Button>
 
                     <div className="flex items-center gap-6 py-4">
                       <button className="flex flex-col items-center gap-1 group">
@@ -734,7 +734,7 @@ const Overview = () => {
                 </div>
 
                 <div className="flex gap-4 mt-6">
-                  <Button onClick={handlePublish} className="bg-red-600 hover:bg-red-700">
+                  <Button onClick={handlePublish} className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">
                     Publish Now
                   </Button>
                   <Button

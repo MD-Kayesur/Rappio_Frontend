@@ -439,7 +439,7 @@ const Videos: React.FC = () => {
                                                     <ul className="space-y-2.5">
                                                         {offer.terms_highlights.map((term, idx) => (
                                                             <li key={idx} className="flex items-start gap-3 text-white text-sm">
-                                                                <div className="w-1.5 h-1.5 rounded-full bg-[#FF2D55] mt-1.5 shrink-0" />
+                                                                <div className="w-1.5 h-1.5 rounded-full bg-[#FACC15] mt-1.5 shrink-0" />
                                                                 {term}
                                                             </li>
                                                         ))}
@@ -454,7 +454,7 @@ const Videos: React.FC = () => {
                                                     e.stopPropagation();
                                                     if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
-                                                className="w-full   text-white font-bold py-4 rounded-2xl hover:bg-[#ff4d6d] transition-all shadow-[0_0_20px_rgba(255,45,85,0.3)] active:scale-95"
+                                                className="w-full bg-[#FACC15]  text-black font-bold py-4 rounded-2xl hover:bg-[#EAB308] transition-all shadow-[0_0_20px_rgba(250,204,21,0.3)] active:scale-95"
                                             >
                                                 {offer.cta || 'CLAIM OFFER NOW'}
                                             </button>
@@ -500,7 +500,7 @@ const Videos: React.FC = () => {
                                     </div> */}
                                     <div className="flex flex-col items-center gap-0">
                                         <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full    hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
-                                            <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#EE2B3E] text-[#EE2B3E]' : 'text-white'}`} />
+                                            <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#FACC15] text-[#FACC15]' : 'text-white'}`} />
                                         </button>
                                         {/* <span className="text-white/80 text-[12px] font-bold">{formatNumber(offer.likes + (index === currentIndex ? 0 : 0))}</span> */}
                                     </div>
@@ -617,7 +617,7 @@ const Videos: React.FC = () => {
                                                 <div className="flex items-center gap-1.5 mb-0.5">
                                                     <span className="text-white/50 font-semibold text-[13px] leading-tight">{comment.user}</span>
                                                     {comment.user === 'Creator' && (
-                                                        <span className="text-[#FF2D55] font-bold text-[11px]">· Creator</span>
+                                                        <span className="text-[#FACC15] font-bold text-[11px]">· Creator</span>
                                                     )}
                                                 </div>
                                                 <p className="text-white text-[15px] leading-snug break-words">
@@ -657,7 +657,7 @@ const Videos: React.FC = () => {
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-1.5 mb-0.5">
                                                                 <span className="text-white/50 text-[12px] font-bold">{reply.user}</span>
-                                                                {reply.user === 'Creator' && <span className="text-[#FF2D55] font-bold text-[10px]">· Creator</span>}
+                                                                {reply.user === 'Creator' && <span className="text-[#FACC15] font-bold text-[10px]">· Creator</span>}
                                                             </div>
                                                             <p className="text-white text-[14px] leading-snug">{reply.text}</p>
                                                             {reply.commentImage && (
@@ -667,7 +667,7 @@ const Videos: React.FC = () => {
                                                             )}
                                                             <div className="mt-2 flex items-center gap-4">
                                                                 <span className="text-white/40 text-[11px]">{reply.timestamp}</span>
-                                                                <button onClick={() => toggleCommentLike(reply.id, true, comment.id)} className={`transition-all active:scale-125 ${reply.isLiked ? 'text-[#FF2D55]' : 'text-white/30'}`}>
+                                                                <button onClick={() => toggleCommentLike(reply.id, true, comment.id)} className={`transition-all active:scale-125 ${reply.isLiked ? 'text-[#FACC15]' : 'text-white/30'}`}>
                                                                     <Heart size={14} fill={reply.isLiked ? 'currentColor' : 'none'} />
                                                                 </button>
                                                             </div>
@@ -682,7 +682,7 @@ const Videos: React.FC = () => {
                                             <div className="flex flex-col items-center gap-0.5">
                                                 <button
                                                     onClick={() => toggleCommentLike(comment.id)}
-                                                    className={`transition-all active:scale-125 ${comment.isLiked ? 'text-[#FF2D55]' : 'text-white/30 hover:text-white/50'}`}
+                                                    className={`transition-all active:scale-125 ${comment.isLiked ? 'text-[#FACC15]' : 'text-white/30 hover:text-white/50'}`}
                                                 >
                                                     <Heart size={20} fill={comment.isLiked ? 'currentColor' : 'none'} />
                                                 </button>
@@ -706,7 +706,7 @@ const Videos: React.FC = () => {
                                                     setSelectedImage(null);
                                                     if (fileInputRef.current) fileInputRef.current.value = '';
                                                 }}
-                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg opacity-100 transition-opacity hover:bg-red-600 z-50"
+                                                className="absolute -top-2 -right-2 bg-[#FACC15] text-black rounded-full p-1 shadow-lg opacity-100 transition-opacity hover:bg-[#EAB308] z-50"
                                             >
                                                 <X size={12} />
                                             </button>
@@ -761,7 +761,7 @@ const Videos: React.FC = () => {
                                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                 </button>
                                                 <div className="relative flex-shrink-0">
-                                                    <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className={`hover:text-white transition-colors ${showEmojiPicker ? 'text-[#FF2D55]' : ''}`}>
+                                                    <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className={`hover:text-white transition-colors ${showEmojiPicker ? 'text-[#FACC15]' : ''}`}>
                                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
                                                     </button>
                                                     <AnimatePresence>
@@ -784,7 +784,7 @@ const Videos: React.FC = () => {
                                         {(commentText.trim() || selectedImage) && (
                                             <button
                                                 onClick={handleCommentSubmit}
-                                                className="text-[#DF2E38] font-bold text-[13px] sm:text-[14px] px-3 py-2 bg-[#DF2E38]/10 rounded-full hover:bg-[#DF2E38]/20 transition-all active:scale-95 uppercase tracking-wide flex-shrink-0"
+                                                className="text-[#000000] font-bold text-[13px] sm:text-[14px] px-3 py-2 bg-[#FACC15] rounded-full hover:bg-[#EAB308] transition-all active:scale-95 uppercase tracking-wide flex-shrink-0"
                                             >
                                                 Post
                                             </button>
@@ -806,7 +806,7 @@ const Videos: React.FC = () => {
                                 <div className="flex overflow-x-auto gap-5 no-scrollbar pb-2 px-1 scroll-smooth" ref={shareScrollRef}>
                                     {[
                                         { name: 'Repost', icon: <Repeat2 size={24} />, color: 'bg-[#facd3b]', onClick: () => toast.success('Reposted!') },
-                                        { name: 'Send to friends', icon: <Send size={24} />, color: 'bg-[#ff3b5c]', onClick: () => toast.success('Opening messages...') },
+                                        { name: 'Send to friends', icon: <Send size={24} className="text-black" />, color: 'bg-[#FACC15]', onClick: () => toast.success('Opening messages...') },
                                         { name: 'Copy Link', icon: <Link size={24} />, color: 'bg-[#2E7DFF]', onClick: () => { navigator.clipboard.writeText(window.location.href); toast.success('Link copied!'); } },
                                         { name: 'WhatsApp', icon: <FaWhatsapp size={26} />, color: 'bg-[#25D366]', onClick: () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`) },
                                         { name: 'Embed', icon: <Code size={22} />, color: 'bg-[#0096a7]', onClick: () => { navigator.clipboard.writeText(`<iframe src="${window.location.href}" width="100%" height="450px" frameborder="0"></iframe>`); toast.success('Embed code copied!'); } },
@@ -858,13 +858,13 @@ const Videos: React.FC = () => {
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                     placeholder="Marcus"
-                                    className="w-full bg-white/5 text-white pl-14 pr-6 py-4 rounded-2xl outline-none border border-white/10 focus:border-red-500/50 transition-all placeholder:text-white/20"
+                                    className="w-full bg-white/5 text-white pl-14 pr-6 py-4 rounded-2xl outline-none border border-white/10 focus:border-[#FACC15]/50 transition-all placeholder:text-white/20"
                                 />
                             </div>
 
                             <button
                                 onClick={handleNameSetup}
-                                className="w-full bg-[#E52D2D] hover:bg-[#FF3B3B] text-white font-bold py-4.5 rounded-2xl transition-all shadow-[0_8px_20px_rgba(229,45,45,0.3)] active:scale-95"
+                                className="w-full bg-[#FACC15] hover:bg-[#EAB308] text-black font-bold py-4.5 rounded-2xl transition-all shadow-[0_8px_20px_rgba(250,204,21,0.3)] active:scale-95"
                             >
                                 Continue
                             </button>

@@ -282,7 +282,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                                     onClick={() => handleSuggestionClick(title)}
                                                     className="w-full px-6 py-4 text-left text-lg text-white/60 hover:bg-white/5 hover:text-white transition-all rounded-2xl flex items-center gap-4 group"
                                                 >
-                                                    <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#DF2E38]/20 group-hover:text-[#DF2E38] transition-colors">
+                                                    <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#FACC15]/20 group-hover:text-[#FACC15] transition-colors">
                                                         <Search size={18} />
                                                     </div>
                                                     <span className="truncate">{title}</span>

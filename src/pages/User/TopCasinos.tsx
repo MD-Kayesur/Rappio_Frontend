@@ -204,8 +204,8 @@ const TopCasinos = () => {
                   {/* Video Play Icon Overlay */}
                   {youtubeID && (
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
-                        <Play className="w-6 h-6 text-white ml-1" fill="white" />
+                      <div className="w-12 h-12 bg-[#FACC15] rounded-full flex items-center justify-center shadow-lg">
+                        <Play className="w-6 h-6 text-black ml-1" fill="black" />
                       </div>
                     </div>
                   )}

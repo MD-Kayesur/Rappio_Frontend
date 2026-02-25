@@ -232,7 +232,7 @@ const Analytics = () => {
                     <Eye className="h-4 w-4" />
                     <span>{formatNumber((item.likes || 0) * 15)}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-red-500">
+                  <div className="flex items-center gap-1.5 text-[#FACC15]">
                     <Heart className="h-4 w-4" />
                     <span>{formatNumber(item.likes)}</span>
                   </div>
@@ -304,9 +304,9 @@ const Analytics = () => {
                 <Line
                   type="monotone"
                   dataKey="videos"
-                  stroke="#EF4444"
+                  stroke="#FACC15"
                   strokeWidth={2}
-                  dot={{ fill: '#EF4444', r: 3 }}
+                  dot={{ fill: '#FACC15', r: 3 }}
                 />
                 <Line
                   type="monotone"
@@ -321,7 +321,7 @@ const Analytics = () => {
 
           <div className="flex items-center justify-center gap-6 mt-4">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-[#FACC15] rounded-full"></div>
               <span className="text-sm text-gray-400">Videos</span>
             </div>
             <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ const Analytics = () => {
               </div>
               <div className="w-full bg-gray-800 rounded-full h-2">
                 <div
-                  className="bg-gradient-to-r from-red-500 to-pink-500 h-2 rounded-full transition-all duration-500"
+                  className="bg-gradient-to-r from-yellow-400 to-yellow-600 h-2 rounded-full transition-all duration-500"
                   style={{ width: `${language.percentage}%` }}
                 ></div>
               </div>

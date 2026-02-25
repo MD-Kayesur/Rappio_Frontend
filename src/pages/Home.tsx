@@ -94,7 +94,7 @@ const Home = () => {
                 {/* Continue Button */}
                 <Button
                   onClick={handleContinue}
-                  className="w-full h-14 cursor-pointer bg-red-600 hover:bg-red-700 text-white font-bold text-lg rounded-xl transition-all active:scale-95 shadow-lg shadow-red-900/20"
+                  className="w-full h-14 cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-black font-bold text-lg rounded-xl transition-all active:scale-95 shadow-lg shadow-yellow-900/20"
                 >
                   Continue
                 </Button>

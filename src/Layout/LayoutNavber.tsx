@@ -77,7 +77,7 @@ export const LayoutNavber: React.FC = () => {
         <div className="absolute top-5 left-70 transform -translate-x-1/2 w-full flex justify-center">
           <button
             onClick={handleLogout}
-            className="text-sm bg-red-600 text-white px-4 py-2 rounded-md"
+            className="text-sm bg-[#FACC15] text-black font-semibold px-4 py-2 rounded-md"
           >
             Logout
           </button>
