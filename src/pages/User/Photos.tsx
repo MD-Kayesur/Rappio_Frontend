@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import logo from "../../assets/12142.png";
+import logo from "../../assets/bgremovelogo.png";
 import {
     Heart,
     MessageCircle,

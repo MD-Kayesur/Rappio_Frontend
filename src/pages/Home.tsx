@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CommonWrapper from "@/common/CommonWrapper";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@/assets/12142.png";
+import logo from "@/assets/bgremovelogo.png";
 import bgImage from "@/assets/home.jpg";
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';

@@ -2,8 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
-import logoLight from "@/assets/12142.png";
-import logoDark from "@/assets/12142.png";
+import logoLight from "@/assets/bgremovelogo.png";
+import logoDark from "@/assets/bgremovelogo.png";
 import logoIcon from "@/assets/vectorLittle.png";
 import {
   LayoutDashboard,
