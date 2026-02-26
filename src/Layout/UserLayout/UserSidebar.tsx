@@ -89,7 +89,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
     { path: "/user/videos", label: "Videos", icon: Video },
     { path: "/user/photos", label: "Photos", icon: Image },
     { path: "/user/favorites", label: "Favorites", icon: Bookmark },
-    { path: "/user/top-casinos", label: "Top Casinos", icon: Trophy },
+    { path: "/user/categories", label: "Categories", icon: Trophy },
     // { path: "/user/settings", label: "Settings", icon: Settings },
     // { path: "/user/support", label: "Support", icon: LifeBuoy },
   ];

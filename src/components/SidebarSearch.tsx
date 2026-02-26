@@ -60,7 +60,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
     }, [disableModal]);
 
     const handleSearchChange = (val: string) => {
-        const mediaPages = ['/user/all', '/user/videos', '/user/photos', '/user/favorites', '/user/top-casinos'];
+        const mediaPages = ['/user/all', '/user/videos', '/user/photos', '/user/favorites', '/user/categories'];
         const currentPath = location.pathname;
 
         if (!mediaPages.includes(currentPath) && val.trim() !== '') {

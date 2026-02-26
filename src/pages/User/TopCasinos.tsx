@@ -18,7 +18,7 @@ interface Offer {
   disclaimer: string;
 }
 
-const TopCasinos = () => {
+const Categories = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
@@ -123,6 +123,9 @@ const TopCasinos = () => {
 
   return (
     <div className="min-h-full text-white overflow-hidden">
+      <div className="px-6 pt-6">
+        <h1 className="text-2xl font-bold">Categories</h1>
+      </div>
       {/* Category Filter Tabs */}
       <div className="sticky top-0 z-10 w-full backdrop-blur-md px-2">
         <div className="relative flex items-center group">
@@ -182,7 +185,7 @@ const TopCasinos = () => {
                 onClick={() => {
                   navigate('/user/all', {
                     state: {
-                      feedType: 'top-casinos',
+                      feedType: 'categories',
                       initialIndex: index,
                       initialCategory: selectedCategory
                     }
@@ -276,4 +279,4 @@ const TopCasinos = () => {
   );
 };
 
-export default TopCasinos;
+export default Categories;
