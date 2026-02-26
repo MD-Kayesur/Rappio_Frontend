@@ -19,11 +19,32 @@ import Settings from "@/pages/Admin/Settings";
 import AllMedia from "@/pages/User/AllMedia";
 import Sittings from "@/pages/User/Sittings";
 
+import About from "@/pages/About";
+import TermsOfService from "@/pages/About/TermsOfService";
+import PrivacyPolicy from "@/pages/About/PrivacyPolicy";
+import CookiePolicy from "@/pages/About/CookiePolicy";
+
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/terms",
+        element: <TermsOfService />,
+      },
+      {
+        path: "/privacy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "/cookies",
+        element: <CookiePolicy />,
+      },
 
 
       {

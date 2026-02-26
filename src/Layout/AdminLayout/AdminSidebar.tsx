@@ -10,7 +10,13 @@ import {
   ListOrdered,
   BarChart3,
   Settings,
-  LogOut
+  LogOut,
+  Info,
+  FileText,
+  Shield,
+  Cookie,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import {
   MdKeyboardDoubleArrowLeft,
@@ -33,6 +39,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
   const location = useLocation();
   const dispatch = useDispatch();
   const [isDarkMode] = useState(false);
+  const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -96,39 +103,89 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
       {/* Menu */}
       {sidebarOpen && (
         <nav className="flex-1 overflow-y-auto mt-4 px-2 sm:px-3 pb-4">
-          {menuItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path === "/admin/overview" && location.pathname === "/admin");
+          <div className="mb-4">
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.path || (item.path === "/admin/overview" && location.pathname === "/admin");
 
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => {
-                  if (window.innerWidth < 768) {
-                    setSidebarOpen(false);
-                  }
-                }}
-                className={`group flex font-normal items-center gap-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer
-                  ${isActive
-                    ? "bg-[#FACC15] text-black shadow-md shadow-[#FACC15]/20"
-                    : "text-[#686565] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#FACC15] dark:hover:text-white"
-                  }
-                  ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
-                `}
-              >
-                <item.icon
-                  className={`flex-shrink-0 transition-transform duration-200 ${isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"
-                    } group-hover:scale-110`}
-                />
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => {
+                    if (window.innerWidth < 768) {
+                      setSidebarOpen(false);
+                    }
+                  }}
+                  className={`group flex font-normal items-center gap-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer
+                    ${isActive
+                      ? "bg-[#FACC15] text-black shadow-md shadow-[#FACC15]/20"
+                      : "text-[#686565] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#FACC15] dark:hover:text-white"
+                    }
+                    ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
+                  `}
+                >
+                  <item.icon
+                    className={`flex-shrink-0 transition-transform duration-200 ${isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"
+                      } group-hover:scale-110`}
+                  />
 
-                {!isCollapsed && (
-                  <span className="flex items-center gap-2 text-[16px] truncate">
-                    {item.label}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
+                  {!isCollapsed && (
+                    <span className="flex items-center gap-2 text-[16px] truncate">
+                      {item.label}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 border-t border-gray-100 dark:border-gray-800 pt-4">
+            <button
+              onClick={() => !isCollapsed && setIsAboutDropdownOpen(!isAboutDropdownOpen)}
+              className={`w-full group flex font-normal items-center gap-3 rounded-lg transition-all duration-200 cursor-pointer
+                ${isAboutDropdownOpen && !isCollapsed ? "bg-gray-50 dark:bg-gray-800/50" : "hover:bg-gray-100 dark:hover:bg-gray-800"}
+                ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
+                ${["/about", "/terms", "/privacy", "/cookies"].includes(location.pathname) ? "text-[#FACC15]" : "text-[#686565] dark:text-gray-200"}
+              `}
+            >
+              <Info className={`flex-shrink-0 transition-transform duration-200 ${isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"} group-hover:scale-110`} />
+
+              {!isCollapsed && (
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-[16px] truncate">About</span>
+                  {isAboutDropdownOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </div>
+              )}
+            </button>
+
+            {isAboutDropdownOpen && !isCollapsed && (
+              <div className="mt-1 ml-4 border-l-2 border-gray-100 dark:border-gray-800 pl-2 space-y-1 animate-in slide-in-from-left-2 duration-200">
+                {[
+                  { path: "/about", label: "About Us", icon: Info },
+                  { path: "/terms", label: "Terms of Service", icon: FileText },
+                  { path: "/privacy", label: "Privacy Policy", icon: Shield },
+                  { path: "/cookies", label: "Cookie Policy", icon: Cookie },
+                ].map((item) => {
+                  const isActive = location.pathname === item.path;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => window.innerWidth < 768 && setSidebarOpen(false)}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-md text-[14px] transition-colors
+                        ${isActive
+                          ? "text-[#FACC15] font-medium"
+                          : "text-gray-500 dark:text-gray-400 hover:text-[#FACC15] hover:bg-gray-50 dark:hover:bg-gray-800/50"}
+                      `}
+                    >
+                      <item.icon className="w-4 h-4 min-w-[16px]" />
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </nav>
       )}
 
