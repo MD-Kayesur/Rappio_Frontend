@@ -384,9 +384,9 @@ const AllMedia: React.FC = () => {
                                                     if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
                                                 type="button"
-                                                className="w-full px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:shadow-xl hover:scale-105 active:scale-95 pointer-events-auto"
+                                                className="w-full px-6 py-3 rounded-xl bg-gray-600/50 backdrop-blur-md text-white border border-white font-bold transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:shadow-xl hover:scale-105 active:scale-95 pointer-events-auto"
                                             >
-                                                {offer.cta || 'CLAIM OFFER'}
+                                                Claim Offer
                                             </button>
 
 
@@ -469,9 +469,9 @@ const AllMedia: React.FC = () => {
                                                     e.stopPropagation();
                                                     if (offer.website_url) window.open(offer.website_url, '_blank');
                                                 }}
-                                                className="w-full   bg-[#FACC15] text-black font-bold py-4 rounded-2xl hover:bg-[#EAB308] transition-all shadow-[0_0_20px_rgba(250,204,21,0.3)] active:scale-95"
+                                                className="w-full bg-gray-600 text-white font-bold py-4 rounded-2xl border border-white hover:bg-gray-700 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95"
                                             >
-                                                {offer.cta || 'CLAIM OFFER NOW'}
+                                                Claim Offer
                                             </button>
                                             <button
                                                 onClick={(e) => {

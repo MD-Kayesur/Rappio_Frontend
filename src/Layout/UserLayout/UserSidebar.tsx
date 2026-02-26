@@ -123,17 +123,17 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                 }`}
             >
               {isCollapsed ? (
-                <img src={logoIcon} alt="ProntoCorso" className="w-10 h-10 rounded-full" />
+                <img src={logoIcon} alt="Rappio" className="w-10 h-10 rounded-full" />
               ) : (
                 <img
                   src={isDarkMode ? logoDark : logoLight}
-                  alt="ProntoCorso"
+                  alt="Rappio"
                   className="transition-all duration-300 rounded-full w-50"
                 />
               )}
               {!isCollapsed && (
                 <h1 className="font-bold text-[22px] text-[#111827] dark:text-gray-200 truncate">
-                  ProntoCorso
+                  Rappio
                 </h1>
               )}
             </div>

@@ -30,20 +30,26 @@ const routes = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/terms",
-        element: <TermsOfService />,
-      },
-      {
-        path: "/privacy",
-        element: <PrivacyPolicy />,
-      },
-      {
-        path: "/cookies",
-        element: <CookiePolicy />,
+        path: "/",
+        element: <UserLayout />,
+        children: [
+          {
+            path: "about",
+            element: <About />,
+          },
+          {
+            path: "terms",
+            element: <TermsOfService />,
+          },
+          {
+            path: "privacy",
+            element: <PrivacyPolicy />,
+          },
+          {
+            path: "cookies",
+            element: <CookiePolicy />,
+          },
+        ]
       },
 
 
