@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
 import logoLight from "@/assets/bgremovelogo.png";
 import logoDark from "@/assets/bgremovelogo.png";
-import logoIcon from "@/assets/vectorLittle.png";
+import logoIcon from "/12143.png";
 import {
   LayoutDashboard,
   ListOrdered,

@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import { useDispatch } from "react-redux";
 // import { logout } from "@/store/Slices/AuthSlice/authSlice";
 
 import logoLight from "@/assets/bgremovelogo.png";
 import logoDark from "@/assets/bgremovelogo.png";
-import logoIcon from "@/assets/vectorLittle.png";
+import logoIcon from "/12143.png";
 import {
   LayoutDashboard,
   Video,
@@ -50,6 +50,15 @@ export const UserSidebar: React.FC<SidebarProps> = ({
   const location = useLocation();
   const [isDarkMode] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
+
+  const isAboutActive = ["/about", "/terms", "/privacy", "/cookies"].includes(location.pathname);
+
+  // Automatically open the About dropdown if an About sub-route is active
+  useEffect(() => {
+    if (isAboutActive) {
+      setIsAboutDropdownOpen(true);
+    }
+  }, [isAboutActive]);
 
   //  const { data: subscriptionData } = useGetMySubscriptionQuery();
   // const isLifetime = subscriptionData?.data?.planAlias === "PRO_LIFETIME" || subscriptionData?.data?.plan === "PRO_LIFETIME";
@@ -205,7 +214,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
               className={`w-full group flex font-normal items-center gap-3 rounded-lg transition-all duration-200 cursor-pointer
                 ${isAboutDropdownOpen && !isCollapsed ? "bg-gray-50 dark:bg-gray-800/50" : "hover:bg-gray-100 dark:hover:bg-gray-800"}
                 ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
-                ${["/about", "/terms", "/privacy", "/cookies"].includes(location.pathname) ? "text-[#FACC15]" : "text-[#686565] dark:text-gray-200"}
+                ${isAboutActive ? "text-[#FACC15]" : "text-[#686565] dark:text-gray-200"}
               `}
             >
               <Info className={`flex-shrink-0 transition-transform duration-200 ${isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"} group-hover:scale-110`} />
@@ -234,7 +243,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                       onClick={() => window.innerWidth < 768 && setSidebarOpen(false)}
                       className={`flex items-center gap-3 px-3 py-2 rounded-md text-[14px] transition-colors
                         ${isActive
-                          ? "text-[#FACC15] font-medium"
+                          ? "bg-[#FACC15] text-black shadow-md shadow-[#FACC15]/20 font-medium"
                           : "text-gray-500 dark:text-gray-400 hover:text-[#FACC15] hover:bg-gray-50 dark:hover:bg-gray-800/50"}
                       `}
                     >
