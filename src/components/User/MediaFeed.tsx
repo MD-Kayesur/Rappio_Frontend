@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import {
     Heart,
     MessageCircle,
@@ -438,17 +438,15 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ type: propType, feedType: propFee
             </div>
 
             {/* Scroll Buttons */}
-            <motion.div
-                animate={{
+            <div
+                style={{
                     right: showComments ? (window.innerWidth < 768 ? 10 : (window.innerWidth < 1024 ? 420 : 520)) : 40,
-                    opacity: 1
                 }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
                 className="hidden sm:flex absolute bottom-10 flex-col gap-3 z-[120]"
             >
                 <button onClick={() => handleScroll('up')} disabled={currentIndex === 0} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'opacity-20' : 'text-foreground hover:bg-foreground/10'}`}><ChevronUp size={28} /></button>
                 <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'opacity-20' : 'text-foreground hover:bg-foreground/10'}`}><ChevronDown size={28} /></button>
-            </motion.div>
+            </div>
 
             <CommentsSidebar
                 showComments={showComments}

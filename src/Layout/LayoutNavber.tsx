@@ -69,7 +69,7 @@ export const LayoutNavber: React.FC = () => {
 
       </div>
       <div className="flex-1" />
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mt-1.5 md:mt-2">
         <GoogleTranslate />
         {/* <ModeToggle /> */}
       </div>
