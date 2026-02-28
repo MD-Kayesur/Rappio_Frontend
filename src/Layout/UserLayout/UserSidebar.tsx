@@ -17,7 +17,12 @@ import {
   Shield,
   Cookie,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  LayoutGrid,
+  Search,
+  User,
+  Play,
+  Heart
 } from "lucide-react";
 import { SidebarSearch } from "@/components/SidebarSearch";
 
@@ -85,11 +90,11 @@ export const UserSidebar: React.FC<SidebarProps> = ({
   // }, [theme]);
 
   const menuItems = [
-    { path: "/user/all", label: "All", icon: LayoutDashboard },
-    { path: "/user/videos", label: "Videos", icon: Video },
-    { path: "/user/photos", label: "Photos", icon: Image },
-    { path: "/user/favorites", label: "Favorites", icon: Bookmark },
-    { path: "/user/top-casinos", label: "Top Casinos", icon: Trophy },
+    { path: '/user/all', label: 'All', icon: LayoutGrid },
+    { path: '/user/videos', label: 'Videos', icon: Play },
+    { path: '/user/photos', label: 'Photos', icon: Image },
+    { path: '/user/category', label: 'Category', icon: LayoutGrid },
+    { path: '/user/favorites', label: 'Favorites', icon: Heart },
     // { path: "/user/settings", label: "Settings", icon: Settings },
     // { path: "/user/support", label: "Support", icon: LifeBuoy },
   ];
