@@ -30,6 +30,10 @@ const routes = createBrowserRouter([
     element: <App />,
     children: [
       {
+        index: true,
+        element: <Home />,
+      },
+      {
         path: "/",
         element: <UserLayout />,
         children: [
@@ -50,12 +54,6 @@ const routes = createBrowserRouter([
             element: <CookiePolicy />,
           },
         ]
-      },
-
-
-      {
-        path: "",
-        element: <Home />,
       },
 
       {
