@@ -352,10 +352,10 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ type: propType, feedType: propFee
     };
 
     if (isLoading || offers.length === 0) {
-        if (isLoading) return <div className="h-full bg-black flex items-center justify-center text-white text-xl"><PageLoader /></div>;
-        return <div className="h-full bg-black flex flex-col items-center justify-center text-white text-xl p-4 text-center">
+        if (isLoading) return <div className="h-full bg-background flex items-center justify-center text-foreground text-xl"><PageLoader /></div>;
+        return <div className="h-full bg-background flex flex-col items-center justify-center text-foreground text-xl p-4 text-center">
             <p className="mb-4">No content found</p>
-            {feedType === 'favorites' && <p className="text-sm text-white/50">Explore and save some favorites first!</p>}
+            {feedType === 'favorites' && <p className="text-sm text-foreground/50">Explore and save some favorites first!</p>}
         </div>;
     }
 
@@ -385,35 +385,35 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ type: propType, feedType: propFee
                                 {/* Sidebar Icons */}
                                 <div className="absolute right-2 bottom-20 sm:static w-14 flex flex-col items-center gap-4 sm:gap-6 sm:mb-8 flex-shrink-0 z-[120]">
                                     <div className="flex flex-col items-center gap-0">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
-                                            <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#FF2D55] text-[#FF2D55]' : 'text-white'}`} />
+                                        <button onClick={(e) => { e.stopPropagation(); toggleLike(offer.id); }} className="w-12 h-12 rounded-full bg-card hover:bg-muted dark:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-border">
+                                            <Heart size={22} className={`${likedOffers.has(offer.id) ? 'fill-[#FF2D55] text-[#FF2D55]' : 'text-foreground'}`} />
                                         </button>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-0">
-                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                        <button onClick={handleExpandAndComment} className="w-12 h-12 rounded-full bg-card hover:bg-muted dark:bg-neutral-700/80 flex items-center justify-center text-foreground transition-all shadow-lg border border-border">
                                             <MessageCircle size={22} />
                                         </button>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-0">
-                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full hover:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-white/5">
-                                            <Bookmark size={22} className={`${savedOffers.has(offer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-white'}`} />
+                                        <button onClick={(e) => { e.stopPropagation(); toggleSave(offer.id); }} className="w-12 h-12 rounded-full bg-card hover:bg-muted dark:bg-neutral-700/80 flex items-center justify-center transition-all shadow-lg border border-border">
+                                            <Bookmark size={22} className={`${savedOffers.has(offer.id) ? 'fill-[#facd3b] text-[#facd3b]' : 'text-foreground'}`} />
                                         </button>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-0">
-                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full hover:bg-white/10 flex items-center justify-center text-white transition-all shadow-lg border border-white/5 active:scale-90 duration-300">
+                                        <button onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }} className="w-12 h-12 rounded-full bg-card hover:bg-muted dark:bg-neutral-700/80 shadow-lg border border-border flex items-center justify-center text-foreground transition-all active:scale-90 duration-300">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z" />
                                             </svg>
                                         </button>
-                                        <span className="text-white/80 text-[12px] font-bold">Share</span>
+                                        <span className="text-foreground/80 text-[12px] font-bold">Share</span>
                                     </div>
 
                                     {(type === 'video' || (type === 'all' && offer.video_url)) && (
                                         <div className="flex flex-col items-center gap-1.5">
-                                            <button onClick={() => setIsMuted(!isMuted)} className="w-12 h-12 rounded-full hover:bg-neutral-700/80 flex items-center justify-center text-white transition-all shadow-lg border border-white/5">
+                                            <button onClick={() => setIsMuted(!isMuted)} className="w-12 h-12 rounded-full bg-card hover:bg-muted dark:bg-neutral-700/80 flex items-center justify-center text-foreground transition-all shadow-lg border border-border">
                                                 {isMuted ? <VolumeX size={22} /> : <Volume2 size={22} />}
                                             </button>
                                         </div>
@@ -432,7 +432,7 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ type: propType, feedType: propFee
                     onClick={() => {
                         window.dispatchEvent(new CustomEvent('open-sidebar-search'));
                     }}
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-white border border-white/10 shadow-lg active:scale-95 transition-all hover:bg-white/10"
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-foreground bg-card border border-border shadow-lg active:scale-95 transition-all hover:bg-muted"
                 >
                     <Search size={20} />
                 </button>
@@ -447,8 +447,8 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ type: propType, feedType: propFee
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
                 className="hidden sm:flex absolute bottom-10 flex-col gap-3 z-[120]"
             >
-                <button onClick={() => handleScroll('up')} disabled={currentIndex === 0} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronUp size={28} /></button>
-                <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'bg-white/5 text-white/20' : 'bg-black/40 text-white hover:bg-black/60 border border-white/10'}`}><ChevronDown size={28} /></button>
+                <button onClick={() => handleScroll('up')} disabled={currentIndex === 0} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === 0 ? 'bg-muted text-muted-foreground/20' : 'bg-card text-foreground hover:bg-muted border border-border'}`}><ChevronUp size={28} /></button>
+                <button onClick={() => handleScroll('down')} disabled={currentIndex === offers.length - 1} className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentIndex === offers.length - 1 ? 'bg-muted text-muted-foreground/20' : 'bg-card text-foreground hover:bg-muted border border-border'}`}><ChevronDown size={28} /></button>
             </motion.div>
 
             <CommentsSidebar

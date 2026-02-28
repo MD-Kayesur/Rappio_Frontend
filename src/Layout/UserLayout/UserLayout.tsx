@@ -56,7 +56,7 @@ export default function UserLayout() {
         <div className={`relative h-full transition-all duration-300 
           ${isMobile ? (sidebarOpen ? "translate-x-0" : "-translate-x-full") : "translate-x-0"}
         `}>
-          <div className={`h-full bg-black/10 backdrop-blur-lg border-r border-white/5 shadow-2xl pointer-events-auto transition-all duration-300 ${isCollapsed ? "w-20" : "w-70"}`}>
+          <div className={`h-full bg-white/80 dark:bg-black/10 backdrop-blur-lg border-r border-black/10 dark:border-white/5 shadow-2xl pointer-events-auto transition-all duration-300 ${isCollapsed ? "w-20" : "w-70"}`}>
             <UserSidebar
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
@@ -76,7 +76,7 @@ export default function UserLayout() {
         >
           <AiOutlineMenu className="w-6 h-6" />
         </button>
-        
+
       )}
 
       {/* Main Content Area */}

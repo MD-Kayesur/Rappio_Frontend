@@ -75,7 +75,7 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                         animate={window.innerWidth < 768 ? { y: 0 } : { x: 0 }}
                         exit={window.innerWidth < 768 ? { y: '100%' } : { x: '100%' }}
                         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                        className="fixed bottom-0 right-0 w-full h-[75vh] md:h-full md:w-[400px] lg:w-[500px] bg-black md:bg-black/20 md:backdrop-blur-lg z-[9999] flex flex-col border-t md:border-t-0 md:border-l border-white/10 rounded-t-[16px] md:rounded-none overflow-hidden"
+                        className="fixed bottom-0 right-0 w-full h-[75vh] md:h-full md:w-[400px] lg:w-[500px] bg-background md:bg-background/40 md:backdrop-blur-lg z-[9999] flex flex-col border-t md:border-t-0 md:border-l border-border rounded-t-[16px] md:rounded-none overflow-hidden transition-colors duration-300"
                     >
                         {/* Header */}
                         <div className="px-5 py-4 flex items-center justify-between border-b border-white/5 sticky top-0 z-20 bg-transparent">
@@ -112,12 +112,12 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                                     <div className="flex-1 min-w-0">
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-1.5 mb-0.5">
-                                                <span className="text-white/50 font-semibold text-[13px] leading-tight">{comment.user}</span>
+                                                <span className="text-foreground/50 font-semibold text-[13px] leading-tight">{comment.user}</span>
                                                 {comment.user === 'Creator' && (
                                                     <span className="text-[#FACC15] font-bold text-[11px]">· Creator</span>
                                                 )}
                                             </div>
-                                            <p className="text-white text-[15px] leading-snug break-words">
+                                            <p className="text-foreground text-[15px] leading-snug break-words">
                                                 {comment.text}
                                             </p>
                                             {comment.commentImage && (
@@ -134,8 +134,8 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
 
                                         {/* Replies Toggle */}
                                         {comment.replies && comment.replies.length > 0 && (
-                                            <button onClick={() => toggleReplies(comment.id)} className="flex items-center gap-2 text-white/40 text-[13px] font-bold mt-4">
-                                                <div className="w-6 h-[1px] bg-white/10" />
+                                            <button onClick={() => toggleReplies(comment.id)} className="flex items-center gap-2 text-foreground/40 text-[13px] font-bold mt-4">
+                                                <div className="w-6 h-[1px] bg-foreground/10" />
                                                 View {comment.replies.length} replies
                                                 <ChevronDown size={14} className={`transition-transform duration-300 ${comment.showReplies ? 'rotate-180' : ''}`} />
                                             </button>
@@ -183,7 +183,7 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                                             >
                                                 <Heart size={20} fill={comment.isLiked ? 'currentColor' : 'none'} />
                                             </button>
-                                            <span className="text-white/40 text-[11px] font-medium">{comment.likes}</span>
+                                            <span className="text-foreground/40 text-[11px] font-medium">{comment.likes}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -223,7 +223,7 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                                     </div>
 
                                     {/* Input Box */}
-                                    <div className="flex-1 flex items-center bg-white/5 rounded-full pl-3 pr-2 sm:px-4 border border-transparent focus-within:border-white/10 transition-all relative">
+                                    <div className="flex-1 flex items-center bg-foreground/5 rounded-full pl-3 pr-2 sm:px-4 border border-transparent focus-within:border-foreground/10 transition-all relative">
                                         <input
                                             ref={commentInputRef}
                                             type="text"
@@ -232,7 +232,7 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                                             onFocus={() => { if (!username) setShowNameSetup(true); }}
                                             onClick={() => { if (!username) setShowNameSetup(true); }}
                                             placeholder="Add comment..."
-                                            className="flex-1 bg-transparent py-2.5 text-[15px] text-white outline-none placeholder:text-white/30 min-w-0"
+                                            className="flex-1 bg-transparent py-2.5 text-[15px] text-foreground outline-none placeholder:text-foreground/30 min-w-0"
                                             onKeyPress={(e) => e.key === 'Enter' && handleCommentSubmit()}
                                         />
 

@@ -2,7 +2,7 @@ import MediaFeed from '@/components/User/MediaFeed';
 
 const AllMedia = () => {
     return (
-        <div className="h-full w-full bg-black overflow-hidden relative">
+        <div className="h-full w-full bg-background overflow-hidden relative">
             <MediaFeed type="all" />
         </div>
     );

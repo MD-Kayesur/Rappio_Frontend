@@ -29,10 +29,10 @@ const ShareModal: React.FC<ShareModalProps> = ({ showShareModal, setShowShareMod
         <AnimatePresence>
             {showShareModal && (
                 <div className="fixed inset-0 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
-                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-black/20 backdrop-blur-lg rounded-3xl p-6 w-full max-w-[450px] relative border border-white/10" onClick={(e) => e.stopPropagation()}>
+                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-background md:bg-background/40 backdrop-blur-lg rounded-3xl p-6 w-full max-w-[450px] relative border border-border transition-colors duration-300" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-center mb-8">
-                            <h3 className="text-white text-lg font-semibold">Share to</h3>
-                            <button onClick={() => setShowShareModal(false)} className="absolute top-5 right-5 text-white/60">
+                            <h3 className="text-foreground text-lg font-semibold">Share to</h3>
+                            <button onClick={() => setShowShareModal(false)} className="absolute top-5 right-5 text-foreground/60 transition-colors hover:text-foreground">
                                 <X size={24} />
                             </button>
                         </div>
@@ -43,7 +43,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ showShareModal, setShowShareMod
                                         <div className={`w-14 h-14 rounded-full ${option.color} flex items-center justify-center text-white shadow-lg`}>
                                             {option.icon}
                                         </div>
-                                        <span className="text-white/60 text-[11px] font-medium leading-tight">{option.name}</span>
+                                        <span className="text-foreground/60 text-[11px] font-medium leading-tight">{option.name}</span>
                                     </button>
                                 ))}
                             </div>

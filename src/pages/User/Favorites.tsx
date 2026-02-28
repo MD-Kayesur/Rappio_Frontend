@@ -116,7 +116,7 @@ const Favorites = () => {
   };
 
   return (
-    <div className="min-h-full text-white overflow-hidden">
+    <div className="min-h-full text-foreground overflow-hidden">
       {/* Category Filter Tabs */}
       <div className="sticky top-0 z-10 w-full backdrop-blur-md px-2">
         <div className="relative flex items-center group">
@@ -140,8 +140,8 @@ const Favorites = () => {
                   key={category}
                   onClick={() => setSelectedCategory(category)}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category
-                    ? 'bg-white text-black'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-foreground text-background'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
                     }`}
                 >
                   {category}
@@ -182,7 +182,7 @@ const Favorites = () => {
                     }
                   });
                 }}
-                className="group relative bg-[#1A1C1D] rounded-xl overflow-hidden hover:ring-2 hover:ring-gray-600 transition-all duration-300 cursor-pointer"
+                className="group relative bg-card rounded-xl overflow-hidden hover:ring-2 hover:ring-foreground/20 transition-all duration-300 cursor-pointer shadow-lg border border-border"
               >
                 {/* Image Container */}
                 <div className="relative aspect-[3/4] overflow-hidden bg-gray-800">

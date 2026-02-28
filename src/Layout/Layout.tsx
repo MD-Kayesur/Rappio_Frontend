@@ -8,7 +8,7 @@ import { Outlet } from 'react-router-dom';
 const Layout: React.FC = () => {
   return (
     <div
-      className="flex flex-col h-screen overflow-hidden bg-[#0A0A0A]"
+      className="flex flex-col h-screen overflow-hidden bg-background"
     >
 
 

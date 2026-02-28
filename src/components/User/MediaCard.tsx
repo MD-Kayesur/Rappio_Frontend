@@ -53,7 +53,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
                 mass: 1
             }}
             style={{ transformStyle: "preserve-3d" }}
-            className="w-full h-full sm:flex-1 bg-[#121212] sm:rounded-[1rem] shadow-2xl sm:border sm:border-white/10 relative group"
+            className="w-full h-full sm:flex-1 bg-card sm:rounded-[1rem] shadow-2xl sm:border border-border relative group transition-colors duration-300"
         >
             {/* Front Side */}
             <div
@@ -109,26 +109,26 @@ const MediaCard: React.FC<MediaCardProps> = ({
 
             {/* Back Side */}
             <div
-                className="absolute inset-0 w-full h-full bg-[#121212] sm:rounded-[1rem] overflow-hidden p-6 sm:p-8 flex flex-col gap-6 custom-scrollbar overflow-y-auto"
+                className="absolute inset-0 w-full h-full bg-card sm:rounded-[1rem] overflow-hidden p-6 sm:p-8 flex flex-col gap-6 custom-scrollbar overflow-y-auto transition-colors duration-300"
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
             >
                 <div className="flex items-center gap-4">
                     <div className="min-w-0">
-                        <h3 className="text-white text-xl font-bold truncate">{offer.title}</h3>
-                        <p className="text-white text-sm truncate">{offer.subtitle}</p>
+                        <h3 className="text-foreground text-xl font-bold truncate">{offer.title}</h3>
+                        <p className="text-foreground/70 text-sm truncate">{offer.subtitle}</p>
                     </div>
                 </div>
 
                 <div className="space-y-4 flex-1 overflow-y-auto custom-scrollbar pr-2">
                     <div className="space-y-2">
-                        <h4 className="text-white font-bold text-xs uppercase tracking-wider">About this offer</h4>
-                        <p className="text-white text-[15px] leading-relaxed">{offer.description}</p>
+                        <h4 className="text-foreground font-bold text-xs uppercase tracking-wider">About this offer</h4>
+                        <p className="text-foreground/90 text-[15px] leading-relaxed">{offer.description}</p>
                     </div>
 
                     {offer.tags && offer.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 py-2">
                             {offer.tags.map((tag, idx) => (
-                                <span key={idx} className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white text-[10px] font-bold uppercase tracking-tight">
+                                <span key={idx} className="px-3 py-1 bg-foreground/5 dark:bg-white/5 border border-border dark:border-white/10 rounded-lg text-foreground dark:text-white text-[10px] font-bold uppercase tracking-tight">
                                     {tag}
                                 </span>
                             ))}
@@ -137,10 +137,10 @@ const MediaCard: React.FC<MediaCardProps> = ({
 
                     {offer.terms_highlights && (
                         <div className="space-y-3 pt-2">
-                            <h4 className="text-white font-bold text-xs uppercase tracking-wider">Key Highlights</h4>
+                            <h4 className="text-foreground font-bold text-xs uppercase tracking-wider">Key Highlights</h4>
                             <ul className="space-y-2.5">
                                 {offer.terms_highlights.map((term, idx) => (
-                                    <li key={idx} className="flex items-start gap-3 text-white text-sm">
+                                    <li key={idx} className="flex items-start gap-3 text-foreground/90 text-sm">
                                         <div className="w-1.5 h-1.5 rounded-full bg-[#FACC15] mt-1.5 shrink-0" />
                                         {term}
                                     </li>
@@ -150,13 +150,13 @@ const MediaCard: React.FC<MediaCardProps> = ({
                     )}
                 </div>
 
-                <div className="space-y-4 pt-6 mt-auto border-t border-white/10">
+                <div className="space-y-4 pt-6 mt-auto border-t border-border">
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             if (offer.website_url) window.open(offer.website_url, '_blank');
                         }}
-                        className="w-full bg-gray-600 text-white font-bold py-4 rounded-2xl border border-white hover:bg-gray-700 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95"
+                        className="w-full bg-primary text-primary-foreground font-bold py-4 rounded-2xl border border-primary/20 hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(0,0,0,0.1)] active:scale-95"
                     >
                         {ctaText}
                     </button>
@@ -165,12 +165,12 @@ const MediaCard: React.FC<MediaCardProps> = ({
                             e.stopPropagation();
                             setFlippedCardId(null);
                         }}
-                        className="w-full bg-white/5 text-white font-medium py-3 rounded-2xl hover:bg-white/10 transition-all text-sm"
+                        className="w-full bg-foreground/5 text-foreground font-medium py-3 rounded-2xl hover:bg-foreground/10 transition-all text-sm transition-colors duration-300"
                     >
                         Back to {mediaLabel}
                     </button>
                     {offer.disclaimer && (
-                        <p className="text-white/20 text-[10px] text-center leading-tight">
+                        <p className="text-foreground/20 text-[10px] text-center leading-tight">
                             {offer.disclaimer}
                         </p>
                     )}

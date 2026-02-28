@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
 import logoLight from "@/assets/bgremovelogo.png";
@@ -22,6 +22,7 @@ import {
   MdKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
 } from "react-icons/md";
+import { useTheme } from "@/components/ThemeToggle/theme-provider";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -38,8 +39,19 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
 }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const [isDarkMode] = useState(false);
+  const { theme } = useTheme();
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    if (theme === "dark") {
+      setIsDarkMode(true);
+    } else if (theme === "light") {
+      setIsDarkMode(false);
+    } else {
+      setIsDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }, [theme]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -65,7 +77,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
         <div className="absolute top-3 right-3 md:hidden z-10">
           <button
             onClick={() => setSidebarOpen(false)}
-            className="w-8 h-8 bg-[#1A1C1D] dark:bg-gray-800 text-white rounded-full flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer shadow-lg"
+            className="w-8 h-8 bg-card border border-border text-foreground rounded-full flex items-center justify-center hover:bg-muted transition-colors cursor-pointer shadow-lg"
           >
             ✖
           </button>
@@ -119,7 +131,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
                   className={`group flex font-normal items-center gap-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer
                     ${isActive
                       ? "bg-[#FACC15] text-black shadow-md shadow-[#FACC15]/20"
-                      : "text-[#686565] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#FACC15] dark:hover:text-white"
+                      : "text-foreground/70 dark:text-gray-200 hover:bg-muted dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white"
                     }
                     ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
                   `}
@@ -143,9 +155,9 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
             <button
               onClick={() => !isCollapsed && setIsAboutDropdownOpen(!isAboutDropdownOpen)}
               className={`w-full group flex font-normal items-center gap-3 rounded-lg transition-all duration-200 cursor-pointer
-                ${isAboutDropdownOpen && !isCollapsed ? "bg-gray-50 dark:bg-gray-800/50" : "hover:bg-gray-100 dark:hover:bg-gray-800"}
+                ${isAboutDropdownOpen && !isCollapsed ? "bg-muted dark:bg-gray-800/50" : "hover:bg-muted dark:hover:bg-gray-800"}
                 ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
-                ${["/about", "/terms", "/privacy", "/cookies"].includes(location.pathname) ? "text-[#FACC15]" : "text-[#686565] dark:text-gray-200"}
+                ${["/about", "/terms", "/privacy", "/cookies"].includes(location.pathname) ? "text-primary" : "text-foreground/70 dark:text-gray-200"}
               `}
             >
               <Info className={`flex-shrink-0 transition-transform duration-200 ${isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"} group-hover:scale-110`} />
