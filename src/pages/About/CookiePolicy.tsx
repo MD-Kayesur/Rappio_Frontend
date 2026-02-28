@@ -2,7 +2,7 @@ import { Cookie } from "lucide-react";
 
 const CookiePolicy = () => {
     return (
-        <div className="p-6 md:p-10 max-w-4xl mx-auto space-y-8 animate-in slide-in-from-bottom-5 duration-500">
+        <div className="p-6 pt-6 min-h-full space-y-8 animate-in slide-in-from-bottom-5 duration-500 text-foreground">
             <div className="flex items-center gap-3 border-b border-gray-100 dark:border-gray-800 pb-6">
                 <Cookie className="w-8 h-8 text-[#FACC15]" />
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Cookie Policy</h1>
