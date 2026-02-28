@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Repeat2, Send, Link, Code, Facebook, Linkedin, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Send, Link, Code, Facebook, Linkedin, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
 import { FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 import { toast } from 'sonner';
 
@@ -13,7 +13,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ showShareModal, setShowShareMod
     const shareScrollRef = useRef<HTMLDivElement>(null);
 
     const shareOptions = [
-        { name: 'Repost', icon: <Repeat2 size={24} />, color: 'bg-[#facd3b]', onClick: () => toast.success('Reposted!') },
+        // { name: 'Repost', icon: <Repeat2 size={24} />, color: 'bg-[#facd3b]', onClick: () => toast.success('Reposted!') },
         { name: 'Send to friends', icon: <Send size={24} className="text-black" />, color: 'bg-[#FACC15]', onClick: () => toast.success('Opening messages...') },
         { name: 'Copy Link', icon: <Link size={24} />, color: 'bg-[#2E7DFF]', onClick: () => { navigator.clipboard.writeText(window.location.href); toast.success('Link copied!'); } },
         { name: 'WhatsApp', icon: <FaWhatsapp size={26} />, color: 'bg-[#25D366]', onClick: () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`) },

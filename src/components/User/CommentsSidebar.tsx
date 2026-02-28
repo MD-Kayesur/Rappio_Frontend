@@ -52,7 +52,7 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
     toggleReplies,
     replyTo,
     setReplyTo,
-    logo,
+    // logo,
     showEmojiPicker,
     setShowEmojiPicker
 }) => {
@@ -86,9 +86,9 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                                 Comments
                             </h3>
                             <div className="flex items-center gap-3">
-                                <button className="p-1 text-white/80 sm:hidden">
+                                {/* <button className="p-1 text-white/80 sm:hidden">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="21" y1="10" x2="7" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="7" y2="18"></line></svg>
-                                </button>
+                                </button> */}
                                 <button onClick={() => setShowComments(false)} className="p-1 hover:bg-white/10 rounded-full text-white/80 transition-colors">
                                     <X size={24} />
                                 </button>
@@ -100,13 +100,13 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                             {comments.map((comment) => (
                                 <div key={comment.id} className="flex gap-3 group">
                                     {/* Avatar */}
-                                    <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-base flex-shrink-0 overflow-hidden">
+                                    {/* <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-base flex-shrink-0 overflow-hidden">
                                         {typeof comment.avatar === 'string' && comment.avatar.length > 2 ? (
                                             <img src={comment.avatar} alt={comment.user} className="w-full h-full object-cover" />
                                         ) : (
                                             <span className="text-lg">{comment.avatar}</span>
                                         )}
-                                    </div>
+                                    </div> */}
 
                                     {/* Content Area */}
                                     <div className="flex-1 min-w-0">
@@ -218,9 +218,9 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                                 )}
                                 <div className="flex items-center gap-2 sm:gap-3">
                                     {/* My Avatar */}
-                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black flex flex-shrink-0 items-center justify-center overflow-hidden border border-white/10">
+                                    {/* <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black flex flex-shrink-0 items-center justify-center overflow-hidden border border-white/10">
                                         <img src={logo} alt="My Avatar" className="w-6 sm:w-7 contrast-125" />
-                                    </div>
+                                    </div> */}
 
                                     {/* Input Box */}
                                     <div className="flex-1 flex items-center bg-foreground/5 rounded-full pl-3 pr-2 sm:px-4 border border-transparent focus-within:border-foreground/10 transition-all relative">
