@@ -106,7 +106,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                 setIsOpen(!isOpen);
                             }
                         }}
-                        className={`flex items-center transition-all bg-foreground/5 border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground rounded-full ${isCollapsed
+                        className={`flex items-center transition-all text-foreground/60 hover:text-foreground rounded-full hover:bg-foreground/10 ${isCollapsed
                             ? 'w-10 h-10 justify-center p-0 flex-shrink-0'
                             : 'w-full px-4 py-2.5 gap-3'
                             }`}
