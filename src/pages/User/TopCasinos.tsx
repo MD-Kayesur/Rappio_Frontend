@@ -122,7 +122,7 @@ const Categories = () => {
   };
 
   return (
-    <div className="min-h-full text-white overflow-hidden">
+    <div className="min-h-full text-foreground overflow-hidden">
       <div className="px-6 pt-6">
         <h1 className="text-2xl font-bold">Categories</h1>
       </div>
@@ -132,7 +132,7 @@ const Categories = () => {
           {showLeftArrow && (
             <button
               onClick={() => scroll('left')}
-              className="absolute left-0 z-20 hidden md:flex p-1.5 bg-black/60 rounded-full text-white backdrop-blur-sm border border-white/10 hover:bg-black/80 transition-all shadow-lg"
+              className="absolute left-0 z-20 hidden md:flex p-1.5 bg-card/60 rounded-full text-foreground backdrop-blur-sm border border-border hover:bg-card/80 transition-all shadow-lg"
             >
               <ChevronLeft size={20} />
             </button>
@@ -149,8 +149,8 @@ const Categories = () => {
                   key={category}
                   onClick={() => setSelectedCategory(category)}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category
-                    ? 'bg-white text-black'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-primary text-primary-foreground shadow-md'
+                    : 'bg-muted/50 text-muted-foreground hover:bg-muted'
                     }`}
                 >
                   {category}
@@ -162,7 +162,7 @@ const Categories = () => {
           {showRightArrow && (
             <button
               onClick={() => scroll('right')}
-              className="absolute right-0 z-20 hidden md:flex p-1.5 bg-black/60 rounded-full text-white backdrop-blur-sm border border-white/10 hover:bg-black/80 transition-all shadow-lg"
+              className="absolute right-0 z-20 hidden md:flex p-1.5 bg-card/60 rounded-full text-foreground backdrop-blur-sm border border-border hover:bg-card/80 transition-all shadow-lg"
             >
               <ChevronRight size={20} />
             </button>
@@ -191,7 +191,7 @@ const Categories = () => {
                     }
                   });
                 }}
-                className="group relative bg-[#1A1C1D] rounded-xl overflow-hidden hover:ring-2 hover:ring-gray-600 transition-all duration-300 cursor-pointer"
+                className="group relative bg-card rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-xl"
               >
                 {/* Image Container */}
                 <div className="relative aspect-[3/4] overflow-hidden bg-gray-800">
@@ -207,8 +207,8 @@ const Categories = () => {
                   {/* Video Play Icon Overlay */}
                   {youtubeID && (
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-12 h-12 bg-[#FACC15] rounded-full flex items-center justify-center shadow-lg">
-                        <Play className="w-6 h-6 text-black ml-1" fill="black" />
+                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                        <Play className="w-6 h-6 text-primary-foreground ml-1" fill="currentColor" />
                       </div>
                     </div>
                   )}
@@ -222,10 +222,10 @@ const Categories = () => {
                       e.stopPropagation();
                       toggleFavorite(offer.id);
                     }}
-                    className="absolute top-2 right-2 p-1.5 bg-black/70 backdrop-blur-sm rounded-lg hover:bg-black/90 transition-colors z-10"
+                    className="absolute top-2 right-2 p-1.5 bg-background/60 backdrop-blur-sm rounded-lg hover:bg-background/80 transition-colors z-10 border border-border"
                   >
                     <Bookmark
-                      className={`h-4 w-4 ${favorites.has(offer.id) ? 'fill-white text-white' : 'text-white'
+                      className={`h-4 w-4 ${favorites.has(offer.id) ? 'fill-primary text-primary' : 'text-foreground'
                         }`}
                     />
                   </button>

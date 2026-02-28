@@ -152,7 +152,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                 />
               )}
               {!isCollapsed && (
-                <h1 className="font-bold text-[22px] text-[#111827] dark:text-gray-200 truncate">
+                <h1 className="font-bold text-[22px] text-foreground truncate">
                   Rappio
                 </h1>
               )}
@@ -190,10 +190,10 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                   }}
                   className={`group flex font-normal items-center gap-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer
                     ${isDisabled
-                      ? "opacity-50 cursor-not-allowed bg-gray-200 dark:bg-gray-800 text-gray-400"
+                      ? "opacity-50 cursor-not-allowed bg-muted text-muted-foreground"
                       : isActive
-                        ? "bg-[#FACC15] text-black shadow-md shadow-[#FACC15]/20"
-                        : "text-foreground/70 dark:text-gray-200 hover:bg-muted dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white"
+                        ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                        : "text-foreground/70 hover:bg-muted hover:text-primary"
                     }
                     ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
                   `}
@@ -208,8 +208,8 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                     <span className="flex  items-center gap-2 text-[16px] truncate">
                       {item.label}
                       {isDisabled && (
-                        <span className="text-xs  text-black px-2 py-0.5 rounded whitespace-nowrap">
-                          <FaLock className="text-xs dark:text-white" />
+                        <span className="text-xs text-foreground px-2 py-0.5 rounded whitespace-nowrap">
+                          <FaLock className="text-xs" />
                         </span>
                       )}
                     </span>
@@ -223,9 +223,9 @@ export const UserSidebar: React.FC<SidebarProps> = ({
             <button
               onClick={() => !isCollapsed && setIsAboutDropdownOpen(!isAboutDropdownOpen)}
               className={`w-full group flex font-normal items-center gap-3 rounded-lg transition-all duration-200 cursor-pointer
-                ${isAboutDropdownOpen && !isCollapsed ? "bg-muted dark:bg-gray-800/50" : "hover:bg-muted dark:hover:bg-gray-800"}
+                ${isAboutDropdownOpen && !isCollapsed ? "bg-muted" : "hover:bg-muted"}
                 ${isCollapsed ? "justify-center px-3 py-3" : "px-3 sm:px-4 py-2.5 sm:py-3"}
-                ${isAboutActive ? "text-primary" : "text-foreground/70 dark:text-gray-200"}
+                ${isAboutActive ? "text-primary" : "text-foreground/70"}
               `}
             >
               <Info className={`flex-shrink-0 transition-transform duration-200 ${isCollapsed ? "w-6 h-6 sm:w-7 sm:h-7" : "w-5 h-5 sm:w-6 sm:h-6"} group-hover:scale-110`} />
@@ -239,7 +239,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
             </button>
 
             {isAboutDropdownOpen && !isCollapsed && (
-              <div className="mt-1 ml-4 border-l-2 border-gray-200 dark:border-gray-800 pl-2 space-y-1 animate-in slide-in-from-left-2 duration-200">
+              <div className="mt-1 ml-4 border-l-2 border-border pl-2 space-y-1 animate-in slide-in-from-left-2 duration-200">
                 {[
                   { path: "/about", label: "About Us", icon: Info },
                   { path: "/terms", label: "Terms of Service", icon: FileText },
@@ -254,8 +254,8 @@ export const UserSidebar: React.FC<SidebarProps> = ({
                       onClick={() => window.innerWidth < 768 && setSidebarOpen(false)}
                       className={`flex items-center gap-3 px-3 py-2 rounded-md text-[14px] transition-colors
                         ${isActive
-                          ? "bg-[#FACC15] text-black shadow-md shadow-[#FACC15]/20 font-medium"
-                          : "text-gray-500 dark:text-gray-400 hover:text-[#FACC15] hover:bg-gray-50 dark:hover:bg-gray-800/50"}
+                          ? "text-primary font-medium"
+                          : "text-muted-foreground hover:text-primary hover:bg-muted/50"}
                       `}
                     >
                       <item.icon className="w-4 h-4 min-w-[16px]" />
@@ -288,7 +288,7 @@ export const UserSidebar: React.FC<SidebarProps> = ({
         <div className="hidden md:block p-3">
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="flex items-center justify-center w-full gap-2 px-3 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            className="flex items-center justify-center w-full gap-2 px-3 py-2 rounded-lg bg-card text-foreground border border-border hover:bg-muted transition-colors cursor-pointer"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {isCollapsed ? (
