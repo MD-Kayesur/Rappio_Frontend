@@ -9,14 +9,14 @@ import { Button } from "@/components/ui/button"
 import { useTheme } from "./theme-provider"
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme()
+  const { theme, toggleTheme } = useTheme()
 
   return (
     <Button
       variant="outline"
       size="icon"
       className="relative cursor-pointer border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      onClick={toggleTheme}
       aria-label="Toggle theme"
     >
       <Sun className={`h-5 w-5 transition-all ${theme === "light" ? "scale-100 rotate-0" : "scale-0 -rotate-90"}`} />

@@ -10,7 +10,7 @@ import UserLayout from "@/Layout/UserLayout/UserLayout";
 import Videos from "@/pages/User/Videos";
 import Photos from "@/pages/User/Photos";
 import Favorites from "@/pages/User/Favorites";
-import TopCasinos from "@/pages/User/TopCasinos";
+import Categories from "@/pages/User/TopCasinos";
 import AdminLayout from "@/Layout/AdminLayout/AdminLayout";
 import Overview from "@/pages/Admin/Overview";
 import FeedOrdering from "@/pages/Admin/FeedOrdering";
@@ -30,26 +30,30 @@ const routes = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/terms",
-        element: <TermsOfService />,
-      },
-      {
-        path: "/privacy",
-        element: <PrivacyPolicy />,
-      },
-      {
-        path: "/cookies",
-        element: <CookiePolicy />,
-      },
-
-
-      {
-        path: "",
+        index: true,
         element: <Home />,
+      },
+      {
+        path: "/",
+        element: <UserLayout />,
+        children: [
+          {
+            path: "about",
+            element: <About />,
+          },
+          {
+            path: "terms",
+            element: <TermsOfService />,
+          },
+          {
+            path: "privacy",
+            element: <PrivacyPolicy />,
+          },
+          {
+            path: "cookies",
+            element: <CookiePolicy />,
+          },
+        ]
       },
 
       {
@@ -70,7 +74,7 @@ const routes = createBrowserRouter([
           { path: "photos", element: <Photos /> },
           { path: "favorites", element: <Favorites /> },
           { path: "settings", element: <Sittings /> },
-          { path: "top-casinos", element: <TopCasinos /> },
+          { path: "categories", element: <Categories /> },
         ],
       },
       {

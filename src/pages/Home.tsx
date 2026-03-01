@@ -71,30 +71,30 @@ const Home = () => {
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-                className="relative max-w-md w-full bg-[#1A1C1D] rounded-2xl shadow-2xl border border-gray-800 p-8 md:p-10"
+                className="relative max-w-md w-full bg-card rounded-2xl shadow-2xl border border-border p-8 md:p-10 transition-colors duration-300"
               >
                 {/* Close Button */}
                 <button
                   onClick={() => setShowWelcome(false)}
-                  className="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10"
+                  className="absolute top-5 right-5 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-full hover:bg-foreground/10"
                 >
                   <X className="h-5 w-5" />
                 </button>
 
                 {/* Title */}
-                <h2 className="text-3xl font-bold text-white text-center mb-6">
+                <h2 className="text-3xl font-bold text-foreground text-center mb-6">
                   18+ Disclosure
                 </h2>
 
                 {/* Description */}
-                <p className="text-sm md:text-base text-gray-400 text-center leading-relaxed mb-8">
+                <p className="text-sm md:text-base text-muted-foreground text-center leading-relaxed mb-8">
                   This platform promotes casino offers via affiliate links only; no real-money gambling occurs on-site. All outbound links redirect to third-party operators. The following disclosure combines the required elements from your spec (section 6: Compliance & Legal Page)—clear 18+ warning, responsible play messaging, affiliate disclosure, and redirection notice.
                 </p>
 
                 {/* Continue Button */}
                 <Button
                   onClick={handleContinue}
-                  className="w-full h-14 cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-black font-bold text-lg rounded-xl transition-all active:scale-95 shadow-lg shadow-yellow-900/20"
+                  className="w-full h-14 cursor-pointer bg-[#FACC15] hover:bg-[#EAB308] text-black font-bold text-lg rounded-xl transition-all active:scale-95 shadow-lg shadow-[#FACC15]/20"
                 >
                   Continue
                 </Button>

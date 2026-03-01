@@ -60,7 +60,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
     }, [disableModal]);
 
     const handleSearchChange = (val: string) => {
-        const mediaPages = ['/user/all', '/user/videos', '/user/photos', '/user/favorites', '/user/top-casinos'];
+        const mediaPages = ['/user/all', '/user/videos', '/user/photos', '/user/favorites', '/user/categories'];
         const currentPath = location.pathname;
 
         if (!mediaPages.includes(currentPath) && val.trim() !== '') {
@@ -106,7 +106,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                 setIsOpen(!isOpen);
                             }
                         }}
-                        className={`flex items-center transition-all bg-[#1A1C1D] border border-white/5 hover:border-white/10 text-gray-400 hover:text-white rounded-full ${isCollapsed
+                        className={`flex items-center transition-all text-foreground/60 hover:text-foreground rounded-full hover:bg-foreground/10 ${isCollapsed
                             ? 'w-10 h-10 justify-center p-0 flex-shrink-0'
                             : 'w-full px-4 py-2.5 gap-3'
                             }`}
@@ -162,7 +162,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                             initial="hidden"
                             animate="visible"
                             exit="exit"
-                            className={`fixed inset-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col backdrop-blur-[20px] bg-black/80 text-white overflow-hidden`}
+                            className={`fixed inset-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col backdrop-blur-[20px] bg-background/80 text-foreground overflow-hidden transition-colors duration-300`}
                             style={{ pointerEvents: 'auto' }}
                             onClick={!isMobile ? closeSearch : undefined}
                         >
@@ -187,7 +187,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                                     placeholder="Search..."
                                                     value={searchQuery}
                                                     onChange={(e) => handleSearchChange(e.target.value)}
-                                                    className="w-full py-2.5 pl-12 pr-11 bg-white/10 text-white rounded-lg border border-white/10 focus:outline-none placeholder-white/20 text-[17px]"
+                                                    className="w-full py-2.5 pl-12 pr-11 bg-foreground/5 text-foreground rounded-lg border border-border focus:outline-none placeholder-foreground/20 text-[17px]"
                                                     onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
                                                     autoFocus
                                                 />
@@ -235,7 +235,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                                 placeholder="Search anything..."
                                                 value={searchQuery}
                                                 onChange={(e) => handleSearchChange(e.target.value)}
-                                                className="w-full py-5 pl-16 pr-14 bg-white/5 hover:bg-white/10 text-white rounded-2xl border border-white/10 focus:border-white/20 focus:bg-white/10 outline-none placeholder-white/20 text-xl transition-all shadow-2xl"
+                                                className="w-full py-5 pl-16 pr-14 bg-foreground/5 hover:bg-foreground/10 text-foreground rounded-2xl border border-border focus:border-foreground/20 focus:bg-foreground/10 outline-none placeholder-foreground/20 text-xl transition-all shadow-2xl"
                                                 onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
                                                 autoFocus
                                             />

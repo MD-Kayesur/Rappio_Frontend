@@ -54,7 +54,7 @@ export default function AdminLayout() {
         <div className={`relative h-full transition-all duration-300 
           ${isMobile ? (sidebarOpen ? "translate-x-0" : "-translate-x-full") : "translate-x-0"}
         `}>
-          <div className={`h-full bg-black/10 backdrop-blur-lg border-r border-white/5 shadow-2xl pointer-events-auto transition-all duration-300 ${isCollapsed ? "w-20" : "w-70"}`}>
+          <div className={`h-full bg-white/80 dark:bg-black/10 backdrop-blur-lg border-r border-black/10 dark:border-white/5 shadow-2xl pointer-events-auto transition-all duration-300 ${isCollapsed ? "w-20" : "w-70"}`}>
             <AdminSidebar
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}

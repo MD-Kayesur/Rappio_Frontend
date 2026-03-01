@@ -1,5 +1,5 @@
 "use client"
-import { ModeToggle } from "@/components/ThemeToggle/mode-toggle"
+// import { ModeToggle } from "@/components/ThemeToggle/mode-toggle"
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import GoogleTranslate from "@/components/LanguageToggle/GoogleTranslate"
@@ -69,9 +69,9 @@ export const LayoutNavber: React.FC = () => {
 
       </div>
       <div className="flex-1" />
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mt-1.5 md:mt-2">
         <GoogleTranslate />
-        <ModeToggle />
+        {/* <ModeToggle /> */}
       </div>
       {showLogout && (
         <div className="absolute top-5 left-70 transform -translate-x-1/2 w-full flex justify-center">

@@ -58,6 +58,7 @@ const Overview = () => {
   const [yearFilter, setYearFilter] = useState('2026');
   const [feedView, setFeedView] = useState('web');
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const [tagInput, setTagInput] = useState('');
   const [showPreview, setShowPreview] = useState(false);
   const [contains18Plus, setContains18Plus] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,7 +73,7 @@ const Overview = () => {
     termsHighlights: '',
     affiliateLink: '',
     languages: '',
-    categories: '',
+    categories: [] as string[],
     disclaimers: '',
     mediaFile: null as File | null,
     mediaPreview: '',
@@ -153,6 +154,26 @@ const Overview = () => {
     setShowPreview(true);
   };
 
+  const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && tagInput.trim()) {
+      e.preventDefault();
+      if (!formData.categories.includes(tagInput.trim())) {
+        setFormData({
+          ...formData,
+          categories: [...formData.categories, tagInput.trim()]
+        });
+      }
+      setTagInput('');
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setFormData({
+      ...formData,
+      categories: formData.categories.filter(tag => tag !== tagToRemove)
+    });
+  };
+
   const handlePublish = () => {
     console.log('Publishing post:', formData);
     setShowPreview(false);
@@ -164,7 +185,7 @@ const Overview = () => {
       termsHighlights: '',
       affiliateLink: '',
       languages: '',
-      categories: '',
+      categories: [],
       disclaimers: '',
       mediaFile: null,
       mediaPreview: '',
@@ -510,12 +531,31 @@ const Overview = () => {
 
                     <div>
                       <Label className="text-sm mb-2 block">Categories/tags:</Label>
-                      <Textarea
-                        placeholder="Type bonus points & press enter to add"
-                        className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
-                        value={formData.categories}
-                        onChange={(e) => setFormData({ ...formData, categories: e.target.value })}
-                      />
+                      <div className="space-y-3">
+                        <Input
+                          placeholder="Type tag & press enter to add"
+                          className="bg-[#1A1C1D] border-gray-800 text-white"
+                          value={tagInput}
+                          onChange={(e) => setTagInput(e.target.value)}
+                          onKeyDown={addTag}
+                        />
+                        <div className="flex flex-wrap gap-2">
+                          {formData.categories.map((tag, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-1.5 px-3 py-1 bg-[#FACC15]/10 border border-[#FACC15]/20 text-[#FACC15] rounded-full text-xs font-medium group"
+                            >
+                              <span>{tag}</span>
+                              <button
+                                onClick={() => removeTag(tag)}
+                                className="hover:text-white transition-colors"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
                     <div>
