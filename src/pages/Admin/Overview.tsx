@@ -20,7 +20,6 @@ import {
   Heart,
   MessageCircle,
   Bookmark,
-  Share,
   X,
   ChevronLeft,
   ChevronRight,
@@ -35,6 +34,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import ShareModal from '@/components/User/ShareModal';
 
 interface Offer {
   id: number;
@@ -60,6 +60,7 @@ const Overview = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [tagInput, setTagInput] = useState('');
   const [showPreview, setShowPreview] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [contains18Plus, setContains18Plus] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -740,8 +741,10 @@ const Overview = () => {
                       <button className="flex flex-col items-center gap-1 group">
                         <Bookmark className="h-6 w-6 group-hover:text-yellow-500 transition-colors" />
                       </button>
-                      <button className="flex flex-col items-center gap-1 group">
-                        <Share className="h-6 w-6 group-hover:text-green-500 transition-colors" />
+                      <button onClick={() => setShowShareModal(true)} className="flex flex-col items-center gap-1 group">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="group-hover:text-green-500 transition-colors">
+                            <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z" />
+                        </svg>
                       </button>
                     </div>
 
@@ -793,6 +796,13 @@ const Overview = () => {
           </div>
         </div>
       )}
+
+      <ShareModal
+        showShareModal={showShareModal}
+        setShowShareModal={setShowShareModal}
+        url={formData.affiliateLink || window.location.href}
+        title={formData.title || 'Check this out!'}
+      />
     </div>
   );
 };

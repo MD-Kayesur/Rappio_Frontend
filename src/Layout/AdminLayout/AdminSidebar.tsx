@@ -16,7 +16,8 @@ import {
   Shield,
   Cookie,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Users
 } from "lucide-react";
 import {
   MdKeyboardDoubleArrowLeft,
@@ -62,6 +63,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
     { path: "/admin/overview", label: "Overview", icon: LayoutDashboard },
     { path: "/admin/feed-ordering", label: "Feed Ordering", icon: ListOrdered },
     { path: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+    { path: "/admin/user-management", label: "User Management", icon: Users },
     { path: "/admin/settings", label: "Settings", icon: Settings },
   ];
 

@@ -18,6 +18,7 @@ import Analytics from "@/pages/Admin/Analytics";
 import Settings from "@/pages/Admin/Settings";
 import AllMedia from "@/pages/User/AllMedia";
 import Sittings from "@/pages/User/Sittings";
+import UserManagement from "@/pages/Admin/UserManagement";
 
 import About from "@/pages/About";
 import TermsOfService from "@/pages/About/TermsOfService";
@@ -88,6 +89,7 @@ const routes = createBrowserRouter([
               { path: "overview", element: <Overview /> },
               { path: "feed-ordering", element: <FeedOrdering /> },
               { path: "analytics", element: <Analytics /> },
+              { path: "user-management", element: <UserManagement /> },
               { path: "settings", element: <Settings /> },
             ],
           },

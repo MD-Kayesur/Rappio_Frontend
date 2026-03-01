@@ -472,6 +472,8 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ type: propType, feedType: propFee
             <ShareModal
                 showShareModal={showShareModal}
                 setShowShareModal={setShowShareModal}
+                url={offers[currentIndex]?.website_url}
+                title={offers[currentIndex]?.title}
             />
 
             {showNameSetup && (

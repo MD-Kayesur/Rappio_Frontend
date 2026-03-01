@@ -1,34 +1,52 @@
 import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Link, Code, Facebook, Linkedin, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
-import { FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
+import { FaWhatsapp, FaXTwitter, FaTelegram } from 'react-icons/fa6';
 import { toast } from 'sonner';
 
 interface ShareModalProps {
     showShareModal: boolean;
     setShowShareModal: (show: boolean) => void;
+    url?: string;
+    title?: string;
 }
 
-const ShareModal: React.FC<ShareModalProps> = ({ showShareModal, setShowShareModal }) => {
+const ShareModal: React.FC<ShareModalProps> = ({ 
+    showShareModal, 
+    setShowShareModal,
+    url = window.location.href,
+    title = 'Check this out!'
+}) => {
     const shareScrollRef = useRef<HTMLDivElement>(null);
 
+    const handleNativeShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({ title, url });
+            } catch (err) {
+                console.log('Share failed:', err);
+            }
+        } else {
+            toast.info('Native sharing is not supported on this browser.');
+        }
+    };
+
     const shareOptions = [
-        // { name: 'Repost', icon: <Repeat2 size={24} />, color: 'bg-[#facd3b]', onClick: () => toast.success('Reposted!') },
-        { name: 'Send to friends', icon: <Send size={24} className="text-black" />, color: 'bg-[#FACC15]', onClick: () => toast.success('Opening messages...') },
-        { name: 'Copy Link', icon: <Link size={24} />, color: 'bg-[#2E7DFF]', onClick: () => { navigator.clipboard.writeText(window.location.href); toast.success('Link copied!'); } },
-        { name: 'WhatsApp', icon: <FaWhatsapp size={26} />, color: 'bg-[#25D366]', onClick: () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`) },
-        { name: 'Embed', icon: <Code size={22} />, color: 'bg-[#0096a7]', onClick: () => { navigator.clipboard.writeText(`<iframe src="${window.location.href}" width="100%" height="450px" frameborder="0"></iframe>`); toast.success('Embed code copied!'); } },
-        { name: 'Facebook', icon: <Facebook size={22} />, color: 'bg-[#1877F2]', onClick: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`) },
-        { name: 'Telegram', icon: <Send size={22} />, color: 'bg-[#24A1DE]', onClick: () => window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}`) },
-        { name: 'X', icon: <FaXTwitter size={22} />, color: 'bg-[#000000]', onClick: () => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`) },
-        { name: 'LinkedIn', icon: <Linkedin size={22} />, color: 'bg-[#0A66C2]', onClick: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`) },
-        { name: 'Email', icon: <Mail size={22} />, color: 'bg-[#EA4335]', onClick: () => window.open(`mailto:?subject=Check this out&body=${encodeURIComponent(window.location.href)}`) },
+        { name: 'Send to friends', icon: <Send size={24} className="text-black" />, color: 'bg-[#FACC15]', onClick: handleNativeShare },
+        { name: 'Copy Link', icon: <Link size={24} />, color: 'bg-[#2E7DFF]', onClick: () => { navigator.clipboard.writeText(url); toast.success('Link copied!'); } },
+        { name: 'WhatsApp', icon: <FaWhatsapp size={26} />, color: 'bg-[#25D366]', onClick: () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(title + " " + url)}`) },
+        { name: 'Embed', icon: <Code size={22} />, color: 'bg-[#0096a7]', onClick: () => { navigator.clipboard.writeText(`<iframe src="${url}" width="100%" height="450px" frameborder="0"></iframe>`); toast.success('Embed code copied!'); } },
+        { name: 'Facebook', icon: <Facebook size={22} />, color: 'bg-[#1877F2]', onClick: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`) },
+        { name: 'Telegram', icon: <FaTelegram size={24} />, color: 'bg-[#24A1DE]', onClick: () => window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`) },
+        { name: 'X', icon: <FaXTwitter size={22} />, color: 'bg-[#000000]', onClick: () => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`) },
+        { name: 'LinkedIn', icon: <Linkedin size={22} />, color: 'bg-[#0A66C2]', onClick: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`) },
+        { name: 'Email', icon: <Mail size={22} />, color: 'bg-[#EA4335]', onClick: () => window.open(`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`) },
     ];
 
     return (
         <AnimatePresence>
             {showShareModal && (
-                <div className="fixed inset-0 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
+                <div className="fixed inset-0 backdrop-blur-sm z-[11000] flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-background md:bg-background/40 backdrop-blur-lg rounded-3xl p-6 w-full max-w-[450px] relative border border-border transition-colors duration-300" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-center mb-8">
                             <h3 className="text-foreground text-lg font-semibold">Share to</h3>
