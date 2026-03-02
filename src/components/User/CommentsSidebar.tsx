@@ -144,13 +144,6 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
                                         <AnimatePresence>
                                             {comment.showReplies && comment.replies?.map(reply => (
                                                 <div key={reply.id} className="flex gap-3 mt-4">
-                                                    <div className="w-6 h-6 rounded-full bg-white/10 overflow-hidden flex items-center justify-center">
-                                                        {typeof reply.avatar === 'string' && reply.avatar.length > 2 ? (
-                                                            <img src={reply.avatar} alt={reply.user} />
-                                                        ) : (
-                                                            <span className="text-[12px]">{reply.avatar}</span>
-                                                        )}
-                                                    </div>
                                                     <div className="flex-1">
                                                         <div className="flex items-center gap-1.5 mb-0.5">
                                                             <span className="text-white/50 text-[12px] font-bold">{reply.user}</span>
