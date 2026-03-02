@@ -22,10 +22,10 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
     const [searchParams, setSearchParams] = useSearchParams()
     const searchQuery = searchParams.get('q') || ''
     const [isOpen, setIsOpen] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 1024);
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -60,7 +60,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
     }, [disableModal]);
 
     const handleSearchChange = (val: string) => {
-        const mediaPages = ['/user/all', '/user/videos', '/user/photos', '/user/favorites', '/user/top-casinos'];
+        const mediaPages = ['/user/all', '/user/videos', '/user/photos', '/user/favorites', '/user/categories'];
         const currentPath = location.pathname;
 
         if (!mediaPages.includes(currentPath) && val.trim() !== '') {
@@ -106,7 +106,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                                 setIsOpen(!isOpen);
                             }
                         }}
-                        className={`flex items-center transition-all bg-[#1A1C1D] border border-white/5 hover:border-white/10 text-gray-400 hover:text-white rounded-full ${isCollapsed
+                        className={`flex items-center transition-all text-foreground/60 hover:text-foreground rounded-full hover:bg-foreground/10 ${isCollapsed
                             ? 'w-10 h-10 justify-center p-0 flex-shrink-0'
                             : 'w-full px-4 py-2.5 gap-3'
                             }`}
@@ -119,159 +119,186 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
 
             <AnimatePresence>
                 {isOpen && (!isMobile || !disableModal) && (
-                    <motion.div
-                        id="search-modal"
-                        variants={{
-                            hidden: { y: '100%', opacity: 0, filter: 'blur(10px)' },
-                            visible: {
-                                y: 0,
-                                opacity: 1,
-                                filter: 'blur(0px)',
-                                transition: {
-                                    duration: 1.0,
-                                    ease: [0.22, 1, 0.36, 1],
-                                    staggerChildren: 0.1,
-                                    delayChildren: 0.2
-                                }
-                            },
-                            exit: { y: '100%', opacity: 0, filter: 'blur(10px)', transition: { duration: 0.6 } }
-                        }}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        className={`fixed top-0 bottom-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col ${isMobile ? 'left-0 right-0 w-full bg-black/60 backdrop-blur-xl text-white' : 'border-r border-white/10 shadow-2xl bg-black/60 backdrop-blur-xl text-white'}`}
-                        style={!isMobile ? {
-                            left: isCollapsed ? '80px' : '280px',
-                            width: '350px',
-                            pointerEvents: 'auto'
-                        } : { pointerEvents: 'auto' }}
-                    >
-                        <div className={`${isMobile ? 'p-4' : 'p-6'} flex flex-col gap-6`}>
-                            <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
-                                {isMobile ? (
-                                    <div className="flex items-center gap-3">
-                                        <button
-                                            onClick={closeSearch}
-                                            className="p-1 text-white hover:opacity-70"
-                                        >
-                                            <ChevronLeft size={32} />
-                                        </button>
-                                        <div className="relative flex-1 group">
-                                            <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60" />
+                    <>
+                        {/* Backdrop only for large screens to allow closing by clicking outside */}
+                        {!isMobile && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={closeSearch}
+                                className="fixed inset-0 z-[9998]"
+                            />
+                        )}
+                        <motion.div
+                            id="search-modal"
+                            variants={isMobile ? {
+                                hidden: { x: '100%', opacity: 1 },
+                                visible: {
+                                    x: 0,
+                                    opacity: 1,
+                                    transition: {
+                                        duration: 0.5,
+                                        ease: [0.22, 1, 0.36, 1],
+                                        staggerChildren: 0.1,
+                                        delayChildren: 0.2
+                                    }
+                                },
+                                exit: { x: '100%', opacity: 1, transition: { duration: 0.4 } }
+                            } : {
+                                hidden: { opacity: 0, scale: 1.05 },
+                                visible: {
+                                    opacity: 1,
+                                    scale: 1,
+                                    transition: {
+                                        duration: 0.4,
+                                        ease: [0.22, 1, 0.36, 1],
+                                        staggerChildren: 0.1,
+                                        delayChildren: 0.1
+                                    }
+                                },
+                                exit: { opacity: 0, scale: 1.05, transition: { duration: 0.3 } }
+                            }}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            className={`fixed inset-0 ${isMobile ? 'z-[99999]' : 'z-[9999]'} flex flex-col backdrop-blur-[20px] bg-background/80 text-foreground overflow-hidden transition-colors duration-300`}
+                            style={{ pointerEvents: 'auto' }}
+                            onClick={!isMobile ? closeSearch : undefined}
+                        >
+                            <div
+                                onClick={(e) => !isMobile && e.stopPropagation()}
+                                className={`${isMobile ? 'p-4' : 'max-w-4xl mx-auto w-full p-8 md:pt-32'} flex flex-col gap-8`}
+                            >
+                                <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
+                                    {isMobile ? (
+                                        <div className="flex items-center gap-3">
+                                            <button
+                                                onClick={closeSearch}
+                                                className="p-1 text-white hover:opacity-70"
+                                            >
+                                                <ChevronLeft size={32} />
+                                            </button>
+                                            <div className="relative flex-1 group">
+                                                <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60" />
+                                                <input
+                                                    ref={inputRef}
+                                                    type="text"
+                                                    placeholder="Search..."
+                                                    value={searchQuery}
+                                                    onChange={(e) => handleSearchChange(e.target.value)}
+                                                    className="w-full py-2.5 pl-12 pr-11 bg-foreground/5 text-foreground rounded-lg border border-border focus:outline-none placeholder-foreground/20 text-[17px]"
+                                                    onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
+                                                    autoFocus
+                                                />
+                                                {searchQuery && (
+                                                    <button
+                                                        onClick={() => handleSearchChange('')}
+                                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                                                    >
+                                                        <X size={16} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                            <button
+                                                onClick={() => {
+                                                    if (searchQuery.trim()) {
+                                                        handleSearchChange(searchQuery);
+                                                        closeSearch();
+                                                    }
+                                                }}
+                                                className=" font-bold text-[18px] px-1"
+                                            >
+                                                Search
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center justify-between">
+                                            <h2 className="text-white text-2xl font-bold">Search</h2>
+                                            <button
+                                                onClick={closeSearch}
+                                                className="p-2 hover:bg-white/10 rounded-full text-white/60 hover:text-white transition-all"
+                                            >
+                                                <X size={20} />
+                                            </button>
+                                        </div>
+                                    )}
+                                </motion.div>
+
+                                <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
+                                    {!isMobile && (
+                                        <div className="relative group">
+                                            <Search size={24} className="absolute left-6 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-white/70 transition-colors" />
                                             <input
                                                 ref={inputRef}
                                                 type="text"
-                                                placeholder="Search..."
+                                                placeholder="Search anything..."
                                                 value={searchQuery}
                                                 onChange={(e) => handleSearchChange(e.target.value)}
-                                                className="w-full py-2.5 pl-12 pr-11 bg-white/10 text-white rounded-lg border border-white/10 focus:outline-none placeholder-white/20 text-[17px]"
+                                                className="w-full py-5 pl-16 pr-14 bg-foreground/5 hover:bg-foreground/10 text-foreground rounded-2xl border border-border focus:border-foreground/20 focus:bg-foreground/10 outline-none placeholder-foreground/20 text-xl transition-all shadow-2xl"
                                                 onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
                                                 autoFocus
                                             />
                                             {searchQuery && (
                                                 <button
                                                     onClick={() => handleSearchChange('')}
-                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                                                    className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
                                                 >
-                                                    <X size={16} />
+                                                    <X size={20} />
                                                 </button>
                                             )}
                                         </div>
-                                        <button
-                                            onClick={() => {
-                                                if (searchQuery.trim()) {
-                                                    handleSearchChange(searchQuery);
-                                                    closeSearch();
-                                                }
-                                            }}
-                                            className=" font-bold text-[18px] px-1"
-                                        >
-                                            Search
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center justify-between">
-                                        <h2 className="text-white text-2xl font-bold">Search</h2>
-                                        <button
-                                            onClick={closeSearch}
-                                            className="p-2 hover:bg-white/10 rounded-full text-white/60 hover:text-white transition-all"
-                                        >
-                                            <X size={20} />
-                                        </button>
-                                    </div>
-                                )}
-                            </motion.div>
+                                    )}
+                                </motion.div>
 
-                            <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
-                                {!isMobile && (
-                                    <div className="relative group">
-                                        <input
-                                            ref={inputRef}
-                                            type="text"
-                                            placeholder="Search anything..."
-                                            value={searchQuery}
-                                            onChange={(e) => handleSearchChange(e.target.value)}
-                                            className="w-full py-3 px-5 bg-white/10 text-white rounded-full border border-transparent focus:border-white/20 outline-none placeholder-white/30 text-[15px]"
-                                            onKeyPress={(e) => e.key === 'Enter' && closeSearch()}
-                                            autoFocus
-                                        />
-                                        {searchQuery && (
-                                            <button
-                                                onClick={() => handleSearchChange('')}
-                                                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
-                                            >
-                                                <X size={16} />
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-                            </motion.div>
-
-                            <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex-1 overflow-y-auto no-scrollbar">
-                                {isMobile ? (
-                                    <div className="flex-1 overflow-y-auto no-scrollbar">
-                                        {searchQuery && (
-                                            <div className="flex flex-col gap-1">
-                                                {suggestions.map((title, idx) => (
-                                                    <button
-                                                        key={idx}
-                                                        onClick={() => handleSuggestionClick(title)}
-                                                        className="w-full px-4 py-3 text-left text-[16px] text-white/80 hover:bg-white/5 active:bg-white/10 transition-all flex items-center gap-4"
-                                                    >
-                                                        <Search size={18} className="text-white/30" />
-                                                        <span className="truncate">{title}</span>
-                                                    </button>
-                                                ))}
-                                                {suggestions.length === 0 && (
-                                                    <div className="px-4 py-10 text-center text-white/40 text-[15px]">
-                                                        No results found for "{searchQuery}"
+                                <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex-1 overflow-y-auto no-scrollbar">
+                                    {isMobile ? (
+                                        <div className="flex-1 overflow-y-auto no-scrollbar">
+                                            {searchQuery && (
+                                                <div className="flex flex-col gap-1">
+                                                    {suggestions.map((title, idx) => (
+                                                        <button
+                                                            key={idx}
+                                                            onClick={() => handleSuggestionClick(title)}
+                                                            className="w-full px-4 py-3 text-left text-[16px] text-white/80 hover:bg-white/5 active:bg-white/10 transition-all flex items-center gap-4"
+                                                        >
+                                                            <Search size={18} className="text-white/30" />
+                                                            <span className="truncate">{title}</span>
+                                                        </button>
+                                                    ))}
+                                                    {suggestions.length === 0 && (
+                                                        <div className="px-4 py-10 text-center text-white/40 text-[15px]">
+                                                            No results found for "{searchQuery}"
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-col gap-2">
+                                            {suggestions.map((title, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    onClick={() => handleSuggestionClick(title)}
+                                                    className="w-full px-6 py-4 text-left text-lg text-white/60 hover:bg-white/5 hover:text-white transition-all rounded-2xl flex items-center gap-4 group"
+                                                >
+                                                    <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#FACC15]/20 group-hover:text-[#FACC15] transition-colors">
+                                                        <Search size={18} />
                                                     </div>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <div className="flex flex-col gap-1">
-                                        {suggestions.map((title, idx) => (
-                                            <button
-                                                key={idx}
-                                                onClick={() => handleSuggestionClick(title)}
-                                                className="w-full px-4 py-3 text-left text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-all rounded-xl flex items-center gap-3"
-                                            >
-                                                <Search size={14} className="opacity-40" />
-                                                <span className="truncate">{title}</span>
-                                            </button>
-                                        ))}
-                                        {searchQuery && suggestions.length === 0 && (
-                                            <div className="px-4 py-10 text-center text-gray-500 text-sm">
-                                                No results found
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </motion.div>
-                        </div>
-                    </motion.div>
+                                                    <span className="truncate">{title}</span>
+                                                </button>
+                                            ))}
+                                            {searchQuery && suggestions.length === 0 && (
+                                                <div className="px-6 py-16 text-center text-white/20 text-lg italic">
+                                                    No results found for "{searchQuery}"
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </motion.div>
+                            </div>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
         </>

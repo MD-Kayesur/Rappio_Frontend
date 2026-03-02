@@ -2,8 +2,8 @@
 import React, { useState, useCallback, useMemo, useEffect, ChangeEvent, FormEvent } from 'react';
 import { Mail, Lock, User, Sparkles, Zap, Eye, EyeOff, Target, ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
- import { toast } from 'react-hot-toast';
- 
+import { toast } from 'react-hot-toast';
+
 import signupimage from "@/assets/prontocorso/PeopleWorking.png";
 import logoLight from "@/assets/prontocorso/ProntoCorsoLogoLight-removebg-preview.png";
 import logoDark from "@/assets/prontocorso/ProntoCorsoLogoDark-removebg-preview.png";
@@ -225,7 +225,7 @@ const validateForm = (data: FormData): FormErrors => {
 // --- Main Application Component ---
 const App: React.FC = () => {
   const navigate = useNavigate();
-   const { theme } = useTheme();
+  const { theme } = useTheme();
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   // Update dark mode status based on theme
@@ -349,14 +349,14 @@ const App: React.FC = () => {
 
     try {
       // Prepare the data for API call - exactly matches your API structure
-     
+
 
       //("Sending registration data:", userData);
 
       // Call the register mutation
- 
+
       // Store user data and tokens
-      
+
 
     } catch (error: any) {
       toast.error(error?.data?.message || "Registration failed. Please try again.");
@@ -598,11 +598,11 @@ const App: React.FC = () => {
 
         <MockButton
           type="submit"
-          disabled={isSubmitting  || !agreedToTerms}
+          disabled={isSubmitting || !agreedToTerms}
           variant="success"
           className="w-full h-12 !bg-[#10B981] hover:!bg-[#0ea571] text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer md:h-14 text-sm md:text-lg animate-slide-up delay-400 mt-2 md:mt-6"
         >
-          {isSubmitting  ? (
+          {isSubmitting ? (
             <div className="flex items-center gap-2 md:gap-3">
               <div className="h-4 w-4 md:h-5 md:w-5 border-2 md:border-3 border-white border-t-transparent rounded-full animate-spin" />
               <span className="text-xs md:text-base dark:text-white text-gray-800">Creating Your Account...</span>
@@ -651,7 +651,7 @@ const App: React.FC = () => {
               <div className="grid gap-3 xs:gap-4 md:gap-6 text-center">
                 {/* Logo */}
                 <div className="flex justify-center mb-2">
-                  <img src={isDarkMode ? logoDark : logoLight} alt="ProntoCorso Logo" className="h-12  md:h-16 " />
+                  <img src={isDarkMode ? logoDark : logoLight} alt="Rappio Logo" className="h-12  md:h-16 " />
 
                 </div>
 
@@ -722,12 +722,11 @@ const App: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-16 mb-16 text-left">
             <div>
               <Link to="/#home" state={{ from: "/" }} className="flex items-center gap-4">
-                <img src={isDarkMode ? logoDark : logoLight} alt="ProntoCorso" className="w-50  mb-6 rounded-full" />
+                <img src={isDarkMode ? logoDark : logoLight} alt="Rappio" className="w-50  mb-6 rounded-full" />
 
               </Link>
               <p className="text-sm leading-relaxed mb-8 text-slate-600 dark:text-gray-400">
-                Empowering citizenship applicants with the specific tactical
-                skills needed to pass the <span className="font-bold text-slate-900 dark:text-white">B1c</span> exam.
+                Premium casino offers and exclusive rewards.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-8">
@@ -792,9 +791,7 @@ const App: React.FC = () => {
                 About
               </h5>
               <p className="text-sm leading-relaxed text-slate-600 dark:text-gray-400 italic">
-                ProntoCorso is an independent tool built to accompany your
-                primary language education. Focused on CILS, CELI, and PLIDA
-                preparation.
+                Rappio is the ultimate hub for high-stakes entertainment.
               </p>
             </div>
           </div>

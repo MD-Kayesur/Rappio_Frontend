@@ -7,10 +7,10 @@ import AdminRoute from "./AdminRoutes";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import UserLayout from "@/Layout/UserLayout/UserLayout";
- import Videos from "@/pages/User/Videos";
+import Videos from "@/pages/User/Videos";
 import Photos from "@/pages/User/Photos";
 import Favorites from "@/pages/User/Favorites";
-import TopCasinos from "@/pages/User/TopCasinos";
+import Categories from "@/pages/User/TopCasinos";
 import AdminLayout from "@/Layout/AdminLayout/AdminLayout";
 import Overview from "@/pages/Admin/Overview";
 import FeedOrdering from "@/pages/Admin/FeedOrdering";
@@ -18,17 +18,43 @@ import Analytics from "@/pages/Admin/Analytics";
 import Settings from "@/pages/Admin/Settings";
 import AllMedia from "@/pages/User/AllMedia";
 import Sittings from "@/pages/User/Sittings";
+import UserManagement from "@/pages/Admin/UserManagement";
+
+import About from "@/pages/About";
+import TermsOfService from "@/pages/About/TermsOfService";
+import PrivacyPolicy from "@/pages/About/PrivacyPolicy";
+import CookiePolicy from "@/pages/About/CookiePolicy";
 
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-
-
       {
-        path: "",
+        index: true,
         element: <Home />,
+      },
+      {
+        path: "/",
+        element: <UserLayout />,
+        children: [
+          {
+            path: "about",
+            element: <About />,
+          },
+          {
+            path: "terms",
+            element: <TermsOfService />,
+          },
+          {
+            path: "privacy",
+            element: <PrivacyPolicy />,
+          },
+          {
+            path: "cookies",
+            element: <CookiePolicy />,
+          },
+        ]
       },
 
       {
@@ -49,7 +75,7 @@ const routes = createBrowserRouter([
           { path: "photos", element: <Photos /> },
           { path: "favorites", element: <Favorites /> },
           { path: "settings", element: <Sittings /> },
-          { path: "top-casinos", element: <TopCasinos /> },
+          { path: "categories", element: <Categories /> },
         ],
       },
       {
@@ -63,6 +89,7 @@ const routes = createBrowserRouter([
               { path: "overview", element: <Overview /> },
               { path: "feed-ordering", element: <FeedOrdering /> },
               { path: "analytics", element: <Analytics /> },
+              { path: "user-management", element: <UserManagement /> },
               { path: "settings", element: <Settings /> },
             ],
           },

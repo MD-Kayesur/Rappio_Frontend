@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Heart, ThumbsUp, MessageCircle, Bookmark, Play } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Heart, ThumbsUp, MessageCircle, Bookmark, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface Offer {
@@ -25,6 +25,9 @@ const Favorites = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('q') || '';
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
 
   // Helper function to extract YouTube video ID
   const extractYouTubeID = (url: string): string => {
@@ -38,6 +41,24 @@ const Favorites = () => {
       return `${(num / 1000).toFixed(1)}k`;
     }
     return num.toString();
+  };
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeftArrow(scrollLeft > 0);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 5);
+    }
+  };
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 200;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
@@ -57,6 +78,10 @@ const Favorites = () => {
       setFavorites(new Set(JSON.parse(savedFavorites)));
     }
   }, []);
+
+  useEffect(() => {
+    handleScroll();
+  }, [offers]);
 
   // Define favorited offers
   const favoritedOffers = offers.filter(offer => favorites.has(offer.id));
@@ -91,24 +116,48 @@ const Favorites = () => {
   };
 
   return (
-    <div className="min-h-full text-white overflow-hidden">
+    <div className="min-h-full text-foreground overflow-hidden">
       {/* Category Filter Tabs */}
-      <div className="sticky top-0 z-10 w-full backdrop-blur-md">
-        <div className="overflow-x-auto no-scrollbar w-full">
-          <div className="flex gap-2 px-4 py-4 min-w-max ">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category
-                  ? 'bg-white text-black'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                  }`}
-              >
-                {category}
-              </button>
-            ))}
+      <div className="sticky top-0 z-10 w-full backdrop-blur-md px-2">
+        <div className="relative flex items-center group">
+          {showLeftArrow && (
+            <button
+              onClick={() => scroll('left')}
+              className="absolute left-0 z-20 hidden md:flex p-1.5 bg-card/60 rounded-full text-foreground backdrop-blur-sm border border-border hover:bg-card/80 transition-all shadow-lg"
+            >
+              <ChevronLeft size={20} />
+            </button>
+          )}
+
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="overflow-x-auto no-scrollbar w-full scroll-smooth"
+          >
+            <div className="flex gap-2 px-4 py-4 min-w-max ">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category
+                    ? 'bg-primary text-primary-foreground shadow-md'
+                    : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                    }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {showRightArrow && (
+            <button
+              onClick={() => scroll('right')}
+              className="absolute right-0 z-20 hidden md:flex p-1.5 bg-card/60 rounded-full text-foreground backdrop-blur-sm border border-border hover:bg-card/80 transition-all shadow-lg"
+            >
+              <ChevronRight size={20} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -133,7 +182,7 @@ const Favorites = () => {
                     }
                   });
                 }}
-                className="group relative bg-[#1A1C1D] rounded-xl overflow-hidden hover:ring-2 hover:ring-gray-600 transition-all duration-300 cursor-pointer"
+                className="group relative bg-card rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-xl"
               >
                 {/* Image Container */}
                 <div className="relative aspect-[3/4] overflow-hidden bg-gray-800">
@@ -149,8 +198,8 @@ const Favorites = () => {
                   {/* Video Play Icon Overlay */}
                   {youtubeID && (
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
-                        <Play className="w-6 h-6 text-white ml-1" fill="white" />
+                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                        <Play className="w-6 h-6 text-primary-foreground ml-1" fill="currentColor" />
                       </div>
                     </div>
                   )}
@@ -164,10 +213,10 @@ const Favorites = () => {
                       e.stopPropagation();
                       toggleFavorite(offer.id);
                     }}
-                    className="absolute top-2 right-2 p-1.5 bg-black/70 backdrop-blur-sm rounded-lg hover:bg-black/90 transition-colors z-10"
+                    className="absolute top-2 right-2 p-1.5 bg-background/60 backdrop-blur-sm rounded-lg hover:bg-background/80 transition-colors z-10 border border-border"
                   >
                     <Bookmark
-                      className={`h-4 w-4 ${favorites.has(offer.id) ? 'fill-white text-white' : 'text-white'
+                      className={`h-4 w-4 ${favorites.has(offer.id) ? 'fill-primary text-primary' : 'text-foreground'
                         }`}
                     />
                   </button>
@@ -176,20 +225,19 @@ const Favorites = () => {
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="flex items-start gap-2 mb-2">
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-xs font-semibold text-white line-clamp-2 leading-tight">
+                        <h3 className="text-xs font-semibold text-foreground line-clamp-2 leading-tight">
                           {offer.title}
                         </h3>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-xs text-gray-300">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <ThumbsUp className="h-3 w-3" />
                         <span>{formatNumber(offer.likes)}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <MessageCircle className="h-3 w-3" />
-                        <span>{formatNumber(offer.comments)}</span>
                       </div>
                     </div>
                   </div>

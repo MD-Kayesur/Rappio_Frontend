@@ -20,7 +20,6 @@ import {
   Heart,
   MessageCircle,
   Bookmark,
-  Share,
   X,
   ChevronLeft,
   ChevronRight,
@@ -35,6 +34,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import ShareModal from '@/components/User/ShareModal';
 
 interface Offer {
   id: number;
@@ -58,7 +58,9 @@ const Overview = () => {
   const [yearFilter, setYearFilter] = useState('2026');
   const [feedView, setFeedView] = useState('web');
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const [tagInput, setTagInput] = useState('');
   const [showPreview, setShowPreview] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [contains18Plus, setContains18Plus] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -72,7 +74,7 @@ const Overview = () => {
     termsHighlights: '',
     affiliateLink: '',
     languages: '',
-    categories: '',
+    categories: [] as string[],
     disclaimers: '',
     mediaFile: null as File | null,
     mediaPreview: '',
@@ -153,6 +155,26 @@ const Overview = () => {
     setShowPreview(true);
   };
 
+  const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && tagInput.trim()) {
+      e.preventDefault();
+      if (!formData.categories.includes(tagInput.trim())) {
+        setFormData({
+          ...formData,
+          categories: [...formData.categories, tagInput.trim()]
+        });
+      }
+      setTagInput('');
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setFormData({
+      ...formData,
+      categories: formData.categories.filter(tag => tag !== tagToRemove)
+    });
+  };
+
   const handlePublish = () => {
     console.log('Publishing post:', formData);
     setShowPreview(false);
@@ -164,7 +186,7 @@ const Overview = () => {
       termsHighlights: '',
       affiliateLink: '',
       languages: '',
-      categories: '',
+      categories: [],
       disclaimers: '',
       mediaFile: null,
       mediaPreview: '',
@@ -207,7 +229,7 @@ const Overview = () => {
 
         <Button
           onClick={() => setShowCreatePost(true)}
-          className="bg-red-600 hover:bg-red-700"
+          className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold"
         >
           New Post
         </Button>
@@ -293,8 +315,8 @@ const Overview = () => {
                   <p className="text-xs text-gray-400 line-clamp-1">{item.subtitle}</p>
                 </div>
                 <div className="flex items-center gap-4 text-sm font-medium">
-                  <div className="flex items-center gap-1.5 text-red-500">
-                    <Heart className="h-4 w-4 fill-red-500/10" />
+                  <div className="flex items-center gap-1.5 text-[#FF2D55]">
+                    <Heart className="h-4 w-4 fill-[#FF2D55]/10" />
                     <span>{formatNumber(item.likes)}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-blue-500">
@@ -384,9 +406,9 @@ const Overview = () => {
                   type="monotone"
                   dataKey="videos"
                   name="Videos"
-                  stroke="#EE2B3E"
+                  stroke="#FACC15"
                   strokeWidth={1.5}
-                  dot={{ r: 3, fill: '#EE2B3E', strokeWidth: 0 }}
+                  dot={{ r: 3, fill: '#FACC15', strokeWidth: 0 }}
                   activeDot={{ r: 5, strokeWidth: 0 }}
                 />
                 <Line
@@ -510,12 +532,31 @@ const Overview = () => {
 
                     <div>
                       <Label className="text-sm mb-2 block">Categories/tags:</Label>
-                      <Textarea
-                        placeholder="Type bonus points & press enter to add"
-                        className="bg-[#1A1C1D] border-gray-800 text-white min-h-20"
-                        value={formData.categories}
-                        onChange={(e) => setFormData({ ...formData, categories: e.target.value })}
-                      />
+                      <div className="space-y-3">
+                        <Input
+                          placeholder="Type tag & press enter to add"
+                          className="bg-[#1A1C1D] border-gray-800 text-white"
+                          value={tagInput}
+                          onChange={(e) => setTagInput(e.target.value)}
+                          onKeyDown={addTag}
+                        />
+                        <div className="flex flex-wrap gap-2">
+                          {formData.categories.map((tag, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-1.5 px-3 py-1 bg-[#FACC15]/10 border border-[#FACC15]/20 text-[#FACC15] rounded-full text-xs font-medium group"
+                            >
+                              <span>{tag}</span>
+                              <button
+                                onClick={() => removeTag(tag)}
+                                className="hover:text-white transition-colors"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
                     <div>
@@ -550,7 +591,7 @@ const Overview = () => {
                             )}
                             <button
                               onClick={() => setFormData({ ...formData, mediaFile: null, mediaPreview: '' })}
-                              className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
+                              className="absolute top-2 right-2 p-1 bg-[#FACC15] hover:bg-[#EAB308] text-black rounded-full"
                             >
                               <X className="h-4 w-4" />
                             </button>
@@ -572,7 +613,7 @@ const Overview = () => {
                             <Button
                               type="button"
                               onClick={() => mediaInputRef.current?.click()}
-                              className="mt-4 bg-red-600 hover:bg-red-700"
+                              className="mt-4 bg-[#FACC15] hover:bg-[#EAB308] text-black"
                             >
                               Upload
                             </Button>
@@ -589,7 +630,7 @@ const Overview = () => {
                             <img src={formData.thumbnailPreview} alt="Thumbnail" className="w-full h-32 object-cover rounded-lg" />
                             <button
                               onClick={() => setFormData({ ...formData, thumbnailFile: null, thumbnailPreview: '' })}
-                              className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
+                              className="absolute top-2 right-2 p-1 bg-[#FACC15] hover:bg-[#EAB308] text-black rounded-full"
                             >
                               <X className="h-4 w-4" />
                             </button>
@@ -624,7 +665,7 @@ const Overview = () => {
                 </div>
 
                 <div className="flex gap-4 mt-6">
-                  <Button onClick={handlePreview} className="bg-red-600 hover:bg-red-700">
+                  <Button onClick={handlePreview} className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">
                     Publish
                   </Button>
                   <Button onClick={handlePreview} variant="outline" className="bg-[#1A1C1D] border-gray-800">
@@ -686,7 +727,7 @@ const Overview = () => {
                       {formData.description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry."}
                     </p>
 
-                    <Button className="bg-red-600 hover:bg-red-700">Claim Offer</Button>
+                    <Button className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">Claim Offer</Button>
 
                     <div className="flex items-center gap-6 py-4">
                       <button className="flex flex-col items-center gap-1 group">
@@ -700,8 +741,10 @@ const Overview = () => {
                       <button className="flex flex-col items-center gap-1 group">
                         <Bookmark className="h-6 w-6 group-hover:text-yellow-500 transition-colors" />
                       </button>
-                      <button className="flex flex-col items-center gap-1 group">
-                        <Share className="h-6 w-6 group-hover:text-green-500 transition-colors" />
+                      <button onClick={() => setShowShareModal(true)} className="flex flex-col items-center gap-1 group">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="group-hover:text-green-500 transition-colors">
+                            <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z" />
+                        </svg>
                       </button>
                     </div>
 
@@ -734,7 +777,7 @@ const Overview = () => {
                 </div>
 
                 <div className="flex gap-4 mt-6">
-                  <Button onClick={handlePublish} className="bg-red-600 hover:bg-red-700">
+                  <Button onClick={handlePublish} className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">
                     Publish Now
                   </Button>
                   <Button
@@ -753,6 +796,13 @@ const Overview = () => {
           </div>
         </div>
       )}
+
+      <ShareModal
+        showShareModal={showShareModal}
+        setShowShareModal={setShowShareModal}
+        url={formData.affiliateLink || window.location.href}
+        title={formData.title || 'Check this out!'}
+      />
     </div>
   );
 };

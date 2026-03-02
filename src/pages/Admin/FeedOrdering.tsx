@@ -399,7 +399,7 @@ const FeedOrdering = () => {
                     size="sm"
                     variant={currentPage === page ? 'default' : 'outline'}
                     className={`h-8 w-8 p-0 text-xs ${currentPage === page
-                      ? 'bg-red-600 hover:bg-red-700 border-red-600'
+                      ? 'bg-[#FACC15] hover:bg-[#EAB308] border-[#FACC15] text-black'
                       : 'bg-gray-800 border-gray-700 hover:bg-gray-700'
                       }`}
                     onClick={() => setCurrentPage(page)}
@@ -579,7 +579,7 @@ const FeedOrdering = () => {
                             <img src={formData.mediaPreview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
                             <button
                               onClick={() => setFormData({ ...formData, mediaFile: null, mediaPreview: '' })}
-                              className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
+                              className="absolute top-2 right-2 p-1 bg-[#FACC15] rounded-full hover:bg-[#EAB308] text-black"
                             >
                               <X className="h-4 w-4" />
                             </button>
@@ -601,7 +601,7 @@ const FeedOrdering = () => {
                             <Button
                               type="button"
                               onClick={() => mediaInputRef.current?.click()}
-                              className="mt-4 bg-red-600 hover:bg-red-700"
+                              className="mt-4 bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold"
                             >
                               Upload
                             </Button>
@@ -618,7 +618,7 @@ const FeedOrdering = () => {
                             <img src={formData.thumbnailPreview} alt="Thumbnail" className="w-full h-32 object-cover rounded-lg" />
                             <button
                               onClick={() => setFormData({ ...formData, thumbnailFile: null, thumbnailPreview: '' })}
-                              className="absolute top-2 right-2 p-1 bg-red-600 rounded-full hover:bg-red-700"
+                              className="absolute top-2 right-2 p-1 bg-[#FACC15] rounded-full hover:bg-[#EAB308] text-black"
                             >
                               <X className="h-4 w-4" />
                             </button>
@@ -653,7 +653,7 @@ const FeedOrdering = () => {
                 </div>
 
                 <div className="flex gap-4 mt-6">
-                  <Button onClick={handleSaveEdit} className="bg-red-600 hover:bg-red-700">
+                  <Button onClick={handleSaveEdit} className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">
                     Save Changes
                   </Button>
                   <Button
@@ -707,7 +707,7 @@ const FeedOrdering = () => {
                           'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'}
                       </p>
 
-                      <Button className="bg-red-600 hover:bg-red-700">Claim Offer</Button>
+                      <Button className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold">Claim Offer</Button>
 
                       {/* Actions */}
                       <div className="flex items-center gap-6 py-4">

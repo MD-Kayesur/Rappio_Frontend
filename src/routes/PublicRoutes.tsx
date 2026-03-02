@@ -11,7 +11,7 @@ import AllMedia from "@/pages/User/AllMedia";
 import Videos from "@/pages/User/Videos";
 import Photos from "@/pages/User/Photos";
 import Favorites from "@/pages/User/Favorites";
-import TopCasinos from "@/pages/User/TopCasinos";
+import Categories from "@/pages/User/TopCasinos";
 // import Settings from "@/pages/User/Settings";
 
 const publicRouter = createBrowserRouter([
@@ -40,8 +40,8 @@ const publicRouter = createBrowserRouter([
           { path: "videos", element: <Videos /> },
           { path: "photos", element: <Photos /> },
           { path: "favorites", element: <Favorites /> },
-        //   { path: "settings", element: <Settings /> },
-          { path: "top-casinos", element: <TopCasinos /> },
+          //   { path: "settings", element: <Settings /> },
+          { path: "categories", element: <Categories /> },
         ],
       },
     ],
