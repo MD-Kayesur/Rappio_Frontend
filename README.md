@@ -52,3 +52,33 @@ export default tseslint.config({
   },
 })
 ```
+
+## Docker Setup
+
+This project is fully dockerized for both development and production.
+
+### Development
+
+To start the development server with hot reloading:
+
+```bash
+docker-compose up dev
+```
+
+The application will be available at `http://localhost:5173`.
+
+### Production
+
+To build and run the production image (served via Nginx):
+
+```bash
+docker-compose up app
+```
+
+The application will be available at `http://localhost`.
+
+### Commands
+
+- `docker-compose build`: Build all services.
+- `docker-compose up -d`: Run all services in the background.
+- `docker-compose down`: Stop and remove containers.
